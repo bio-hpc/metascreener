@@ -1,0 +1,16 @@
+# $Header: /opt/cvs/CADD/Raccoon2/bin/raccoonLauncher,v 1.2 2012/12/06 23:05:33 forli Exp $
+# $Id: raccoonLauncher,v 1.2 2012/12/06 23:05:33 forli Exp $
+
+# vision can be launched from a python shell like this:
+#import Vision; Vision.runVision()
+
+import sys, os
+sys.path.insert(0, '.')
+
+from CADD import Raccoon2
+
+if '__IP' in dir(): # ipython
+    Raccoon2.runRaccoon(sys.argv, ownInterpreter = False)
+else:
+    Raccoon2.runRaccoon(sys.argv, ownInterpreter = True)
+

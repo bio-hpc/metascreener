@@ -1,0 +1,19 @@
+/.packager.py/1.18/Fri Dec 19 01:38:00 2003/-kkv/
+/LICENSE/1.2/Thu Jul  3 20:49:11 2008/-kkv/
+/RELNOTES/1.5/Thu Oct 30 19:57:13 2008/-kkv/
+/alignmentEditor.py/1.7/Tue Jul 24 17:30:40 2007/-kkv/
+/bhtfunctions.py/1.9/Tue Jul 24 17:30:40 2007/-kkv/
+/errors.py/1.5/Fri Jun 20 01:35:58 2014/-kkv/
+/events.py/1.5/Fri Jun 20 01:35:58 2014/-kkv/
+/popen2Threads.py/1.17/Wed Mar  4 23:35:37 2009/-kkv/
+/preferences.py/1.11/Tue Aug 30 18:18:36 2011/-kkv/
+/process.py/1.4/Wed Jun 17 00:03:21 2009/-kkv/
+D/TestUtil////
+D/Tests////
+D/gui////
+D/math////
+D/regression////
+D/splashregister////
+D/util////
+D/web////
+/__init__.py/1.94/Fri Jan 23 00:09:17 2015/-kkv/

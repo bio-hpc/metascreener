@@ -1,0 +1,37 @@
+# configure AutoDock with Flexibility Tree
+# 
+# Yong Zhao, TSRI, La Jolla. 2004
+# yongzhao@scripps.edu
+
+# name of XML desicrption of the docking system
+ReceptorXML = '/export/people/yongzhao/dev/1HBV.xml'
+LigandXML='/export/people/yongzhao/dev/1HBV_Lig.xml'
+
+
+# GA settings , one line per attribute
+pop_size = 100
+p_replace = 0.5
+p_cross = 0.5
+gens = 100
+p_mutate = 'gene'
+p_deviation =  1e-6
+rand_seed = 0
+rand_alg = 'CMRG'
+
+# calculate the Internal Energy for ligand?
+calcLigIE = True
+
+# calculate the Internal Energy for ligand?
+calcRecIE = True
+
+# C++ scorer 
+scorerVersion = "C++"
+
+# python scorer
+#scorerVersion = "Python"
+
+# internal energy (autodock) of receptor, C++
+#scorerVersion = "IEC++"
+
+# amber force field
+#scorerVersion = "Amber"

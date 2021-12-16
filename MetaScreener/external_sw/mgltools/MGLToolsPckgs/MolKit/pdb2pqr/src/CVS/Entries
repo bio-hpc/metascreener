@@ -1,0 +1,17 @@
+/.cvsignore/1.1/Fri Aug  3 20:59:24 2007/-kkv/
+/__init__.py/1.1/Fri Aug  3 20:59:24 2007/-kkv/
+/aa.py/1.1/Fri Aug  3 20:59:24 2007/-kkv/
+/definitions.py/1.1/Fri Aug  3 20:59:24 2007/-kkv/
+/forcefield.py/1.1/Fri Aug  3 20:59:24 2007/-kkv/
+/hydrogens.py/1.1/Fri Aug  3 20:59:24 2007/-kkv/
+/inputgen.py/1.1/Fri Aug  3 20:59:24 2007/-kkv/
+/na.py/1.1/Fri Aug  3 20:59:24 2007/-kkv/
+/pdb.py/1.1/Fri Aug  3 20:59:24 2007/-kkv/
+/protein.py/1.1/Fri Aug  3 20:59:24 2007/-kkv/
+/psize.py/1.1/Fri Aug  3 20:59:24 2007/-kkv/
+/quatfit.py/1.1/Fri Aug  3 20:59:24 2007/-kkv/
+/routines.py/1.1/Fri Aug  3 20:59:24 2007/-kkv/
+/server.py/1.1/Fri Aug  3 20:59:24 2007/-kkv/
+/structures.py/1.1/Fri Aug  3 20:59:24 2007/-kkv/
+/utilities.py/1.1/Fri Aug  3 20:59:24 2007/-kkv/
+D

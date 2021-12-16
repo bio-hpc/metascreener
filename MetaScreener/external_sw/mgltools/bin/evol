@@ -1,0 +1,9 @@
+#!/data/mgltools/MakeInstallers/python2.7/bin/python
+
+import imp
+path = imp.find_module('prody')[1]
+apps = imp.find_module('apps', [path])
+apps = imp.load_module('prody.apps', *apps)
+
+if __name__ == '__main__':
+    apps.evol_main()

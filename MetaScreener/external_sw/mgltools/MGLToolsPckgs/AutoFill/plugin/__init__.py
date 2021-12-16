@@ -1,0 +1,1 @@
+packageContainsVFCommands = 1

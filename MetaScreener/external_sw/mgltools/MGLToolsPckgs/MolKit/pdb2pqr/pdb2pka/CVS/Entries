@@ -1,0 +1,18 @@
+/Makefile.am/1.1/Fri Aug  3 20:59:24 2007/-kb/
+/Makefile.in/1.1/Fri Aug  3 20:59:24 2007/-kb/
+/NEWligand_topology.py/1.2/Wed Oct 10 22:15:40 2007/-kkv/
+/TITRATION.DAT/1.1/Fri Aug  3 20:59:24 2007/-kb/
+/__init__.py/1.1/Fri Aug  3 20:59:24 2007/-kkv/
+/apbs.py/1.1/Fri Aug  3 20:59:24 2007/-kkv/
+/example.py/1.1/Fri Aug  3 20:59:24 2007/-kkv/
+/inputgen_pKa.py/1.1/Fri Aug  3 20:59:24 2007/-kkv/
+/ligand_topology.py/1.2/Wed Oct 10 22:15:40 2007/-kkv/
+/pKa_base.py/1.1/Fri Aug  3 20:59:24 2007/-kkv/
+/pMC_mult.cpp/1.1/Fri Aug  3 20:59:24 2007/-kkv/
+/pMC_mult.h/1.1/Fri Aug  3 20:59:24 2007/-kkv/
+/pMC_mult.i/1.1/Fri Aug  3 20:59:24 2007/-kb/
+/pMC_mult.py/1.1/Fri Aug  3 20:59:24 2007/-kkv/
+/pMC_mult_wrap.cpp/1.1/Fri Aug  3 20:59:24 2007/-kkv/
+/pka.py/1.1/Fri Aug  3 20:59:24 2007/-kkv/
+D/ligandclean////
+D/substruct////

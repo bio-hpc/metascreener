@@ -1,0 +1,10 @@
+varying vec3 normal;
+varying vec2 texCoords;
+
+void main (void)
+{
+    gl_FrontColor = gl_Color;//gl_Normal for normal map
+    gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
+    normal = vec3(gl_ModelViewMatrix * vec4(gl_Normal,0.0));
+    texCoords = gl_MultiTexCoord0.xy;
+}

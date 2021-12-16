@@ -1,0 +1,360 @@
+#!/usr/bin/env pythonsh
+import sys, pdb
+from time import time
+import numpy
+from AutoDockFR.utils import saveAutoDockFRPrediction
+
+t0 =  time()                        # Stores the time (float) at the start of the program
+
+if len(sys.argv)==1:  ## print help msg if no input is given
+    sys.argv.append('-help')
+
+from AutoDockFR.Docking import AutoDockFR
+from AutoDockFR.Param import Params
+
+input=Params(args=sys.argv[1:])
+
+flipdock=AutoDockFR(input)
+
+from MolKit import Read
+
+# create a gene an set it to the starting values
+ga = flipdock.docking.search
+settings = flipdock.setting
+
+from AutoDockFR.GA import SolisWet
+
+GA_LocalSearchRate = settings['GA_localsearchrate']
+GA_LocalSearchMaxFail = settings['GA_LocalSearchMaxFail']
+GA_LocalSearchMaxSuccess = settings['GA_LocalSearchMaxSuccess']
+GA_LocalSearchMinVar = settings['GA_LocalSearchMinVar']
+GA_LocalSearchFactorContraction = settings['GA_LocalSearchFactorContraction']
+GA_LocalSearchFactorExpansion = settings['GA_LocalSearchFactorExpansion']
+GA_LocalSearchMaxIts = settings['GA_LocalSearchMaxIts']
+
+solisWets = SolisWet(GA_LocalSearchRate, GA_LocalSearchMaxFail, GA_LocalSearchMaxSuccess,
+		     GA_LocalSearchMinVar, GA_LocalSearchFactorContraction,
+		     GA_LocalSearchFactorExpansion, GA_LocalSearchMaxIts)
+
+def mkGenome(startingGenes, score=None):
+    individual = ga.pop.model_genome.clone()
+    individual.initialize(settings)
+    for i,v in enumerate(startingGenes):
+        individual[i].set_value(v)
+    sc = -individual.evaluate()
+    if score:
+        if abs(sc-score)>0.01: print 'gene_score=%f expected_score=%f diff=%f'%(sc, score, abs(sc-score))
+    return individual
+
+
+def minimize1(individual, num, nbRounds=50, noImprovementBreak=10, nbSteps=500, maxfail=10, minVar=0.01, absolute=False, verbose=False):
+    t0 =  time()           # Stores the time (float) at the start of the program
+    orig_ene = last_score = -individual._score
+    noImprovement = 0
+    nbSuccess = 0
+    stepsList = []
+    for i in range(nbRounds):
+        neighbor, nbSteps = solisWets.search(individual, max_steps=nbSteps, MAX_FAIL=maxfail, MIN_VAR=minVar, absMinVar=absolute)
+	if -neighbor._score < last_score:
+            stepsList.append(nbSteps)
+	    #if verbose:
+	    #    print '%d'%(i)
+	    last_score = -neighbor._score
+	    individual = neighbor
+	    nbSuccess += 1
+	    noImprovement = 0
+	else:
+	    noImprovement += 1
+	    if noImprovement > noImprovementBreak:
+	        #if verbose: print 'NoImprove '
+	        break
+    det = 0.0
+    if verbose:
+        if nbSuccess:
+            de = -individual._score-orig_ene
+            t = time()-t0
+            det = de/t
+            print "Minimized %3d %3d/%3d/%3d e: %9.3f->%9.3f de %6.3f de/s %8.3f in: %4.1f seconds" % (
+		num, nbSuccess, i+1, nbRounds, orig_ene, -individual._score,
+                de, det, t),
+            print "steps: min:%5.2f, max:%5.2f, mean:%5.2f, std:%5.2f"%(
+                min(stepsList),max(stepsList),numpy.mean(stepsList), numpy.std(stepsList))
+        else:
+            print '0 improvement'
+
+    return individual, det
+
+# reset ligand Xfomr to  move anchor to center of box
+
+# m2 moves root atom to center of the box
+#m2 = flipdock.docking.gnm.motionObjs[2]
+#m2.configure(percent=0.0)
+#m2.updateTransformation()
+
+# does the translation of the ligand in the box
+# relative to teh center of the box
+# we place the lignad in the center to avoid translation
+#m1 = flipdock.docking.gnm.motionObjs[1]
+#m1.configure(point_X=.5, point_Y=.5, point_Z=.5)
+#m1.updateTransformation()
+
+#m0 = flipdock.docking.gnm.motionObjs[0]
+#m0.configure(x=1., y=0., z=0., angle=0)
+#m0.updateTransformation()
+
+#flipdock.docking.LigandTree.root.motion.updateTransformation()
+
+startingGenes =  [1., 0., 0., 0.,
+                  0.5, 0.5, 0.5] + [0.0]*(len(ga.pop[0])-7)
+
+from AutoDockFR.utils import saveAutoDockFRPrediction
+# 1tni rmsd:  3.8 E:    -7.499 -> -8.68 20 rounds   354s
+startingGenes = [0.2708766635826621, 0.844871580154249, 0.6288376386732152, 0.6687841999875661, 0.4840180701115133, 0.4928854843443466, 0.7162029666631905, 0.3850443390343041, 0.0735301904644645, 0.9585644033564323, 0.7317580658588656, 0.6795038359168699]
+
+#ind = mkGenome(startingGenes, None)
+#saveAutoDockFRPrediction(
+#     ind, flipdock.docking.setting, flipdock.docking.scoreObject,
+#     R_tree = flipdock.docking.ReceptorTree,
+#     L_tree = flipdock.docking.LigandTree, 
+#     recName=None, ligName ="start1.pdb")
+
+# -8.002780  -> -8.65 10 rounds 10 rounds 150 sec
+#startingGenes = [0.030507639525308966, 0.4126899330239841, 0.8341326199519684, 0.3465393452601416, 0.6015626975627226, 0.3902903353303907, 0.4342554611670891, 0.0, 0.9826660983684561, 0.8524259950957274, 0.0015719282993851464, 1.0]
+#ind = mkGenome(startingGenes, None)
+#saveAutoDockFRPrediction(
+#     ind, flipdock.docking.setting, flipdock.docking.scoreObject,
+#     R_tree = flipdock.docking.ReceptorTree,
+#     L_tree = flipdock.docking.LigandTree, 
+#     recName=None, ligName ="start2.pdb")
+
+# -7.108744  -> -7.84 20 round 305s 
+#startingGenes = [0.09616782830694151, 0.08755597210429061, 0.5503410001225155, 0.18827474180814632, 0.5068626381599478, 0.43554401252622643, 0.7908786657321147, 0.9702223890380726, 0.16410327178609954, 0.9025539364669721, 0.021665467245311112, 0.8298454554928089]
+#ind = mkGenome(startingGenes, None)
+#saveAutoDockFRPrediction(
+#     ind, flipdock.docking.setting, flipdock.docking.scoreObject,
+#     R_tree = flipdock.docking.ReceptorTree,
+#     L_tree = flipdock.docking.LigandTree, 
+#     recName=None, ligName ="start3.pdb")
+
+ind = mkGenome(startingGenes, None)
+
+drot = 0.002
+dtrans1 = .012
+dtrans1 = dtrans2 = dtrans3 = .008
+dtor = .36
+absVar = [drot/2., drot/2., drot/2., drot/2.,     # 
+          dtrans1/12., dtrans2/8., dtrans3/8,     # 0.012, 0.08 0.08 translation with prob 1 sigma
+          #0.36/360, 0.36/360, 0.36/360, 0.36/360, 0.36/360 ]  # 3.6 degrees on torsion with prob 1 sigma
+          dtor/360., dtor/360., dtor/360., dtor/360., dtor/360. ]  # 3.6 degrees on torsion with prob 1 sigma
+#absVar = None
+
+print 'absVar', absVar
+
+def jitter(ind, ax, ay, az):
+    from random import uniform
+    ind[4]._value += uniform(-ax, ax)
+    ind[5]._value += uniform(-ay, ay)
+    ind[6]._value += uniform(-az, az)
+    ind.evaluate(force=1)
+
+t0 = time()
+winner = ind.clone()
+mini = ind.clone()
+rfail = 0
+dx= 1.0
+dxMult = 0
+fc = 0
+# iterate the process n times
+for i in range(10):
+    print "round:", i, time()-t0, -winner._score, dx
+    fail = 0 # count the number of times SolisWets does not improve
+    maxFail = len(ind) # maximum number of such failures
+    ct = 0  # counter 
+    saveAutoDockFRPrediction(
+        mini, flipdock.docking.setting, flipdock.docking.scoreObject,
+        R_tree = flipdock.docking.ReceptorTree,
+        L_tree = flipdock.docking.LigandTree, 
+        recName=None, ligName ="mini_r%03d_0000.pdb"%i)
+    while fail<maxFail: # as long as we do not fail nbGenes time in a row
+        # do one local search with lots of steps and allwo to fail 2*nbGenes
+        new, nbSteps = solisWets.search(mini, max_steps=1000, MAX_FAIL=maxFail*2, MIN_VAR=0.001, absMinVar=absVar)
+        # if the results is better it will be minimized again and reset fail counter
+        if new._score > mini._score:
+            print '  ',fail, nbSteps, mini._score, new._score, new._score- mini._score
+            fail = 0
+            mini = new
+        else: # increment failure count
+            fail += 1
+        saveAutoDockFRPrediction(
+            mini, flipdock.docking.setting, flipdock.docking.scoreObject,
+            R_tree = flipdock.docking.ReceptorTree,
+            L_tree = flipdock.docking.LigandTree, 
+            recName=None, ligName ="mini_r%03d_%04d.pdb"%(i, ct))
+        ct += 1
+        # if we reach 10 iterations and score is not better we stop minimizing
+        #if ct > 10 and new._score < winner._score: break'
+        if ct > 10: break
+
+    # if the minimized ind is better he becomes the winner
+    if mini._score > winner._score:
+        winner = mini.clone()
+        rfail = 0
+        ## if dxMult > 0:
+        ##     dx -= 1.0 # if dx was increased, decrease it
+        ##     dxMult -= 1
+    else:
+        # we start from the last winner
+        mini = winner.clone()
+        rfail += 1
+        if rfail==3: # if the winner did not improve in 5 round increase dx
+            break
+            ## dx += 1.0
+            ## dxMult += 1
+            ## rfail = 0
+
+    # we randomly move the individual using a Gaussian with dev dx
+    jitter(mini, dx/12., dx/8., dx/8.)
+
+
+print winner.evaluate(force=1), time()-t0
+
+saveAutoDockFRPrediction(
+     ind, flipdock.docking.setting, flipdock.docking.scoreObject,
+     R_tree = flipdock.docking.ReceptorTree,
+     L_tree = flipdock.docking.LigandTree, 
+     recName="rec.pdb", ligName ="winner1.pdb")
+
+
+raise
+#dx = 1.
+#mini = jitter(mini, dx/12., dx/8., dx/8.)
+#mini.evaluate(force=1)
+
+#mini, des = minimize1(ind, 0, nbRounds=1, noImprovementBreak=10, nbSteps=200, maxfail=20, absolute=absVar, verbose=True)
+
+raise
+FE_coeff_tors_42	= 0.2983 # torsional 
+
+print -ind._score + flipdock.docking.TORSDOF*FE_coeff_tors_42
+
+
+gnm = flipdock.docking.gnm
+RR_coords, FR_Coords, L_coords = gnm.toPhenotype(ind)
+
+mini, des = minimize1(ind, 0, nbRounds=50, noImprovementBreak=10, nbSteps=100, minVar=0.01, absolute=None, verbose=True)
+
+mini, des = minimize1(mini, 0, nbRounds=200, noImprovementBreak=50, nbSteps=300, minVar=0.01, absolute=absVar, verbose=True)
+
+#print -ind._score
+
+raise
+execfile('popMToMin.py')
+
+inds = [mkGenome(ind[0], ind[2]) for ind in population]
+orig_scores = [-ind._score for ind in inds]
+
+## # sort by energy
+# sort individuals from low energy to high
+eorder = numpy.argsort([x[2] for x in population])
+#for idx in eorder:
+#    ind = inds[idx]
+#    print population[idx][2], -inds[idx]._score
+
+t1 = time()
+desList = []
+for idx in eorder:
+    ind = inds[idx]
+    mini, des = minimize1(ind, idx, nbRounds=50, noImprovementBreak=10, nbSteps=100, verbose=True)
+    desList.append(des)
+print 'total time:', time()-t1
+print 'delta energy per second: min: %5.2f max:%5.2f mean: %5.2f, std:%5.2f'%(
+    numpy.min(desList),numpy.max(desList),numpy.mean(desList),numpy.std(desList))
+
+## code to look at structures generated by local search
+##
+## gnm = flipdock.docking.gnm
+## RR_coords, FR_Coords, L_coords = gnm.toPhenotype(startingGenes)
+
+## ind = mkGenome(startingGenes, None)
+## import numpy
+
+saveAutoDockFRPrediction(
+     ind, flipdock.docking.setting, flipdock.docking.scoreObject,
+     R_tree = flipdock.docking.ReceptorTree,
+     L_tree = flipdock.docking.LigandTree, 
+     recName="rec.pdb", ligName ="sol1_0.60_19.485.pdb")
+
+## for i in range(20):
+##     neighbor, nbSteps = solisWets.search(ind, max_steps=1, search_rate=1.)
+##     RR_coords, FR_Coords, L_coordsT = gnm.toPhenotype(neighbor)
+##     diff = numpy.array(L_coords)-numpy.array(L_coordsT)
+##     saveAutoDockFRPrediction(
+##         ind, flipdock.docking.setting, flipdock.docking.scoreObject,
+##         R_tree = flipdock.docking.ReceptorTree,
+##         L_tree = flipdock.docking.LigandTree, 
+##         recName="rec.pdb", ligName ="LigMin%02d.pdb"%(i,))
+##     #print diff[0]
+## raise
+
+# Minimize
+
+# RMSD 1.56432658123 E= -12.46
+#startingGenes =  [0.841211280286, 0.844832571933, 0.104948214256, 0.672662987526, 0.603153898725, 0.219287855745, 0.454442688354, 0.113088550996, 0.42315787059, 0.770070324903, 0.228898747382]
+
+# RMSD  2.511040  E=18.6026115551
+#startingGenes =  [0.958046305517, 0.869910423443, 0.217997926804, 0.695815769155, 0.528297242162, 0.235593879779, 0.402693886518, 0.82022600779, 0.894627054393, 0.292742118415, 0.350000369958]
+
+#startingGenes =  [0.793880232108, 0.851151478424, 0.140998844597, 0.659121294111, 0.567986718739, 0.202237273289, 0.404275095269, 0.0795310918169, 0.168891193547, 0.675661799583, 0.873050708653]
+
+#raise
+#ind = mkGenome(startingGenes, None)
+#print -ind._score
+
+
+## stats = {}
+
+## opt_scores = {}
+## #for idx in eorder:
+## #    ind = inds[idx]
+## #    print population[idx][2]
+## #    print inds[idx]._score
+
+## #for idx in range(len(population)):
+## #    print population[idx][2], inds[idx]._score
+    
+## for steps in [5, 10, 15, 20, 30, 40, 50, 100]:
+##     for _round, noImp in zip([1,2,3,4,5,10, 20, 30, 50, 100, 200, 300],[10, 10, 10, 10, 10, 2, 4, 6, 10, 20, 30, 50]):
+## 	t1 = time()
+##         key = "%d_%d_%d"%(_round,steps,noImp)
+## 	if not opt_scores.has_key(key):
+## 	    results = []
+## 	    stat = {}
+## 	    opt_scores[key] = results
+## 	    stats[key] = stat
+## 	else:
+## 	    results = opt_scores[key]
+## 	    stat = stats[key]
+## 	t0 = time()
+## 	diff = []
+## 	diffsum = 0.0
+## 	for idx in eorder:
+## 	    ind = inds[idx]
+## 	    mini = minimize1(ind, nbRounds=_round, noImprovementBreak=10, nbSteps=steps)
+## 	    results.append(-mini._score)
+## 	    a = ind._score - 17.
+## 	    b = mini._score - 17.
+## 	    #print a, b, -(b-a)/a
+## 	    d = -(b-a)/a
+## 	    diff.append(d)
+## 	    diffsum += d
+## 	stat['time'] = time()-t0
+## 	stat['ediff'] = diff
+## 	stat['stats'] = {
+## 		'med':numpy.median(diff),
+## 		'std':numpy.std(diff),
+## 		'min':numpy.min(diff),
+## 		'max':numpy.max(diff),
+## 		}
+## 	print time()-t1, key, stat['stats'], 'in:', stat['time'] 
+	    
+   

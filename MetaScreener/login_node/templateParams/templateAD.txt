@@ -1,0 +1,34 @@
+#VINA 
+#LanzNombre:AD - AutoDock Vina 1.1.2 (May 11, 2011)
+#LanzExtensionProtQ:.pdbqt
+#LanzExtensionligB:.pdbqt
+#lanzOptions:VS,BD,VSR
+#LanzCoordX: 
+#LanzCoordY:
+#LanzCoordZ:
+#LanzGrid:N
+#LanzCores:4
+#LanzTimeExecution:900
+#LanzMem:2G
+#lanzSizeGridX:30
+#lanzSizeGridY:30
+#lanzSizeGridZ:30
+#lanzTimeOut:Y
+#lanzCreateResumen:Y
+#defecto::param con condicion::parametro::leyenda
+-::Y::-fl::flexible side chains, if any (PDBQT)
+-::Y::--log::arg optionally, write log file
+-::N::--local_only::do local search only
+-::N::--randomize_only::randomize input, attempting
+-::Y::--weight_gauss1::arg (=-0.035579) gauss_1 weight
+-::Y::--weight_gauss2::arg (=-0.005156) gauss_2 weight
+-::Y::--weight_repulsion::arg (=0.84024500000000002) repulsion weight
+-::Y::--weight_hydrophobic::arg (=-0.035069000000000003) hydrophobic weight
+-::Y::--weight_hydrogen:: arg (=-0.58743900000000004) Hydrogen bond weight
+-::Y::--weight_rot:: arg (=0.058459999999999998) N_rot weight
+2015::Y::--seed:: arg explicit random seed
+4::Y::--energy_range:: arg (=3) maximum energy difference between the best binding 
+0::Y::--film:: arg (=0) Output generates a trajectory conformations when 
+8::Y::--exhaustiveness:: arg (=8) exhaustiveness of the global search (roughly proportional to time)
+AD::Y::-refined_energy:: [ AD | GR  ] (Vina, Gromacs )
+

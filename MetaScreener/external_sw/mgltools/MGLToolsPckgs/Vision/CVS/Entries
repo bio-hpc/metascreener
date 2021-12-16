@@ -1,0 +1,35 @@
+/API.py/1.7/Thu Mar 23 21:06:40 2006/-kkv/
+/F2DockNodes.py/1.1/Fri May 30 19:18:16 2008/-kkv/
+/FAQ.html/1.4/Tue Aug  3 19:28:28 2004/-kkv/
+/FAQ.txt/1.4/Tue Aug  3 19:28:28 2004/-kkv/
+/Forms.py/1.32/Fri Feb  8 23:37:12 2008/-kkv/
+/IPythonNodes.py/1.22/Wed Sep 30 21:06:47 2009/-kkv/
+/ImageMagickNodes.py/1.7/Mon Jul 14 21:58:25 2008/-kkv/
+/LICENSE/1.4/Mon Jul  7 19:03:11 2008/-kkv/
+/PILNodes.py/1.57/Thu Sep  5 22:24:32 2013/-kkv/
+/PILTypes.py/1.4/Wed Nov  1 21:03:54 2006/-kk/
+/RELNOTES/1.13/Wed Oct 29 23:45:20 2008/-kkv/
+/StandardNodes.py/1.244/Fri Mar 28 00:08:31 2014/-kkv/
+/UserLibBuild.py/1.61/Wed Aug 21 21:01:52 2013/-kk/
+/VPE.py/1.243/Tue Oct  8 01:48:52 2013/-kkv/
+/WebNodes.py/1.17/Tue Jul 21 16:59:21 2009/-kkv/
+/__init__.py/1.86/Thu Sep  5 20:54:54 2013/-kkv/
+/_visionrc/1.12/Sat Sep  5 00:31:24 2009/-kkv/
+/cmdlWrapper.py/1.1/Wed Apr  9 23:00:59 2008/-kkv/
+/colours.py/1.2/Wed Dec  8 20:45:27 2010/-kkv/
+/flex.py/1.12/Tue Jul 24 17:30:37 2007/-kkv/
+/gantt.py/1.1/Mon Sep 22 17:57:25 2008/-kkv/
+/libTree.py/1.8/Wed Aug 21 21:09:09 2013/-kkv/
+/make_zip_file.py/1.2/Mon Jul 19 21:54:19 2010/-kkv/
+/matplotlibNodes.py/1.103/Wed Aug 21 21:11:25 2013/-kkv/
+/matplotlibTypes.py/1.2/Wed Nov  1 22:18:00 2006/-kk/
+/nodeLibraries.py/1.36/Wed Jan 23 22:47:38 2008/-kkv/
+/posnegFill.py/1.1/Fri Jan 26 22:28:32 2007/-kkv/
+/readme.txt/1.2/Wed Aug 29 20:37:16 2007/-kk/
+/writeRTC.py/1.1/Wed Feb 16 22:49:00 2011/-kkv/
+D/Icons////
+D/Tests////
+D/bin////
+D/doc////
+D/icons////
+D/regression////

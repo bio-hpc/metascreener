@@ -1,0 +1,24 @@
+/AminoAcids.pdb/1.2/Tue Jun 28 16:16:59 2005/-kkv/
+/EssentialDynamics.py/1.8/Tue Dec 11 22:16:04 2007/-kkv/
+/FT.py/1.87/Thu Jul 31 18:33:01 2014/-kkv/
+/FTAmber.py/1.2/Tue Jul 24 17:30:46 2007/-kkv/
+/FTConstruction.py/1.5/Thu Jun 14 18:49:31 2012/-kkv/
+/FTConvolutions.py/1.18/Fri May 22 18:40:03 2009/-kkv/
+/FTMotions.py/1.88/Thu Jul 31 18:39:34 2014/-kkv/
+/FTRotamers.py/1.12/Fri Feb 21 22:25:08 2014/-kkv/
+/FTShapeCombiners.py/1.4/Fri Jan 23 21:44:29 2004/-kkv/
+/FTShapes.py/1.27/Thu Apr 30 20:02:23 2009/-kkv/
+/FlexLoop.py/1.1/Fri Dec 15 19:03:36 2006/-kkv/
+/RotLib.py/1.1/Tue Jun 28 16:16:10 2005/-kkv/
+/XMLParser.py/1.42/Wed Oct 24 22:03:02 2012/-kkv/
+/__init__.py/1.6/Fri Feb 10 00:43:36 2012/-kkv/
+/bbind02.May.lib/1.1/Wed Mar 30 18:03:53 2005/-kkv/
+/buildRotLib.py/1.2/Tue Jan 14 19:01:38 2014/-kkv/
+/flextreeCommands.py/1.5/Thu Jan  5 21:51:52 2012/-kkv/
+/rotamer.def/1.1/Wed Mar 30 18:08:10 2005/-kkv/
+/rotamer.py/1.5/Thu Jul 31 21:12:52 2014/-kkv/
+/setting/1.1/Sat Jul  2 02:02:26 2005/-kkv/
+/utils.py/1.22/Wed Aug 23 22:54:16 2006/-kkv/
+D/Tests////
+D/VisionInterface////
+D/data////

@@ -1,0 +1,5 @@
+alias pmv /mnt/home/users/ac_001_um/jorgedlpg/pruebasDoking/SENECA/docking/mgltools_x86_64Linux2_latest/bin/pmv
+alias adt /mnt/home/users/ac_001_um/jorgedlpg/pruebasDoking/SENECA/docking/mgltools_x86_64Linux2_latest/bin/adt
+alias vision /mnt/home/users/ac_001_um/jorgedlpg/pruebasDoking/SENECA/docking/mgltools_x86_64Linux2_latest/bin/vision
+alias cadd /mnt/home/users/ac_001_um/jorgedlpg/pruebasDoking/SENECA/docking/mgltools_x86_64Linux2_latest/bin/cadd
+alias pythonsh /mnt/home/users/ac_001_um/jorgedlpg/pruebasDoking/SENECA/docking/mgltools_x86_64Linux2_latest/bin/pythonsh

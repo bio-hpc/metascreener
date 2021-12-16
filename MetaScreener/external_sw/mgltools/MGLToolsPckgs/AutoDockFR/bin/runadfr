@@ -1,0 +1,243 @@
+#!/usr/bin/env pythonsh
+import sys, pdb
+from time import time
+#sys.path.insert(0,'/mgl/ms4/yongzhao/dev24')
+#sys.path.insert(0, '.')
+from bhtree import bhtreelib
+import numpy
+
+## import psyco
+## psyco.log()
+## psyco.profile()
+
+t0 =  time()                        # Stores the time (float) at the start of the program
+repeat=1
+
+if len(sys.argv)==1:  ## print help msg if no input is given
+    sys.argv.append('-help')
+
+from AutoDockFR.Docking import AutoDockFR
+from AutoDockFR.Param import Params
+
+
+input=Params(args=sys.argv[1:])
+#MLDprint input.optList.setting
+
+#pdb.run("adfr=AutoDockFR(input)")
+adfr = AutoDockFR(input)
+
+from MolKit import Read
+
+from AutoDockFR.orderRefAtoms import orderRefMolAtoms
+
+## hack bias torsion for 1ppc bond
+## means = [[67.,187], [43.,163], [270.,70], [17.,137], [336.,96], [29.,149], [80.,200], [53.,173]]
+
+## for i, torMotion in enumerate(adfr.docking.gnm.motionObjs[2:]):
+##     normMean = [m/360. for m in means[i]]
+##     torMotion.setGoodGenes(normMean, [20./360.]*len(normMean))
+
+# Sets a callback to do RMSD calc after each GA generation
+###########newly added################
+gscorer=None
+if adfr.setting['gridMaps']:
+    gscorer = adfr.docking.scoreObject.gridScorer
+  
+if gscorer:
+    goodc = gscorer.fixTranslation(adfr.docking)
+    #print goodc
+
+# (MS) FIXME: this should be a method of adfr (if not already there)
+def writePopulation(adfr, prefix):
+    # write population
+    ligmol = adfr.docking.ligandSet[0].top
+    ligFile = adfr.docking.ligandFile
+
+    # (MS) FIXME: we shoudl not have to read the molecule again
+    # I am sure it is already stored somewhere.
+    # also the treeOrderLigAtoms must already be stored somewhere
+    from MolKit import Read
+    movMol = Read(ligFile)[0]
+    # order movAtoms to match order in tree
+    treeOrderedLigAtoms = orderRefMolAtoms(movMol.allAtoms, adfr.docking.ligandSet)
+
+    for ni, ind in enumerate(pop):
+        a, b, newCoords = ind.toPhenotype(ind)
+
+        # assing coordinates from tree to ligand atoms ordered according to tree
+        treeOrderedLigAtoms.updateCoords(newCoords)
+
+        ligFilename = "%s%d.pdbqt"%(prefix, ni)
+        # write with ligand with newCoords sorted to match order in ligand file
+        ligmol.parser.write_with_new_coords( movMol.allAtoms.coords, filename=ligFilename)
+
+# FIXME (MS) This should happen in AutoDockFR
+# we should also be able to specify a population file to strat with
+pop = adfr.docking.pop
+pop._size(adfr.setting['GA_pop_size'])
+maxTry = adfr.setting['constraintMaxTry']
+for i, ind in enumerate(pop):
+    ## having maxTry != 0 will contraint atoms
+    t0 = time()
+    attempts = ind.randomize(maxTry=maxTry)
+    print 'individual %3d randomized in %4d attempts %.2f(s) %.3f'%(
+        i, attempts, time()-t0, ind._score)
+
+#if adfr.setting['constraint'] or adfr.setting['constraint_ls']:
+#        ie = ind.scorer.score(ind, L_L=True, RR_L=False)
+#        e = ind.scorer.score(ind, L_L=False, RR_L=True)
+#        print 'orig %d %9.3f %15.3f %15.3f'%(i, ie, e, ind.evaluate(force=1))
+#    #writePopulation(adfr, 'orig')
+
+
+## if adfr.setting['constraint'] or adfr.setting['constraint_ls']:
+##     for i, ind in enumerate(pop):
+##         ie = ind.scorer.score(ind, L_L=True, RR_L=False)
+##         e = ind.scorer.score(ind, L_L=False, RR_L=True)
+##         print 'const %d %9.3f %9.3f'%(i, ie, e)
+
+    #writePopulation(adfr, 'b4mini')
+
+from AutoDockFR.GA import SolisWet
+ls = SolisWet(adfr.setting['GA_localsearchrate'],
+              adfr.setting['GA_localSearchMaxFail'],
+              adfr.setting['GA_localSearchMaxSuccess'],
+              adfr.setting['GA_localSearchMinVar'],
+              adfr.setting['GA_localSearchFactorContraction'],
+              adfr.setting['GA_localSearchFactorExpansion'],
+              adfr.setting['GA_localSearchMaxIts'])
+# FIXME (MS) for or some reason adfr.docking.search is not set yet at this point
+# we should fix this (MS)
+adfr.docking.search.localSearch = ls
+
+# FIXME (MS) this should also happen in AutoDockFR 
+if adfr.setting['constraint_ls']:
+    minimize = adfr.docking.search.minimize
+    t00 = time()
+
+    for i, ind in enumerate(pop):
+        #old_ie = ind.scorer.score(ind, RR_L=False, L_L=True)
+        #old_e = ind.scorer.score(ind, RR_L=True, L_L=False)
+        ind._score = ind.scorer.score(ind)
+        t0 = time()
+        #new, nbSteps = ls.search(ind, **kw)
+        # FIXME: it would be nice if minimize returned the number of steps info
+        # or at least kept it si that we can use it to understand behavior
+        new = minimize(ind, nbSteps=5, noImproveStop=2, max_steps=200,
+                       MAX_FAIL=8, MIN_VAR=0.01)
+        dt = time()-t0
+        new._score = new.scorer.score(new)
+        #new_ie = ind.scorer.score(new, RR_L=False, L_L=True)
+        #new_e = ind.scorer.score(new, RR_L=True, L_L=False)
+        print "minimized %3d %15.3f -> %15.3f in %5.2f"%(
+            i, -ind._score , -new._score, dt)
+        pop[i] = new
+    print 'mini Done in', time()-t00
+
+## Print score breaks down
+##
+#for i, ind in enumerate(pop):
+#    a, b, newCoords = ind.toPhenotype(ind)
+#    print 'anchor %d %s'%(i, str(newCoords[0]))
+#    ind.scorer.score()
+#    ind.scorer.printAllScoreTerms(ind)
+#    print "-------------------------------------------------------------------"
+    
+##<<<<<<< runadfr
+##if adfr.setting['constraint_ls']:
+##    t0 = time()
+##    anneal = adfr.docking.search.anneal
+##    from AutoDockFR.GA import SolisWet
+##    ls = SolisWet(adfr.setting['GA_localsearchrate'], adfr.setting['GA_LocalSearchMaxFail'],\
+##                  adfr.setting['GA_LocalSearchMaxSuccess'], adfr.setting['GA_LocalSearchMinVar'],
+##                  adfr.setting['GA_LocalSearchFactorContraction'],\
+##                  adfr.setting['GA_LocalSearchFactorExpansion'],adfr.setting['GA_LocalSearchMaxIts'])
+##
+##    #for ind in pop:
+##    #    print ind.score(),
+##    #    new, nbSteps = ls.search(ind, max_steps=1000, MAX_FAIL=len(ind)*2, MIN_VAR=0.001,
+##    #			     absMinVar=None, search_rate=1.0)
+##    #    print new.score()
+##
+##    for i, ind in enumerate(pop):
+##        origScore = ind.scorer.score(ind, RR_L=False, L_L=True)
+##        new, nbSteps = ls.search(ind, max_steps=1000, MAX_FAIL=4, MIN_VAR=0.001,
+##                                 absMinVar=None, search_rate=1.0, mode='conformation')
+##        #a, b, newCoords = new.toPhenotype(new)
+##        #print 'anchor %d %s'%(i, str(newCoords[0]))
+##
+##        newScore = new.scorer.score(new, RR_L=False, L_L=True)
+##        pop[i] = new
+##        print "ind %d IE went from %9.3f to %9.3f in %d"%(i, origScore, newScore, nbSteps)
+##
+##    print 'conf mini Done in', time()-t0
+##    writePopulation(adfr, 'cmini')
+##
+##    t0 = time()
+##    for i, ind in enumerate(pop):
+##        origScore = ind.scorer.score(ind)
+##        new, nbSteps = ls.search(ind, max_steps=1000, MAX_FAIL=30, MIN_VAR=0.001,
+##                                 absMinVar=None, search_rate=1.0, mode='all')
+##
+##        newScore = new.scorer.score(new)
+##        pop[i] = new
+##        print "ind %d E went from %9.3f to %9.3f in %d"%(i, origScore, newScore, nbSteps)
+##
+##    print 'glob mini Done in', time()-t0
+##    writePopulation(adfr, 'mini')
+##
+##    # print population
+##    #for ind in pop:
+##    #    print ['%8.3f'%v for v in ind.get_values()]
+##
+##    ## # write population
+##    ## ligmol = adfr.docking.ligandSet[0].top
+##    ## ligFile = adfr.docking.ligandFile
+##    ## from MolKit import Read
+##    ## movMol = Read(ligFile)[0]
+##    ## for ni, ind in enumerate(pop):
+##    ##     a, b, newCoords = ind.toPhenotype(ind)
+##
+##    ##     # order movAtoms to match order in tree
+##    ##     treeOrderedLigAtoms = orderRefMolAtoms(movMol.allAtoms, adfr.docking.ligandSet)
+##    ##     # assing coordinates from tree to ligand atoms ordered according to tree
+##    ##     treeOrderedLigAtoms.updateCoords(newCoords)
+##
+##    ##     ligFilename = "initPop%d.pdbqt"%(ni)
+##    ##     print ligFilename
+##    ##     # write with ligand with newCoords sorted to match order in ligand file
+##    ##     ligmol.parser.write_with_new_coords( movMol.allAtoms.coords, filename=ligFilename)
+########################## ############
+##=======
+##>>>>>>> 1.26
+
+from mglutil.math.rmsd import RMSDCalculator
+for ref in adfr.setting['rmsdRef']:
+    refMol=Read(ref)[0]
+    refAts=refMol.getAtoms()
+
+    ligAts = adfr.docking.ligandSet
+    # Make sure the reference atoms match the order of the atoms in the FT
+    sortedRefAts = orderRefMolAtoms(refAts, ligAts)
+
+    adfr.docking.search.addCallback('postGeneration', adfr.docking.GA_PopScoreRMSD_cb, sortedRefAts.coords, score_flag=True, popFile='generation_job%s' % adfr.setting['jobID'])
+    RMSDcalc = RMSDCalculator(refCoords = sortedRefAts.coords)
+    adfr.docking.search.rmsdCalculators.append(RMSDcalc)
+
+print 'search box size', adfr.docking.LigandTree.getAllMotion()[0].motionList[1].boxDim
+print 'search box center', adfr.docking.LigandTree.getAllMotion()[0].motionList[2].point2
+
+# start docking
+#pdb.run("adfr.dock()")
+if adfr.setting['constraintMaxTry'] or adfr.setting['constraint_ls']:
+    for ind in pop:
+        if not hasattr(ind, '_score'):
+            ind.evaluate(force=1)
+        #ind.scorer.printAllScoreTerms(ind)
+
+adfr.dock(pop)
+
+
+#adfr.docking.GA_PopScoreRMSD_cb(sortedRefAts.coords, score_flag=True, popFile='lastGenration.py')
+
+print "Execution time runadfr: %.1f hours, %.1f minutes, %.1f seconds\n" % ((time() -  t0)/3600, (time() -  t0)/60, time() -  t0)

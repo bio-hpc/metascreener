@@ -1,0 +1,62 @@
+<?xml version="1.0" ?>
+    <root
+        name="1hvr"
+        id="99"
+        selectionString="1hvr"
+        convolve="FTConvolveApplyMatrixToCoords"
+        file="1hvrLigRotated.pdbqs">
+        <node
+            name="chainA"
+            id="1"
+            selectionString="1hvrLigRotated:A"
+            convolve="FTConvolveApplyMatrixToCoords">
+            <node
+                name="Core A"
+                id="2"
+                shapeParams="cutoff: float 1.85"
+                selectionString="1hvrLigRotated:A:PRO1,GLN2,VAL3,THR4,LEU5,TRP6,GLN7,ARG8,PRO9,LEU10,VAL11,THR12,ILE13,LYS14,ILE15,GLY16,GLY17,GLN18,LEU19,LYS20,GLU21,ALA22,LEU23,LEU24,ASP25,THR26,GLY27,ALA28,ASP29,ASP30,THR31,VAL32,LEU33,GLU34,LEU38,PRO39,GLY40,ARG41,TRP42,LYS43,GLN58,TYR59,ASP60,GLN61,ILE62,LEU63,ILE64,GLU65,ILE66,CYS67,GLY68,HIS69,LYS70,ALA71,ILE72,GLY73,THR74,VAL75,LEU76,PRO81,VAL82,ASN83,ILE84,ILE85,GLY86,ARG87,ASN88,LEU89,LEU90,THR91,GLN92,ILE93,GLY94,ALA95,THR96,LEU97,ASN98,PHE99,HYD67"
+                motion="FTMotion_Generic"
+                shape="FTLines"
+                convolve="FTConvolveApplyMatrixToCoords"
+                motionParams="percent: float 0.0, matrixList: list float 0.99587458 0.07888025 -0.04485199 0.0 -0.0790066 0.99687356 -0.00104846 0.0 0.04462906 0.00458773 0.9989931 0.0 -0.00396458 0.27953646 0.03013884 1.0, name: str generic, indexList: list float 1.0">
+            </node>
+            <node
+                name="Flap A"
+                id="3"
+                refNode="2"
+                shapeParams="cutoff: float 1.85"
+                selectionString="1hvrLigRotated:A:GLU35,MET36,SER37,PRO44,LYS45,MET46,ILE47,GLY48,GLY49,ILE50,GLY51,GLY52,PHE53,ILE54,LYS55,VAL56,ARG57,VAL77,GLY78,PRO79,THR80"
+                motion="FTMotion_Generic"
+                shape="FTLines"
+                convolve="FTConvolveApplyMatrixToCoords"
+                motionParams="percent: float 0.0, matrixList: list float 0.96122706 0.24516559 -0.12623928 0.0 -0.24147341 0.96940923 0.04400378 0.0 0.13316572 -0.01181421 0.99102336 0.0 1.93201792 3.15556884 -2.67976809 1.0, name: str generic, indexList: list float 1.0">
+            </node>
+        </node>
+        <node
+            name="chainB"
+            id="4"
+            selectionString="1hvrLigRotated:B"
+            convolve="FTConvolveApplyMatrixToCoords">
+            <node
+                name="Core B"
+                id="5"
+                shapeParams="cutoff: float 1.85"
+                selectionString="1hvrLigRotated:B:PRO1,GLN2,VAL3,THR4,LEU5,TRP6,GLN7,ARG8,PRO9,LEU10,VAL11,THR12,ILE13,LYS14,GLY16,GLY17,GLN18,LEU19,LYS20,GLU21,ALA22,LEU23,LEU24,ASP25,THR26,GLY27,ALA28,ASP29,ASP30,THR31,VAL32,LEU33,GLU34,GLU35,PRO39,GLY40,ARG41,TRP42,LYS43,PRO44,LYS45,MET46,ILE54,LYS55,VAL56,ARG57,GLN58,TYR59,ASP60,GLN61,ILE62,LEU63,ILE64,GLU65,ILE66,CYS67,GLY68,HIS69,LYS70,ALA71,ILE72,GLY73,THR74,VAL75,LEU76,VAL77,GLY78,PRO79,THR80,PRO81,VAL82,ASN83,ILE84,ILE85,GLY86,ARG87,ASN88,LEU89,LEU90,THR91,GLN92,ILE93,GLY94,ALA95,THR96,LEU97,ASN98,PHE99,HYD67"
+                motion="FTMotion_Generic"
+                shape="FTLines"
+                convolve="FTConvolveApplyMatrixToCoords"
+                motionParams="percent: float 0.0, matrixList: list float 0.9984284 -0.05064071 -0.02400495 0.0 0.05080615 0.99868846 0.00633226 0.0 0.0236528 -0.00754191 0.99969178 0.0 0.52326089 0.43251178 0.11378685 1.0, name: str generic, indexList: list float 1.0">
+            </node>
+            <node
+                name="Flap B"
+                id="6"
+                refNode="5"
+                shapeParams="cutoff: float 1.85"
+                selectionString="1hvrLigRotated:B:ILE15,MET36,SER37,LEU38,ILE47,GLY48,GLY49,ILE50,GLY51,GLY52,PHE53"
+                motion="FTMotion_Generic"
+                shape="FTLines"
+                convolve="FTConvolveApplyMatrixToCoords"
+                motionParams="percent: float 0.0, matrixList: list float 0.96989775 -0.2198071 -0.10480107 0.0 0.21166201 0.97376937 -0.08350062 0.0 0.12040608 0.05880467 0.99098152 0.0 0.20092086 5.04090929 2.79043245 1.0, name: str generic, indexList: list float 1.0">
+            </node>
+        </node>
+    </root>

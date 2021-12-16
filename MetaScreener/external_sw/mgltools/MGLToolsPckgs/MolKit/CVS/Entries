@@ -1,0 +1,51 @@
+/.packager.py/1.15/Thu Dec 18 21:52:07 2003/-kkv/
+/APBSParameters.py/1.24/Wed Sep 23 01:34:50 2009/-kkv/
+/GapFinder.py/1.7/Fri Sep 10 17:35:58 2010/-kkv/
+/LICENSE/1.1/Thu Jul  3 20:28:27 2008/-kkv/
+/MolecularDescriptor.py/1.3/Thu Jul 17 17:27:07 2003/-kkv/
+/PDBdict.py/1.2/Wed May 23 18:26:29 2001/-kkv/
+/PDBresidueNames.py/1.7/Tue May 15 17:42:23 2012/-kkv/
+/PROSS.py/1.1/Tue Aug 17 19:48:34 2010/-kkv/
+/RELNOTES/1.9/Thu Oct 30 18:42:03 2008/-kkv/
+/WaterBuilder.py/1.1/Thu Oct  7 17:28:48 2010/-kkv/
+/__init__.py/1.30/Thu Oct  3 22:36:21 2013/-kkv/
+/amberPrmTop.py/1.32/Tue Jul 24 17:30:40 2007/-kkv/
+/bondClassifier.py/1.3/Tue Apr  6 23:29:50 2004/-kkv/
+/bondSelector.py/1.28/Mon Sep 23 19:39:16 2013/-kkv/
+/chargeCalculator.py/1.5/Wed Aug 11 15:17:53 2004/-kkv/
+/chargeMass.py/1.1/Fri May 21 03:27:05 2004/-kkv/
+/distanceSelector.py/1.10/Tue Jul 24 17:30:40 2007/-kkv/
+/genPdbParser.py/1.2/Tue Dec  4 17:53:42 2007/-kkv/
+/getsecondarystructure.py/1.30/Thu Oct  3 22:38:52 2013/-kkv/
+/groParser.py/1.11/Fri Dec 15 19:53:29 2006/-kkv/
+/hydrogenBondBuilder.py/1.9/Tue Apr 26 21:04:29 2011/-kkv/
+/hydrogenBuilder.py/1.7/Mon Dec  8 18:04:17 2008/-kkv/
+/interactionDescriptor.py/1.22/Sun May 16 18:08:17 2010/-kkv/
+/introduction.py/1.1.1.1/Tue Apr  3 19:47:52 2001/-kkv/
+/listSet.py/1.33/Wed Jul  2 22:33:26 2014/-kkv/
+/mmcifParser.py/1.22/Thu May 19 19:20:47 2011/-kkv/
+/mmcifWriter.py/1.9/Tue Apr 25 22:05:20 2006/-kkv/
+/mol2Parser.py/1.18/Fri Jun 20 01:24:34 2014/-kkv/
+/molecule.py/1.101/Wed Jul  2 22:34:33 2014/-kkv/
+/moleculeParser.py/1.10/Fri Jun 20 01:27:00 2014/-kkv/
+/moleculeWriter.py/1.1.1.1/Tue Apr  3 19:47:52 2001/-kkv/
+/oxtBuilder.py/1.1/Thu Sep 15 16:02:04 2005/-kkv/
+/parm94_dat.py/1.2/Thu Jan 10 21:50:53 2002/-kkv/
+/pdbParser.py/1.137/Thu Jul 10 02:41:45 2014/-kkv/
+/pdbWriter.py/1.29/Wed Jul  9 17:26:33 2014/-kkv/
+/pqrWriter.py/1.8/Fri Jun 20 01:27:00 2014/-kkv/
+/protein.py/1.67/Fri Jun 20 01:27:00 2014/-kkv/
+/radii_patterns.py/1.1/Fri Apr  5 05:39:20 2002/-kkv/
+/sdfParser.py/1.3/Fri Jun 20 01:27:00 2014/-kkv/
+/sequence.py/1.1/Mon Sep 13 22:21:33 2010/-kkv/
+/sets.py/1.2/Mon Jun 12 18:28:35 2006/-kkv/
+/stringSelector.py/1.43/Thu Oct 10 22:42:59 2013/-kkv/
+/torTree.py/1.31/Tue Nov 27 17:11:15 2012/-kkv/
+/trajParser.py/1.2/Tue Oct 17 18:22:13 2006/-kkv/
+/tree.py/1.76/Thu Jun 26 21:06:00 2014/-kkv/
+/waterBuilder.py/1.1/Tue Sep 28 22:14:32 2010/-kkv/
+D/Tests////
+D/VisionInterface////
+D/data////
+D/pdb2pqr////
+/rotamerLib.py/1.2/Thu Aug 21 23:39:02 2014/-kkv/

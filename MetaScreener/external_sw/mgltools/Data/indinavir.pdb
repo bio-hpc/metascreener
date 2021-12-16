@@ -1,0 +1,132 @@
+HEADER    HYDROLASE (ACID PROTEINASE)             31-MAR-95   1HSG      1HSG   2
+COMPND    MOL_ID: 1;                                                    1HSG   3
+COMPND   2 MOLECULE: HIV-1 PROTEASE;                                    1HSG   4
+COMPND   3 CHAIN: A, B;                                                 1HSG   5
+COMPND   4 EC: 3.4.23.-;                                                1HSG   6
+COMPND   5 ENGINEERED: YES;                                             1HSG   7
+COMPND   6 OTHER_DETAILS: NY5 ISOLATE                                   1HSG   8
+SOURCE    MOL_ID: 1;                                                    1HSG   9
+SOURCE   2 ORGANISM_SCIENTIFIC: HUMAN IMMUNODEFICIENCY VIRUS TYPE 1;    1HSG  10
+SOURCE   3 GENE: HIV-1 PROTEASE FROM THE NY5 ISOLATE;                   1HSG  11
+SOURCE   4 EXPRESSION_SYSTEM: ESCHERICHIA COLI                          1HSG  12
+EXPDTA    X-RAY DIFFRACTION                                             1HSG  13
+AUTHOR    Z.CHEN                                                        1HSG  14
+REVDAT   1   03-APR-96 1HSG    0                                        1HSG  15
+SEQRES   1 A   99  PRO GLN ILE THR LEU TRP GLN ARG PRO LEU VAL THR ILE  1HSG  62
+SEQRES   2 A   99  LYS ILE GLY GLY GLN LEU LYS GLU ALA LEU LEU ASP THR  1HSG  63
+SEQRES   3 A   99  GLY ALA ASP ASP THR VAL LEU GLU GLU MET SER LEU PRO  1HSG  64
+SEQRES   4 A   99  GLY ARG TRP LYS PRO LYS MET ILE GLY GLY ILE GLY GLY  1HSG  65
+SEQRES   5 A   99  PHE ILE LYS VAL ARG GLN TYR ASP GLN ILE LEU ILE GLU  1HSG  66
+SEQRES   6 A   99  ILE CYS GLY HIS LYS ALA ILE GLY THR VAL LEU VAL GLY  1HSG  67
+SEQRES   7 A   99  PRO THR PRO VAL ASN ILE ILE GLY ARG ASN LEU LEU THR  1HSG  68
+SEQRES   8 A   99  GLN ILE GLY CYS THR LEU ASN PHE                      1HSG  69
+SEQRES   1 B   99  PRO GLN ILE THR LEU TRP GLN ARG PRO LEU VAL THR ILE  1HSG  70
+SEQRES   2 B   99  LYS ILE GLY GLY GLN LEU LYS GLU ALA LEU LEU ASP THR  1HSG  71
+SEQRES   3 B   99  GLY ALA ASP ASP THR VAL LEU GLU GLU MET SER LEU PRO  1HSG  72
+SEQRES   4 B   99  GLY ARG TRP LYS PRO LYS MET ILE GLY GLY ILE GLY GLY  1HSG  73
+SEQRES   5 B   99  PHE ILE LYS VAL ARG GLN TYR ASP GLN ILE LEU ILE GLU  1HSG  74
+SEQRES   6 B   99  ILE CYS GLY HIS LYS ALA ILE GLY THR VAL LEU VAL GLY  1HSG  75
+SEQRES   7 B   99  PRO THR PRO VAL ASN ILE ILE GLY ARG ASN LEU LEU THR  1HSG  76
+SEQRES   8 B   99  GLN ILE GLY CYS THR LEU ASN PHE                      1HSG  77
+HET    MK1    902      45     L-735,524 (SEE REMARK 5)                  1HSG  78
+FORMUL   3  MK1    C36 H47 N5 O4                                        1HSG  79
+FORMUL   4  HOH   *127(H2 O1)                                           1HSG  80
+CRYST1   59.570   87.070   46.710  90.00  90.00  90.00 P 21 21 2     8  1HSG 100
+ORIGX1      1.000000  0.000000  0.000000        0.00000                 1HSG 101
+ORIGX2      0.000000  1.000000  0.000000        0.00000                 1HSG 102
+ORIGX3      0.000000  0.000000  1.000000        0.00000                 1HSG 103
+SCALE1      0.016787  0.000000  0.000000        0.00000                 1HSG 104
+SCALE2      0.000000  0.011485  0.000000        0.00000                 1HSG 105
+SCALE3      0.000000  0.000000  0.021409        0.00000                 1HSG 106
+HETATM 1517  N1  MK1   902       9.280  23.763   3.004  1.00 28.25      1HSG N  
+HETATM 1518  C1  MK1   902       9.498  23.983   4.459  1.00 30.30      1HSG C  
+HETATM 1519  C2  MK1   902      10.591  24.905   4.962  1.00 27.27      1HSG C  
+HETATM 1520  C3  MK1   902      10.591  24.864   6.466  1.00 28.85      1HSG C  
+HETATM 1521  O1  MK1   902      10.937  23.849   7.057  1.00 29.59      1HSG O  
+HETATM 1522  N2  MK1   902      10.193  25.953   7.094  1.00 22.29      1HSG N  
+HETATM 1523  C4  MK1   902      10.145  26.250   8.490  1.00 23.47      1HSG C  
+HETATM 1524  C5  MK1   902       9.379  27.577   8.641  1.00 27.66      1HSG C  
+HETATM 1525  C6  MK1   902      11.398  26.347   9.074  1.00 21.71      1HSG C  
+HETATM 1526  C7  MK1   902       9.364  25.283   9.268  1.00 22.75      1HSG C  
+HETATM 1527  N3  MK1   902      11.819  24.282   4.355  1.00 28.91      1HSG N  
+HETATM 1528  C8  MK1   902      11.753  23.776   2.961  1.00 26.24      1HSG C  
+HETATM 1529  C9  MK1   902      10.440  23.182   2.493  1.00 27.47      1HSG C  
+HETATM 1530  C10 MK1   902      13.083  24.963   4.552  1.00 20.86      1HSG C  
+HETATM 1531  C11 MK1   902      14.203  24.064   5.078  1.00 21.68      1HSG C  
+HETATM 1532  O2  MK1   902      15.242  24.884   4.634  1.00 15.87      1HSG O  
+HETATM 1533  C12 MK1   902      14.440  23.761   6.569  1.00 21.49      1HSG C  
+HETATM 1534  C13 MK1   902      15.573  22.821   7.005  1.00 26.89      1HSG C  
+HETATM 1535  C14 MK1   902      15.644  22.664   8.534  1.00 28.67      1HSG C  
+HETATM 1536  C15 MK1   902      16.733  21.750   8.961  1.00 26.89      1HSG C  
+HETATM 1537  C16 MK1   902      18.058  21.916   8.553  1.00 29.22      1HSG C  
+HETATM 1538  C17 MK1   902      19.037  21.016   8.947  1.00 29.22      1HSG C  
+HETATM 1539  C18 MK1   902      18.673  19.939   9.758  1.00 30.97      1HSG C  
+HETATM 1540  C19 MK1   902      17.347  19.773  10.176  1.00 29.25      1HSG C  
+HETATM 1541  C20 MK1   902      16.374  20.687   9.772  1.00 29.96      1HSG C  
+HETATM 1542  C21 MK1   902      15.447  21.440   6.373  1.00 29.35      1HSG C  
+HETATM 1543  O3  MK1   902      14.367  20.831   6.397  1.00 32.66      1HSG O  
+HETATM 1544  N4  MK1   902      16.583  20.913   5.924  1.00 31.19      1HSG N  
+HETATM 1545  C22 MK1   902      16.692  19.500   5.604  1.00 29.22      1HSG C  
+HETATM 1546  C23 MK1   902      18.067  18.945   5.936  1.00 28.82      1HSG C  
+HETATM 1547  O4  MK1   902      19.061  19.938   5.729  1.00 28.32      1HSG O  
+HETATM 1548  C24 MK1   902      18.226  17.726   5.057  1.00 32.05      1HSG C  
+HETATM 1549  C25 MK1   902      17.476  17.904   3.760  1.00 31.29      1HSG C  
+HETATM 1550  C26 MK1   902      17.500  17.363   2.496  1.00 32.00      1HSG C  
+HETATM 1551  C27 MK1   902      16.613  17.872   1.541  1.00 28.00      1HSG C  
+HETATM 1552  C28 MK1   902      15.722  18.906   1.865  1.00 29.01      1HSG C  
+HETATM 1553  C29 MK1   902      15.683  19.479   3.129  1.00 27.70      1HSG C  
+HETATM 1554  C30 MK1   902      16.504  19.061   4.128  1.00 31.86      1HSG C  
+HETATM 1555  C31 MK1   902       8.033  23.100   2.604  1.00 36.25      1HSG C  
+HETATM 1556  C32 MK1   902       6.666  23.739   2.876  1.00 42.75      1HSG C  
+HETATM 1557  C33 MK1   902       6.158  24.808   2.124  1.00 47.41      1HSG C  
+HETATM 1558  N5  MK1   902       4.911  25.430   2.300  1.00 51.38      1HSG N  
+HETATM 1559  C34 MK1   902       4.207  24.839   3.348  1.00 50.60      1HSG C  
+HETATM 1560  C35 MK1   902       4.654  23.774   4.136  1.00 49.34      1HSG C  
+HETATM 1561  C36 MK1   902       5.905  23.211   3.897  1.00 44.71      1HSG C  
+CONECT 1517 1518 1529 1555                                              1HSG1795
+CONECT 1518 1517 1519                                                   1HSG1796
+CONECT 1519 1518 1520 1527                                              1HSG1797
+CONECT 1520 1519 1521 1522                                              1HSG1798
+CONECT 1521 1520                                                        1HSG1799
+CONECT 1522 1520 1523                                                   1HSG1800
+CONECT 1523 1522 1524 1525 1526                                         1HSG1801
+CONECT 1524 1523                                                        1HSG1802
+CONECT 1525 1523                                                        1HSG1803
+CONECT 1526 1523                                                        1HSG1804
+CONECT 1527 1519 1528 1530                                              1HSG1805
+CONECT 1528 1527 1529                                                   1HSG1806
+CONECT 1529 1517 1528                                                   1HSG1807
+CONECT 1530 1527 1531                                                   1HSG1808
+CONECT 1531 1530 1532 1533                                              1HSG1809
+CONECT 1532 1531                                                        1HSG1810
+CONECT 1533 1531 1534                                                   1HSG1811
+CONECT 1534 1533 1535 1542                                              1HSG1812
+CONECT 1535 1534 1536                                                   1HSG1813
+CONECT 1536 1535 1537 1541                                              1HSG1814
+CONECT 1537 1536 1538                                                   1HSG1815
+CONECT 1538 1537 1539                                                   1HSG1816
+CONECT 1539 1538 1540                                                   1HSG1817
+CONECT 1540 1539 1541                                                   1HSG1818
+CONECT 1541 1536 1540                                                   1HSG1819
+CONECT 1542 1534 1543 1544                                              1HSG1820
+CONECT 1543 1542                                                        1HSG1821
+CONECT 1544 1542 1545                                                   1HSG1822
+CONECT 1545 1544 1546 1554                                              1HSG1823
+CONECT 1546 1545 1547 1548                                              1HSG1824
+CONECT 1547 1546                                                        1HSG1825
+CONECT 1548 1546 1549                                                   1HSG1826
+CONECT 1549 1548 1550 1554                                              1HSG1827
+CONECT 1550 1549 1551                                                   1HSG1828
+CONECT 1551 1550 1552                                                   1HSG1829
+CONECT 1552 1551 1553                                                   1HSG1830
+CONECT 1553 1552 1554                                                   1HSG1831
+CONECT 1554 1545 1549 1553                                              1HSG1832
+CONECT 1555 1517 1556                                                   1HSG1833
+CONECT 1556 1555 1557 1561                                              1HSG1834
+CONECT 1557 1556 1558                                                   1HSG1835
+CONECT 1558 1557 1559                                                   1HSG1836
+CONECT 1559 1558 1560                                                   1HSG1837
+CONECT 1560 1559 1561                                                   1HSG1838
+CONECT 1561 1556 1560                                                   1HSG1839
+MASTER        0    0    1    0    0    0    0    6   45    0    0   16
+END

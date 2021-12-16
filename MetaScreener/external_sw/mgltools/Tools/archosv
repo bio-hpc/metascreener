@@ -1,0 +1,25 @@
+#! /bin/sh
+# print architecture, operating system, version
+#  as one string, e.g., sun4SunOS5, sgi4DIRIX5, hppaHPUX09, ...
+# all from uname 
+#
+# Michael Pique, The Scripps Research Institute
+#
+unamem=`uname -m`
+arch=`echo $unamem | sed 's/sun4./sun4/
+s/IP[0-9]*/sgi4D/
+s/i.86/i86/
+s/Power Macintosh/ppc/'`
+
+# remove hyphen from HP-UX and anything beyond IRIX except 64
+os=`uname -s|sed 's/IRIX64/SPECIAL/
+s/IRIX.*/IRIX/
+s/SPECIAL/IRIX64/'`
+#
+#
+# chop SGI and Alpha OSF1 sub-versions
+v=`uname -r | sed 's/[AB]\.\([0-9][0-9]\)\.[0-9][0-9]/\1/
+s/\..*//'`
+osv="${arch}${os}${v}"
+echo $osv
+

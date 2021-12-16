@@ -1,0 +1,34 @@
+#LigandScout http://www.rsc.org/chemistryworld/Issues/2006/September/LigandScout.asp
+#LanzNombre:LS - LigandScout V4.4.7
+#LanzExtensionProtQ:.pmz,.pml
+#LanzExtensionligB:.ldb
+#lanzOptions:VS
+#LanzCoordX:0
+#LanzCoordY:0
+#LanzCoordZ:0
+#LanzGrid:N
+#LanzCores:4
+#LanzTimeExecution:2700
+#LanzMem:4Gb
+#lanzSizeGridX:0
+#lanzSizeGridY:0
+#lanzSizeGridZ:0
+#lanzTimeOut:Y
+#lanzCreateResumen:Y
+-::Y::-l::{logfile} output file for logging-messages       
+-::N::-e::disable checking for exclusion volume  
+-::N::-f::enable fragment screening mode         
+2::Y::-a::maximum number of features to omit     
+-::Y::-m::minimum number of required features    
+-::Y::-r::file with regular expressions to select 
+relative::Y::-sf::-S{function} the scoring function to use. Either    
+-::Y::-b:: {expr} boolean expression to use on the query 
+-::Y::-R::{file} roc curve file(*.png,*.svg,*.pdf,...)  
+5::Y::-TT::{time} execution time-out on compound level   (Ojo en el original es -T)
+-::Y::-x::{mode} the execution mode (default: multi)    
+-::Y::-H::{file} host list file (default:               
+-::Y::-c::{list} comma separated host list              
+-::N::-X::kill iworkers when finished            
+-::Y::-N::{name} network interface to use ('-n list' to
+BEST::Y::--conformation-match-mode::specifies the conformations to consider.
+

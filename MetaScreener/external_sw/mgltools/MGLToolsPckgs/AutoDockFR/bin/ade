@@ -1,0 +1,664 @@
+#!/usr/bin/env pythonsh
+##
+## $Header: /opt/cvs/AutoDockFR/bin/ade,v 1.22 2014/03/18 03:13:24 pradeep Exp $
+##
+## $Id: ade,v 1.22 2014/03/18 03:13:24 pradeep Exp $
+##
+import sys, os
+import argparse
+from glob import glob
+sys.path.insert(0, os.path.abspath('.')) 
+
+def usage():
+    print "******************************************************************************************"
+    print "*                                                                	                    *"
+    print "* calculate ligand-receptor energy				    	                    *"
+    print "* Usage: ade -lig pdbqtFile -rec pdbqtFile -gridMaps </path/1_rec.map> </path/2_rec.map> *"
+    print "*                                                               	                    *"
+    print "* -b: print the energy break-down per scoring term                 	                    *"
+    print "* -ab: print the energy break-down per atom to a file               	                    *"
+    print "* -flexRec: selection string for flexible side-chains              	                    *"
+    print "* -unscaledTerms: print out unsaled terms              	                            *"
+    print "*                                                               	                    *"
+    print "******************************************************************************************"
+
+parser = argparse.ArgumentParser() 
+parser.add_argument('-gridMaps', nargs='*')
+parser.add_argument('-lig')
+parser.add_argument('-rec')
+parser.add_argument('-v')
+parser.add_argument('-flexrec')
+parser.add_argument('-t', '--unscaledTerms', help='print unscaled terms of interaction energy', action="store_true")
+parser.add_argument('-ll', '--ll', help='detailed ligand intra-interactions', action="store_true")
+
+args = parser.parse_args()
+gridMaps = []
+if args.gridMaps:
+    for mapName in args.gridMaps:
+        gridMaps.extend( glob(mapName))
+
+    print 'Using maps', [name.split('.')[1] for name in gridMaps]
+
+ligFileName = args.lig
+recFileName = args.rec
+flexRecSel = None
+interfaceAtoms = None
+ligIE = False
+recIE = False
+breakdowns = False
+perAtomBreakdown = False
+forceFieldVersion = '4'
+receptorFT = None
+gscorer = None
+## if args.gridMaps:
+##     gridMaps = args.gridMaps
+
+## try:
+##     for i in range(len(sys.argv)): #sys.argv[1:]:
+##         if sys.argv[i] == "-lig":
+##             ligFileName=sys.argv[i+1]
+##             i+=1
+##         elif sys.argv[i] == "-rec":
+##             recFileName=sys.argv[i+1]
+##             i+=1
+##         elif sys.argv[i] == "-flexRec":
+##             flexRecSel=sys.argv[i+1]
+##             i+=1
+##         elif sys.argv[i] == "-gridMaps":
+##             gridMaps = sys.argv[i+1]
+##         elif sys.argv[i] == "-b":
+##             breakdowns=True
+##         elif sys.argv[i] == "-ab":
+##             perAtomBreakdown=True
+##         elif sys.argv[i] == "-v":
+##             forceFieldVersion=sys.argv[i+1]
+##             i+=1
+##         else:
+##             pass
+
+## except IndexError:
+##     usage()
+##     sys.exit(1)
+
+if ligFileName is None or recFileName is None:
+    usage()
+    sys.exit(1)
+
+if forceFieldVersion == '4':
+    assert os.path.splitext(ligFileName)[1]=='.pdbqt'
+    assert os.path.splitext(recFileName)[1]=='.pdbqt'
+    from AutoDockFR.ADCscorer import AD42ScoreC as ScorerClass
+    
+else:
+    raise RuntimeError, "bad forcefield version: got %s expected '4' or '305'"%forceFieldVersion
+
+# Create an AtomSet instance from the MolKit Read class.  Stores all information for ligand and receptor
+from MolKit import Read
+ligand = Read(ligFileName)[0]
+# MLD: bonds Needed to mask 1-1, 1-2, 1-3, 1-4 interactions
+# in ADCscorer.py ~> createLigLigScorer()
+# Ligand Internal Energy wasn't correct without this.
+ligand.buildBondsByDistance()
+ligAtoms = ligand.allAtoms
+receptor = Read(recFileName)[0]
+
+#ligRoot = ligand.ROOT.coords
+#ligandSet = ligAtoms.getAtoms()
+if len(gridMaps):
+    from AutoDockFR.gridScorer import GridScorer
+    gscorer = GridScorer(args.gridMaps)
+    gscorer.addAtomSet(ligAtoms, 'RRL')
+
+# Only want to set the necessary scorers to be on to begin with  
+scorerOpts = {'RR_L':True,
+             'L_L':True,
+             'RR_RR':False, 
+             'cutoff':1.0,
+             'FR_L':False,  
+             'RR_FR':False, 
+             'FR_FR':False,
+             'RR_L_Fitness':True,
+             'L_L_Fitness':True,
+             'RR_RR_Fitness':False, 
+             'FR_L_Fitness':False,  
+             'RR_FR_Fitness':False, 
+             'FR_FR_Fitness':False,
+             'gridScorer':gscorer
+	     #'include_1_4_interaction':False
+              }        
+  
+if args.flexrec:
+    
+    receptor.buildBondsByDistance()
+    flexRecSel =args.flexrec
+
+    from AutoDockFR.utils import RecXML4SoftRotamSC
+    xmlbuilder = RecXML4SoftRotamSC(receptor, flexRecSel)
+    receptorFT=tree = xmlbuilder.getTree()
+    interfaceAtoms = xmlbuilder.interfaceAtoms
+    receptorFT.interfaceAtoms = xmlbuilder.interfaceAtoms
+    flexRecAtoms = receptorFT.getMovingAtoms()
+    receptorFT.getMovingAtoms().conformation = 0
+    rigidRecAtoms =  receptor.allAtoms-(flexRecAtoms+interfaceAtoms)
+    gscorer.addAtomSet(flexRecAtoms, 'RRFR')
+    #reslen =[]
+    #for i in range(len(receptorFT.flexNodeList)):
+    #    reslen.append(len(receptorFT.flexNodeList[i].getAtoms()))
+        
+
+    #import pdb
+    #pdb.set_trace()
+
+    
+    ## from FlexTree.FTConstruction import FTParam, GenerateFT
+    
+    ## ftp = FTParam()
+    ## ftp.kw['movingSidechains'] = flexRecSel
+    ## receptor.buildBondsByDistance()
+    ## # save receptor coordinates
+    ## coords = receptor.allAtoms.coords[:]
+    ## gg = GenerateFT(ftp, mol=receptor)
+    ## receptorFT = gg.getTree()
+    #scorerOpts['calcRecIE'] = True
+    # the FT will modify atomic coordinates of moving atoms
+    # restore the original coordinates
+    # moving atoms have additional conformations used to move the fragment to the origin
+    # here we tell the atoms set to the original coordinates from the PDB which is conformation 1
+    #receptorFT.getMovingAtoms().conformation = 0
+
+    
+    # Update the scorerOpts dictionary
+    scorerOpts['FR_L'] = True
+    scorerOpts['RR_FR'] = True
+    scorerOpts['FR_FR'] = True
+    scorerOpts['RR_RR'] = False
+
+    scorerOpts['FR_L_Fitness'] = True
+    scorerOpts['RR_FR_Fitness'] = True
+    scorerOpts['FR_FR_Fitness'] = True
+    scorerOpts['RR_RR_Fitness'] = False
+    #scorerOpts['include_1_4_interaction'] = False    
+
+
+# FlexiblityTree - Store flexible and rigid atoms of the receptor
+if receptorFT:
+    #rigidRecAtoms = receptorFT.getRigidAtoms()
+    flexRecAtoms = receptorFT.getMovingAtoms()
+else:
+    rigidRecAtoms = receptor.allAtoms
+    from MolKit.molecule import AtomSet
+    flexRecAtoms = AtomSet([])
+
+
+#print 'building scorer for %d rigid Rec %d ligand and %d flexible Rec atoms' % (
+#    len(rigidRecAtoms), len(ligAtoms), len(flexRecAtoms))
+
+#from AutoDockFR.evaluateEnergy import ADEnergyEvaluator
+#evaluator = ADEnergyEvaluator(receptor, ligand, forceFieldVersion='4',
+#                              receptorFT=receptorFT, scorerOpts=scorerOpts)
+#evaluator.getProtLigScoreBreakdown()
+
+#import pdb;pdb.set_trace()
+# Create scorer
+AD42ScoreC = ScorerClass(rigidRecAtoms, ligAtoms, ligand.torTree, ligand.TORSDOF,
+                          flexRecAtoms=flexRecAtoms,interfaceAtoms=interfaceAtoms, **scorerOpts)
+
+##AD42ScoreC = ScorerClass(rigidRecAtoms, ligAtoms, ligand.torTree, ligand.TORSDOF,
+##                          flexRecAtoms=None, **scorerOpts)
+if flexRecAtoms:
+    flexRecAtomsCoords = flexRecAtoms.coords
+else:
+    flexRecAtomsCoords = None
+
+fscore, score = AD42ScoreC.score(rigidRecAtoms.coords, flexRecAtomsCoords, ligAtoms.coords)
+if not args.unscaledTerms:
+    print "\n\nGAScore: %f"%-score
+
+# Method call to create a dictionary that stores all the scoring values
+###data = AD42ScoreC.getAllScoreTerms()
+#print id(data), data
+
+#print AD42ScoreC.scoreCoords(rigidRecAtoms.coords, flexRecAtoms.coords, ligAtoms.coords)
+## data = AD42ScoreC.getAllScoreTerms()
+
+## # Get the Protein-Ligand Interaction energy
+## AD42ScoreC.getProtLigScore(data, receptorFT)
+## print AD42ScoreC.score()
+
+## # Protein-Ligand Interaction energy term breakdown
+## if breakdowns:
+##     AD42ScoreC.getProtLigScoreBreakdown(data)
+
+## #MS
+## #AD42ScoreC.printAllScoreTerms()
+
+## if perAtomBreakdown:
+##     # Per atom energy analysis: breakdown of the scoring contribution: vdw, ele, hbond, delsolv
+##     #scorer.getProtLigScorePerAtom()
+
+##     lines = AD42ScoreC.getPerAtomBreakdown(AD42ScoreC.FRFRmolSyst)
+##     for l in lines:
+## 	print l
+
+##     # Save a file w/per atom energy analysis: breakdown of the scoring contribution: vdw, ele, hbond, delsolv
+##     #AD42ScoreC.getProtLigScorePerAtomToFile()
+
+
+####################### LL  ######################################
+
+ligAtoms.name
+scorer = AD42ScoreC
+terms = scorer.LLmolSyst.scorer.get_terms()
+names = scorer.LLmolSyst.scorer.names
+##for n,t in zip(names, terms):
+##  print n, t
+
+FE_coeff_vdW_42		= 0.1662 # van der waals
+FE_coeff_hbond_42	= 0.1209 # hydrogen bonding
+FE_coeff_estat_42	= 0.1406 # electrostatics
+FE_coeff_desolv_42	= 0.1322 # desolvation
+FE_coeff_tors_42	= 0.2983 # torsional 
+
+import numpy
+hArray = numpy.array(terms[1].get_score_array(), 'f')*FE_coeff_hbond_42
+eArray = numpy.array(terms[0].get_score_array(), 'f')*FE_coeff_estat_42
+vdwArray = numpy.array(terms[2].get_score_array(), 'f')*FE_coeff_vdW_42
+dsArray = numpy.array(terms[3].get_score_array(), 'f')*FE_coeff_desolv_42
+
+if args.unscaledTerms:
+    if len(gridMaps)==0:
+        terms1 = scorer.RRLmolSyst.scorer.get_terms()
+        names1 = scorer.RRLmolSyst.scorer.names
+        print "Unscaled interaction terms", names1
+        unscaledTerms = []
+        for term in terms1:
+            array = numpy.array(term.get_score_array(), 'f')
+            unscaledTerms.append(numpy.sum(array.flat))
+            print unscaledTerms[-1],
+        print
+        #print 'Interaction Energy:', unscaledTerms[2]*FE_coeff_vdW_42 + \
+        #      unscaledTerms[0]*FE_coeff_estat_42 + \
+        #      unscaledTerms[1]*FE_coeff_hbond_42 + \
+        #      unscaledTerms[3]*FE_coeff_desolv_42
+
+    #print "\n\n"
+    #AD42ScoreC.printAllScoreTerms()
+    #print "\n\n"
+    sys.exit(1)
+
+#hArray *= FE_coeff_hbond_42
+#eArray *= FE_coeff_estat_42
+#vdwArray *= FE_coeff_vdW_42
+#dsArray *= FE_coeff_desolv_42
+
+
+distance = scorer.LLmolSyst.get_distance_matrix(1, 0)
+if args.ll:
+    print "	       	   Ligand Intramolecular Energy Analysis"
+    print "		   ====================================="
+    print
+    print "Non-bond  Atom1-Atom2  Distance   Total        Elec     vdW        Hb     Desolv"
+    print "________  ___________  ________   ______  _________  ________ ________  ________"
+
+    ct = 1
+    esum = 0.
+    vsum = 0.
+    hsum = 0.
+    dsum = 0.
+    for i in range(len(ligAtoms)):
+        for j in range(i, len(ligAtoms)):
+            if scorer.LLmolSyst.is_masked(i,j):
+                e  = eArray[i][j]
+                v = vdwArray[i][j]
+                h = hArray[i][j]
+                d = dsArray[i][j]
+                #h2 = hArray[j][i]
+                print "  %5d   %5d-%-5d   %6.4f   %7.4f   %7.4f   %7.4f   %7.4f   %7.4f"%(
+                    ct, i+1, j+1, distance[i][j], e+v+h+d, e, v, h, d)
+                ct += 1
+                esum += e
+                vsum += v
+                hsum +=h
+                dsum += d
+    print "--------------------------------------------------------------------------------------------------------"
+    print "  %25s      %7.4f   %7.4f   %7.4f   %7.4f   %7.4f\n\n\n"%("Sum", esum+vsum+hsum+dsum, esum, vsum, hsum, dsum)
+
+
+    #vdwArray[0]
+    #eArray[0]
+    #hArray[0]
+    #dsArray[0]
+
+    # internal energy per atom breakdown
+    ##for l in AD42ScoreC.getPerAtomBreakdown(AD42ScoreC.LLmolSyst):
+    ##    print l
+
+
+    ####distance[0]
+
+    #for v,n in zip(numpy.array[1], ligAtoms.name):
+    #   print n, v
+
+    # print non bonded interaction table
+    print "         Ligand Intramolecular non-bonded interaction table"
+    print "         =================================================="
+    print
+
+    print "Atom: ID: ",
+    strg = ''
+    for i in range(len(ligAtoms)):
+        strg += "%4d"%(i+1)
+
+    print strg
+    #_____ ___ ____________________________________
+    # C     1  |_|_|_|_|_|X|X|_|_|_|_|_|_|_|X|X|X|X
+
+    for i in range(len(ligAtoms)):
+        print "%4s: %2d:  "%(ligAtoms[i].name, i+1),
+        for j in range(i, len(ligAtoms)):
+            if j ==i:
+                for k in range(0,i):
+                    print "%3s"%" ",
+            if scorer.LLmolSyst.is_masked(i,j):
+                print "%3s"%ligAtoms[j].name,
+            else:
+                print "%3s"%"  ",
+        print 
+
+    #from MolKit import Read
+    #amol = Read("../1sq5_sol_1.pdbqt")[0]
+    #fscore, score = AD42ScoreC.score(rigidRecAtoms.coords, flexRecAtomsCoords, amol.allAtoms.coords)
+    #print -score
+
+    for i in range(len(ligAtoms)):
+        for j in range(i, len(ligAtoms)):
+            if not scorer.LLmolSyst.is_masked(i,j) and hArray[i][j]!=0.0:
+                print 'PROBLEM', (i,j)
+
+    print
+print
+
+ct2 = 1
+perAtomBreakDown={}
+for i in range(len(ligAtoms)):
+    esum = 0.
+    vsum = 0.
+    hsum = 0.
+    dsum = 0.
+    for j in range(len(ligAtoms)):
+        e  = eArray[i][j]/2
+        v = vdwArray[i][j]/2
+        h = hArray[i][j]/2
+        d = dsArray[i][j]/2
+        esum += e
+        vsum += v
+        hsum += h
+        dsum += d
+
+    perAtomBreakDown.update({ct2:{'Type':ligAtoms[ct2-1].autodock_element, 'elec':esum, 'hbonds':hsum, 'vdw':vsum,'ds':dsum}})
+    ct2+=1
+
+ligPerAtm =[[0,'-',0.0,0.0,0.0,0.0] for j in range(len(ligAtoms))]
+ligPerAtmSum =[]
+#print "             Ligand per-Atom Intramolecular Energy Analysis"
+#print "             =============================================="
+#print
+#print ("%9s %9s %9s %9s %9s %9s"%('Num','Type','vdw','hbonds','elec','ds'))
+#termsName = ['Type','elec','hbonds','vdw','dsum']
+elec2=0.
+vdw2=0.
+hbond2=0.
+ds2=0.
+for k,v in perAtomBreakDown.items():
+    n = k-1
+    ligPerAtm[n][0] = k
+    for k1,v1 in v.items():
+        if k1 == 'Type':
+            ligPerAtm[n][1] = v1
+        elif k1=='vdw':
+            ligPerAtm[n][2] = v1
+        elif k1=='hbonds':
+            ligPerAtm[n][3] = v1
+        elif k1=='elec':
+            ligPerAtm[n][4] = v1
+        elif k1=='ds':
+            ligPerAtm[n][5] = v1
+        #ligPerAtm.append(v1)
+
+for i in range(1,ct2):
+    #print ("%15d %5s %9.4f %9.4f %9.4f %9.4f"%(i, perAtomBreakDown[i]['Type'],perAtomBreakDown[i]['elec'],perAtomBreakDown[i]['hbonds'],perAtomBreakDown[i]['vdw'],perAtomBreakDown[i]['ds']))
+    elec2 += perAtomBreakDown[i]['elec']
+    hbond2 += perAtomBreakDown[i]['hbonds']
+    vdw2 += perAtomBreakDown[i]['vdw']
+    ds2 += perAtomBreakDown[i]['ds']
+
+#print"-------------------------------------------------------------------"
+#print "%9s %9.4f %9.4f %9.4f %9.4f %9.4f\n\n\n"%("Sum:",elec2+hbond2+vdw2+ds2,vdw2,hbond2,elec2,ds2)
+ligPerAtmSum =["Sum:",elec2+hbond2+vdw2+ds2,vdw2,hbond2,elec2,ds2]
+print
+print
+
+############################################################################
+
+
+gRRLscore, gRRLvDW,gRRLe,gRRLd = gscorer.scoreBreakDown(ligAtoms.coords, 'RRL')
+gRRL =[[0,'-',0.0,0.0,0.0] for j in range(len(ligAtoms))]
+gRRLSum =[]
+#print "              RRL - per-Atom Intermolecular Energy Analysis"
+#print "             =============================================="
+#print
+#print ("%15s %5s %9s %9s %9s"%('Num','Type','vdw','elec','ds'))
+elec3=0.
+vdw3=0.
+ds3=0.
+for i in range(len(gRRLvDW)):
+    #print ("%15d %5s %9.4f %9.4f %9.4f"%(i, ligAtoms[i].autodock_element,gRRLvDW[i],gRRLe[i],gRRLd[i]))
+    gRRL[i][0] = i+1
+    gRRL[i][1] = ligAtoms[i].autodock_element
+    gRRL[i][2] = gRRLvDW[i]
+    gRRL[i][3] = gRRLe[i]
+    gRRL[i][4] = gRRLd[i]
+    elec3 +=gRRLe[i]
+    vdw3 += gRRLvDW[i]
+    ds3 += gRRLd[i]
+#print"---------------------------------------------------------------------------------------------------------"
+#print "%12s %8.4f %9.4f %9.4f %9.4f\n\n\n"%("Sum:",elec3+vdw3+ds3,vdw3,elec3,ds3)
+gRRLSum = ["Sum:",elec3+vdw3+ds3,vdw3,elec3,ds3]
+
+#############################################################################
+
+print "             Ligand per-Atom Intramolecular Energy Analysis         |   RRL - per-Atom Intermolecular Energy Analysis     "
+print "             ==============================================         |====================================================="
+print
+print ("%9s %9s %9s %9s %9s %9s %9s %9s %9s %9s %9s %9s"%('Num','Type','vdw','hbonds','elec','ds',"|",'Num','Type','vdw','elec','ds'))
+merge = ligPerAtm
+for i in range(len(ligPerAtm)):
+    merge[i].append("|")
+    merge[i].extend(gRRL[i])
+    
+for lPA in merge:
+    for t in lPA:
+        if isinstance(t,float):
+            print '%9.4f'%t,
+        else:
+            print '%9s'%t,
+        
+    print "|"
+print "============================================================================================================================"
+merge2 = ligPerAtmSum
+merge2.append("|")
+merge2.extend(gRRLSum)
+for t in merge2:
+    if isinstance(t,float):
+        print '%9.4f'%t,
+    else:
+        print '%9s'%t,
+
+print
+print
+print
+
+
+
+if args.flexrec:
+
+################  FRFR  ####################################################
+
+    #scorer = AD42ScoreC
+    terms = scorer.FRFRmolSyst.scorer.get_terms()
+    names = scorer.FRFRmolSyst.scorer.names
+    #import numpy
+    hArray = numpy.array(terms[1].get_score_array(), 'f')*FE_coeff_hbond_42
+    eArray = numpy.array(terms[0].get_score_array(), 'f')*FE_coeff_estat_42
+    vdwArray = numpy.array(terms[2].get_score_array(), 'f')*FE_coeff_vdW_42
+    #dsArray = numpy.array(terms[3].get_score_array(), 'f')*FE_coeff_desolv_42
+
+##     #hArray *= FE_coeff_hbond_42
+##     #eArray *= FE_coeff_estat_42
+##     #vdwArray *= FE_coeff_vdW_42
+##     #dsArray *= FE_coeff_desolv_42
+
+
+    distance = scorer.FRFRmolSyst.get_distance_matrix(1, 0)
+
+    ct2=1
+    perResBreakDown={}
+    sc = flexRecAtoms+interfaceAtoms
+ #   reslenct = 0
+ #   for resl in reslen:
+        
+## #        for i in range(reslenct-1,resl):
+    for i in range(len(sc)):
+        #reslenct += 1
+        esum = 0.
+        vsum = 0.
+        hsum = 0.
+        #dsum = 0.
+        for j in range(len(sc)):
+            e  = eArray[i][j]/2
+            v = vdwArray[i][j]/2
+            h = hArray[i][j]/2
+            #d = dsArray[i][j]/2
+            esum += e
+            vsum += v
+            hsum += h
+                #dsum += d
+        #if reslenct in reslen:receptorFT.flexNodeList[ct2-1].name'Res':flexRecAtoms[ct2-1].autodock_element
+        perResBreakDown.update({ct2:{'Res':"%8s-%4s"%(sc[ct2-1].parent.name,sc[ct2-1].name),'elec':esum, 'hbonds':hsum, 'vdw':vsum}})
+        ct2+=1
+
+    FRPerAtm =[[0,'-',0.0,0.0,0.0] for j in range(len(sc))]
+    FRPerAtmSum =[]
+    elec2=0.
+    vdw2=0.
+    hbond2=0.
+    ds2=0.
+    for k,v in perResBreakDown.items():
+        n = k-1
+        FRPerAtm[n][0] = k
+        for k1,v1 in v.items():
+            if k1 == 'Res':
+                FRPerAtm[n][1] = v1
+            elif k1=='vdw':
+                FRPerAtm[n][2] = v1
+            elif k1=='hbonds':
+                FRPerAtm[n][3] = v1
+            elif k1=='elec':
+                FRPerAtm[n][4] = v1
+ 
+
+
+        
+    ## print "             FRFR per-Atom Intramolecular Energy Analysis"
+    ## print "             =============================================="
+    ## print
+    ## print ("%15s %5s %9s %9s %9s"%('Num','Type','elec','hbonds','vdw'))
+    #termsName = ['Type','elec','hbonds','vdw','dsum']
+    elec2=0.
+    vdw2=0.
+    hbond2=0.
+    ###ds2=0.
+    for i in range(1,ct2):
+        #print ("%15d %5s %9.4f %9.4f %9.4f"%(i,perResBreakDown[i]['Res'],perResBreakDown[i]['elec'],perResBreakDown[i]['hbonds'],perResBreakDown[i]['vdw']))
+        elec2 += perResBreakDown[i]['elec']
+        hbond2 += perResBreakDown[i]['hbonds']
+        vdw2 += perResBreakDown[i]['vdw']
+        #ds2 += perAtomBreakDown[i]['ds']
+    #print"---------------------------------------------------------------------------------------------------------"
+    #print "%12s %8.4f %9.4f %9.4f %9.4f\n\n\n"%("Sum:",elec2+hbond2+vdw2,elec2,hbond2,vdw2)
+    
+    FRPerAtmSum =["Sum:",elec2+hbond2+vdw2,vdw2,hbond2,elec2]
+
+############################################################################
+
+
+
+    
+    gRRFRscore, gRRFRvDW,gRRFRe,gRRFRd = gscorer.scoreBreakDown(flexRecAtoms.coords, 'RRFR')
+    gRRFR =[[0,'-',0.0,0.0,0.0] for j in range(len(sc))]
+    gRRFRSum =[]
+
+    ## print "              RRFR - per-Atom Intermolecular Energy Analysis"
+    ## print "             =============================================="
+    ## print
+    ## print ("%15s %5s %9s %9s %9s"%('Num','Type','vdw','elec','ds'))
+    elec4=0.
+    vdw4=0.
+    ds4=0.
+    for i in range(len(gRRFRvDW)):
+        #print ("%15d %5s %9.4f %9.4f %9.4f"%(i, flexRecAtoms[i].autodock_element,gRRFRvDW[i],gRRFRe[i],gRRFRd[i]))
+        gRRFR[i][0] = i+1
+        gRRFR[i][1] = "%8s-%4s"%(flexRecAtoms[i].parent.name,flexRecAtoms[i].name)
+        gRRFR[i][2] = gRRFRvDW[i]
+        gRRFR[i][3] = gRRFRe[i]
+        gRRFR[i][4] = gRRFRd[i]
+
+        elec4 +=gRRFRe[i]
+        vdw4 += gRRFRvDW[i]
+        ds4 += gRRFRd[i]
+    #print"---------------------------------------------------------------------------------------------------------"
+    #print "%12s %8.4f %9.4f %9.4f %9.4f\n\n\n"%("Sum:",elec4+vdw4+ds4,vdw4,elec4,ds4)
+    gRRFRSum =["Sum:",elec4+vdw4+ds4,vdw4,elec4,ds4]
+    #############################################################################
+
+    print "              FR per-Atom Intramolecular Energy Analysis            |        RRFR - per-Atom Intermolecular Energy Analysis"
+    print "            ==============================================          |        =============================================="
+    print
+    print ("%12s %12s %9s %9s %9s %13s %12s %12s %9s %9s %9s"%('Num','Residue','vdw','hbonds','elec',"|",'Num','Residue','vdw','elec','ds'))
+    merge = FRPerAtm
+    for i in range(len(FRPerAtm)):
+        merge[i].append("|")
+        merge[i].extend(gRRFR[i])
+
+    for lPA in merge:
+        for t in lPA:
+            if isinstance(t,float):
+                print '%9.4f'%t,
+            else:
+                print '%12s'%t,
+
+        print "|"
+    print "=================================================================================================================================="
+    merge2 = FRPerAtmSum
+    merge2.append("|")
+    merge2.extend(gRRFRSum)
+    cnt = 0
+    for t in merge2:
+        if isinstance(t,float):
+            print '%9.4f'%t,
+        else:
+            cnt+=1
+            if cnt in [1,3]:
+                print '%16s'%t,
+            else:
+                print '%12s'%t,
+            
+
+    print
+    print
+    print
+
+    
+
+AD42ScoreC.printAllScoreTerms()
+print "\n\n"

@@ -1,0 +1,4 @@
+./msms -if 1at.xyzr -of 1at_de3 -de 3.
+python msmsToIndpol.py 1at_de3 20
+mv 1at_de3.indpolvert vesicle_r20nm.indpolvert
+mv 1at_de3.indpolface vesicle_r20nm.indpolface

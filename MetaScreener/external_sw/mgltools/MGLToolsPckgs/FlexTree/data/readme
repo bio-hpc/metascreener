@@ -1,0 +1,34 @@
+This directory is part of FlexTree package.
+
+File names and descriptions should be updated after files being modified.
+
+FILE: 1hvr_docking.xml
+    XML description of 1hvr motion and XK232(ligand) motion 
+
+FILE: 1hvr.pdbqs
+    pdbqs file of 1hvr(PDB ID)
+
+FILE: 1hvr.xml
+    XML description of 1hvr motion. NO motion specified for XK232 ligand.
+
+FILE: 4hvp.pdb
+    PDB file, please refer to the header for detailed description.
+
+FILE: 4hvp.xml
+    XML description of flexibility motion in 4hvp.pdb
+
+FILE: coreflap.xml
+    XML description of flexibility motion in 4hvp.pdb 
+
+FILE: ga1hvrAD_net.py
+    ViPEr network file. GA based docking. 
+    Usage: %viper -i 1hvrAD_def_net.py
+
+FILE: 1hvrAD_def_net.py
+    ViPEr network file. Defines the motion of XK232 motion and 1hvr motion.
+    Input file 1hvr.xml
+    Outputs the 1hvr_docking.xml file
+    Usage: %viper -i 1hvrAD_def_net.py
+
+FILE: readme
+    This file.

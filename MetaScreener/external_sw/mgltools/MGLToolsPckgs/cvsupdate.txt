@@ -1,0 +1,4 @@
+Use the following command to CVS-update MGLToolsPckgs:
+ 
+
+cvs -d:pserver:anonymous@mgl1.scripps.edu:/opt/cvs update

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<biosolveit>
+  <version major="1" minor="6" patch="0"/>
+  <flexdocking>
+    <settings>
+      <licenses>
+        <license path="."/>
+      </licenses>
+      <parameters>
+        <HYDROPHOBIC_ATOM_DISTANCE value="0.8" />
+        <METAL_TOLERANCE_DISTANCE value="0.8" />
+        <HBOND_ATOM_CENTER_DISTANCE value="2.4" />
+        <HBOND_CONE_ANGLE value="120.0" />
+        <PI_PI_CENTER_DISTANCE value="5.0" />
+        <PI_CATION_CENTER_DISTANCE value="4.5" />
+      </parameters>
+    </settings>
+  </flexdocking>
+</biosolveit>

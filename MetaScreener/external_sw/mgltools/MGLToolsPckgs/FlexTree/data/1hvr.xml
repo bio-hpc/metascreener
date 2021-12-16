@@ -1,0 +1,124 @@
+<?xml version="1.0" ?>
+    <root
+        name="1hvrCrystalStructure"
+        id="99"
+        selectionString="1hvr"
+        convolve="FTConvolveApplyMatrixToCoords"
+        file="FlexTree/Tests/Data/1hvr.pdbqs">
+        <node
+            name="chainA"
+            id="1"
+            selectionString="1hvr:A"
+            convolve="FTConvolveApplyMatrixToCoords">
+            <node
+                name="Core A"
+                id="2"
+                shapeParams="cutoff: float 1.85"
+                selectionString="1hvr:A:PRO1,GLN2,VAL3,THR4,LEU5,TRP6,GLN7,ARG8,PRO9,LEU10,VAL11,THR12,ILE13,LYS14,ILE15,GLY16,GLY17,GLN18,LEU19,LYS20,GLU21,ALA22,LEU23,LEU24,ASP25,THR26,GLY27,ALA28,ASP29,ASP30,THR31,VAL32,LEU33,GLU34,LEU38,PRO39,GLY40,ARG41,TRP42,LYS43,GLN58,TYR59,ASP60,GLN61,ILE62,LEU63,ILE64,GLU65,ILE66,CYS67,GLY68,HIS69,LYS70,ALA71,ILE72,GLY73,THR74,VAL75,LEU76,PRO81,VAL82,ASN83,ILE84,ILE85,GLY86,ARG87,ASN88,LEU89,LEU90,THR91,GLN92,ILE93,GLY94,ALA95,THR96,LEU97,ASN98,PHE99,HYD67"
+                motion="FTMotion_Generic"
+                shape="FTLines"
+                convolve="FTConvolveApplyMatrixToCoords"
+                motionParams="percent: float 0.0, matrixList: list float 0.99587458 0.07888025 -0.04485199 0.0 -0.0790066 0.99687356 -0.00104846 0.0 0.04462906 0.00458773 0.9989931 0.0 -0.00396458 0.27953646 0.03013884 1.0, name: str generic, indexList: list float 1.0">
+            </node>
+            <node
+                name="Flap A"
+                id="3"
+                refNode="2"
+                shapeParams="cutoff: float 1.85"
+                selectionString="1hvr:A:GLU35,MET36,SER37,PRO44,LYS45,MET46,ILE47,GLY48,GLY49,ILE50,GLY51,GLY52,PHE53,ILE54,LYS55,VAL56,ARG57,VAL77,GLY78,PRO79,THR80"
+                motion="FTMotion_Generic"
+                shape="FTLines"
+                convolve="FTConvolveApplyMatrixToCoords"
+                motionParams="percent: float 0.0, matrixList: list float 0.96122706 0.24516559 -0.12623928 0.0 -0.24147341 0.96940923 0.04400378 0.0 0.13316572 -0.01181421 0.99102336 0.0 1.93201792 3.15556884 -2.67976809 1.0, name: str generic, indexList: list float 1.0">
+            </node>
+        </node>
+        <node
+            name="chainB"
+            id="4"
+            selectionString="1hvr:B"
+            convolve="FTConvolveApplyMatrixToCoords">
+            <node
+                name="Core B"
+                id="5"
+                shapeParams="cutoff: float 1.85"
+                selectionString="1hvr:B:PRO1,GLN2,VAL3,THR4,LEU5,TRP6,GLN7,ARG8,PRO9,LEU10,VAL11,THR12,ILE13,LYS14,GLY16,GLY17,GLN18,LEU19,LYS20,GLU21,ALA22,LEU23,LEU24,ASP25,THR26,GLY27,ALA28,ASP29,ASP30,THR31,VAL32,LEU33,GLU34,GLU35,PRO39,GLY40,ARG41,TRP42,LYS43,PRO44,LYS45,MET46,ILE54,LYS55,VAL56,ARG57,GLN58,TYR59,ASP60,GLN61,ILE62,LEU63,ILE64,GLU65,ILE66,CYS67,GLY68,HIS69,LYS70,ALA71,ILE72,GLY73,THR74,VAL75,LEU76,VAL77,GLY78,PRO79,THR80,PRO81,VAL82,ASN83,ILE84,ILE85,GLY86,ARG87,ASN88,LEU89,LEU90,THR91,GLN92,ILE93,GLY94,ALA95,THR96,LEU97,ASN98,PHE99,HYD67"
+                motion="FTMotion_Generic"
+                shape="FTLines"
+                convolve="FTConvolveApplyMatrixToCoords"
+                motionParams="percent: float 0.0, matrixList: list float 0.9984284 -0.05064071 -0.02400495 0.0 0.05080615 0.99868846 0.00633226 0.0 0.0236528 -0.00754191 0.99969178 0.0 0.52326089 0.43251178 0.11378685 1.0, name: str generic, indexList: list float 1.0">
+            </node>
+            <node
+                name="Flap B"
+                id="6"
+                refNode="5"
+                shapeParams="cutoff: float 1.85"
+                selectionString="1hvr:B:ILE15,MET36,SER37,LEU38,ILE47,GLY48,GLY49,ILE50,GLY51,GLY52,PHE53"
+                motion="FTMotion_Generic"
+                shape="FTLines"
+                convolve="FTConvolveApplyMatrixToCoords"
+                motionParams="percent: float 0.0, matrixList: list float 0.96989775 -0.2198071 -0.10480107 0.0 0.21166201 0.97376937 -0.08350062 0.0 0.12040608 0.05880467 0.99098152 0.0 0.20092086 5.04090929 2.79043245 1.0, name: str generic, indexList: list float 1.0">
+            </node>
+        </node>
+        <node
+            name="Ligand"
+            id="7"
+            selectionString="1hvr: :XK2263"
+            convolve="FTConvolveApplyMatrixToCoords">
+            <node
+                name="Core Ligand"
+                id="8"
+                shapeParams="cutoff: float 1.85"
+                selectionString="1hvr: :XK2263:C6,N7,C5,O5,C4,O4,N2,C3,C1,O1"
+                motion_1="gridCenter: list float 2.5053260869565217 5.9141956521739116 -7.6130869565217401, boxDim: list float 6.0 6.0 6.0, name: str translation within a box, point: list float 0.0 0.0 0.0, type: str FTMotion_BoxTranslation"
+                motion_0="vector: list float 1.0 0.0 0.0, angle: float 0.0, name: str rotation about a point, point: list float 2.5053260869565217 5.9141956521739116 -7.6130869565217401, type: str FTMotion_RotationAboutPoint"
+                motion="FTMotionCombiner"
+                shape="FTLines"
+                convolve="FTConvolveApplyMatrixToCoords"
+                motionParams="numMotion: int 2">
+            </node>
+            <node
+                name="sidechain1"
+                id="9"
+                refNode="8"
+                shapeParams="cutoff: float 1.85"
+                selectionString="1hvr: :XK2263:C7,C70,C71,C72,C73,C74,C75,C76,C77,C78,C79"
+                motion="FTMotion_RotationAboutAxis"
+                shape="FTLines"
+                convolve="FTConvolveApplyMatrixToCoords"
+                motionParams="point1: list float 2.895 5.2690000000000001 -6.6139999999999999, point2: list float 3.3450000000000002 4.9889999999999999 -5.2480000000000002, percent: float 1.0, angle: float 0.0, name: str rotatableBond">
+            </node>
+            <node
+                name="sidechain2"
+                id="10"
+                refNode="8"
+                shapeParams="cutoff: float 1.85"
+                selectionString="1hvr: :XK2263:C61,C62,C63,C64,C65,C66,C67"
+                motion="FTMotion_RotationAboutAxis"
+                shape="FTLines"
+                convolve="FTConvolveApplyMatrixToCoords"
+                motionParams="point1: list float 2.3109999999999999 4.1420000000000003 -7.359, point2: list float 3.3839999999999999 3.617 -8.3390000000000004, percent: float 1.0, angle: float 0.0, name: str rotatableBond">
+            </node>
+            <node
+                name="sidechain3"
+                id="11"
+                refNode="8"
+                shapeParams="cutoff: float 1.85"
+                selectionString="1hvr: :XK2263:C2,C20,C21,C22,C23,C24,C25,C26,C27,C28,C29"
+                motion="FTMotion_RotationAboutAxis"
+                shape="FTLines"
+                convolve="FTConvolveApplyMatrixToCoords"
+                motionParams="point1: list float 2.593 7.0129999999999999 -8.2479999999999993, point2: list float 3.3050000000000002 8.1170000000000009 -8.907, percent: float 1.0, angle: float 0.0, name: str rotatableBond">
+            </node>
+            <node
+                name="sidechain4"
+                id="12"
+                refNode="8"
+                shapeParams="cutoff: float 1.85"
+                selectionString="1hvr: :XK2263:C31,C32,C33,C34,C35,C36,C37"
+                motion="FTMotion_RotationAboutAxis"
+                shape="FTLines"
+                convolve="FTConvolveApplyMatrixToCoords"
+                motionParams="point1: list float 1.202 6.7089999999999996 -8.6419999999999995, point2: list float 0.223 7.3289999999999997 -7.5940000000000003, percent: float 1.0, angle: float 0.0, name: str rotatableBond">
+            </node>
+        </node>
+    </root>

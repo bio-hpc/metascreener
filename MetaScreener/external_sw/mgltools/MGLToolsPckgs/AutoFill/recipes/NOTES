@@ -1,0 +1,190 @@
+cytoplasm:
+
+  1ABL: kinase, 872 atoms
+  python center.py cyto/1ABL.pdb
+  python mkMesh.py cyto/1ABL_centered.pdb 
+  python -i mkIngredienth.py cyto/1ABL_centered.pdb 4 1
+  1 sphere
+   -0.357724 0.302313 -0.148531 15.519182
+
+
+  2CPK.pdb PHOSPHOTRANSFERASE 2819
+  python center.py cyto/2CPK.pdb
+  python mkMesh.py cyto/2CPK_centered.pdb 
+  python -i mkIngredienth.py cyto/2CPK_centered.pdb 4 1
+  # added 3 in y by hand
+  saveSpheres1('cyto/2CPK_centered_4.sph', spheres[1], rads[1])
+
+
+  1CZA.pdb TRANSFERASE 7103
+  python center.py cyto/1CZA.pdb
+  python mkMesh.py cyto/1CZA_centered.pdb 
+  python -i mkIngredienth.py cyto/1CZA_centered.pdb 4 1
+  saveSpheres1('cyto/1CZA_centered_4.sph', spheres[1], rads[1])
+
+
+  2OT8.pdb 12811  TRANSPORT PROTEIN
+  python center.py cyto/2OT8.pdb
+  python mkMesh.py cyto/2OT8_centered.pdb 
+  #python -i mkIngredienth.py cyto/2OT8_centered.pdb 8 2
+  python -i mkIngredienth.py cyto/2OT8_centered.pdb 4 3
+  saveSpheres1('cyto/2OT8_centered_16.sph', spheres[2], rads[2])
+
+
+  1AON.pdb 58690 GROEL/GROES
+  python center.py cyto/1AON.pdb
+  python mkMesh.py cyto/1AON_centered.pdb 
+  #python -i mkIngredienth.py ProteinsForAutofill/cytoplasmicProteins/1AON.pdb 4 3
+
+  used groel_pmvnet.py
+  8 spheres
+    [0.08,-0.01,-37.31],
+    [-38.80,-25.56,44.27],
+    [-4.33,-46.46,44.17],
+    [33.43,-32.37,44.33],
+    [45.92,6.16,44.23],
+    [23.73,39.97,44.10],
+    [-16.41,43.72,44.08],
+    [-44.19,14.61,44.32],
+
+    [ 75.45, 25.96,  25.97,  26.02,  25.97,  25.91,  25.99,  26.01]
+
+  1TWT.pdb 30S RIBOSOME 54990
+  python center.py cyto/1TWT.pdb
+  python mkMesh.py cyto/1TWT_centered.pdb 
+  #python -i mkIngredienth.py cyto/1TWT_centered.pdb 8 2
+  python -i mkIngredienth.py cyto/1TWT_centered.pdb 4 2
+  saveSpheres1('cyto/1TWT_centered_4.sph', spheres[1], rads[1])
+
+##   1TWV.pdb RIBOSOME,50S 76591
+##   python center.py cyto/1TWV.pdb
+##   python mkMesh.py cyto/1TWV_centered.pdb 
+##   python -i mkIngredienth.py cyto/1TWV_centered.pdb 4 3
+##   saveSpheres1('cyto/1TWV_centered_4.sph', spheres[1], rads[1])
+
+##   FULL RIBO
+##   python center.py cyto/fullRibo.pdb
+##   python mkMesh.py cyto/fullRibo_centered.pdb 
+##   python -i mkIngredienth.py cyto/fullRibo_centered.pdb 4 3
+ 
+membrane
+
+cp 1yg1.trpdb 1yg1.pdb 
+cp 1zll.trpdb 1zll.pdb 
+cp 2afl.trpdb 2afl.pdb 
+cp 2uuh.trpdb 2uuh.pdb 
+cp 3g61.trpdb 3g61.pdb 
+
+1h6i.pdb 1659 AQUAPORIN
+  python mkMesh.py membrane/1h6i.pdb 
+  python -i mkIngredienth.py membrane/1h6i.pdb 2 1
+  saveSpheres1('membrane/1h6i_centered_2.sph', spheres[1], rads[1])
+
+1zll.pdb 2114 PHOSPHOLAMBAN
+  python mkMesh.py membrane/1zll.pdb 
+  python -i mkIngredienth.py membrane/1zll.pdb 2 1
+  #saveSpheres1('membrane/1zll_2.sph', spheres[1], rads[1])
+  saveSpheres1('membrane/1zll_1.sph', spheres[0], rads[0])
+
+2afl.pdb 2461 PROTON TRANSPORT
+  python mkMesh.py membrane/2afl.pdb 
+  python -i mkIngredienth.py membrane/2afl.pdb 2 1
+  saveSpheres1('membrane/2afl_1.sph', spheres[0], rads[0])
+
+2uuh.pdb 3571 C4 SYNTHASE
+  python mkMesh.py membrane/2uuh.pdb 
+  python -i mkIngredienth.py membrane/2uuh.pdb 4 1
+  manual -7 in y
+  for i in range(3):
+      sph = spheres[i]
+      sp = []
+      for x,y,z in sph:
+          sp.append( (x, y-7, z) )
+      sphg[i].Set(centers=sp)
+      saveSpheres1('membrane/2uuh_%d.sph'%5**i, sp, rads[i])
+  #saveSpheres1('membrane/2uuh_1.sph', spheres[0], rads[0])
+  #saveSpheres1('membrane/2uuh_4.sph', spheres[1], rads[1])
+
+1yg1.pdb 3875 FACILITATIVE GLUCOSE
+  python mkMesh.py membrane/1yg1.pdb 
+  python -i mkIngredienth.py membrane/1yg1.pdb 4 1
+  saveSpheres1('membrane/1yg1_4.sph', spheres[1], rads[1])
+
+1ojc.pdb 3982 OXIDOREDUCTASE
+  python mkMesh.py membrane/1ojc.pdb # fails .. did it in PMV
+  python -i mkIngredienth.py membrane/1ojc.pdb 4 1 #fails on windows
+  built membrane/1ojc_5.sph by hand
+
+1qo1.pdb 3916
+  python mkMesh.py membrane/1qo1.pdb 1
+  python -i mkIngredienth.py membrane/1qo1.pdb 2 3
+  made by hand by graham
+    #python -i mkIngredienthca.py ProteinsForAutofill/membraneProteins/1qo1.pdb 4 3
+    python -i mkIngredienthca.py ProteinsForAutofill/membraneProteins/1qo1.pdb 2 3
+
+2abm 7077 AQUAPORIN TETRAMER
+  cp membrane/2abm.trpdb membrane/2abm.pdb
+  python mkMesh.py membrane/2abm.pdb
+  python -i mkIngredienth.py membrane/2abm.pdb 8 1
+  saveSpheres1('membrane/2abm_1.sph', spheres[0], rads[0])
+  saveSpheres1('membrane/2abm_8.sph', spheres[1], rads[1])
+
+  python -i mkIngredienth.py membrane/2abm.pdb 4 1
+  manual +1 in z
+  for i in range(2):
+      sph = spheres[i]
+      sp = []
+      for x,y,z in sph:
+          sp.append( (x, y, z+1) )
+      sphg[i].Set(centers=sp)
+      saveSpheres1('membrane/2abm_%d.sph'%4**i, sp, rads[i])
+
+3g61.pdb 9182 P-GLYCOPROTEIN
+  python mkMesh.py membrane/3g61.pdb
+  python -i mkIngredienth.py membrane/3g61.pdb 5 2
+  manual -5 in z
+  for i in range(3):
+      sph = spheres[i]
+      sp = []
+      for x,y,z in sph:
+          sp.append( (x, y, z-5) )
+      sphg[i].Set(centers=sp)
+      saveSpheres1('membrane/3g61_%d.sph'%5**i, sp, rads[i])
+
+
+2bg9.pdb 14931 ION CHANNEL/RECEPTOR
+  python mkMesh.py membrane/2bg9.pdb
+  python -i mkIngredienth.py membrane/2bg9.pdb 3 2
+  manual -7 in z
+  for i in range(3):
+      sph = spheres[i]
+      sp = []
+      for x,y,z in sph:
+          sp.append( (x, y, z-7) )
+      sphg[i].Set(centers=sp)
+      saveSpheres1('membrane/2bg9_%d.sph'%3**i, sp, rads[i])
+
+  got 4 spheres from graham
+  
+2a79.pdb 19452 POTASSIUM CHANNEL
+  python mkMesh.py membrane/2a79.pdb
+  python -i mkIngredienth.py membrane/2a79.pdb 8 1
+  manual -7 in z
+  for i in range(2):
+      sph = spheres[i]
+      sp = []
+      for x,y,z in sph:
+          sp.append( (x, y, z-7) )
+      sphg[i].Set(centers=sp)
+      saveSpheres1('membrane/2a79_%d.sph'%8**i, sp, rads[i])
+
+  got 10 spheres from graham
+
+SUNDAY:
+    sped up collision detection
+    took away freePoints removal after success ==> speed up but kinase0 outside
+    added packingMode and set to close for Kinase. Works, got shell near
+    surface when require less than possible,
+    Increased nbJitter to 20 130 -> 423
+    confusion betwee cyto and extra cellular
+    

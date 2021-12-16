@@ -1,0 +1,26 @@
+Bootstrap: docker
+From: ubuntu:18.04
+MirrorURL: http://us.archive.ubuntu.com/ubuntu/
+
+%runscript
+    echo "Singularity image for metascreener with ubuntu 18.04, openbabel, pymol, plip, imagemagick, matplotlib and pandas"
+
+%files
+	./edit_sessions.py /opt/edit_sessions.py
+	./prepare_complex.py /opt/prepare_complex.py
+
+%post
+    apt-get update
+    export DEBIAN_FRONTEND=noninteractive
+    apt-get -y install vim openbabel plip python-rdkit python-pip imagemagick pymol libsm-dev
+    pip install matplotlib pandas xlsxwriter 
+    apt-get clean
+
+%environment
+    export PATH=/usr/games:$PATH
+    export LC_ALL=C
+
+%labels
+    AUTHOR Jorge de la Peña (jorge.dlpg@gmail.com)
+    Maintainer Carlos Martínez Cortés
+    Version v1

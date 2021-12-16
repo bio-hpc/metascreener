@@ -1,0 +1,7 @@
+target="targets/test/1le0.pdbqt"
+query="queries/test/GLA.pdbqt" 
+histograms="y" 
+option="BD" 
+software="AD"
+num_per_job="5"
+profile="STANDARD_BD"

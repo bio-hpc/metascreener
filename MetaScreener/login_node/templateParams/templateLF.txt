@@ -1,0 +1,48 @@
+#
+#LanzNombre:LF - Lead Finder version 2104 build 1, 18 April 2021
+#LanzExtensionProtQ:.mol2
+#LanzExtensionligB:.mol2
+#lanzOptions:VS,BD,BCD,BDVS
+#LanzCoordX: 
+#LanzCoordY:
+#LanzCoordZ:
+#LanzGrid:Y
+#LanzCores:1
+#LanzTimeExecution:3600
+#LanzMem:2G
+#lanzSizeGridX:30
+#lanzSizeGridY:30
+#lanzSizeGridZ:30
+#lanzTimeOut:Y
+#lanzCreateResumen:Y
+#defecto::param con condicion::parametro::leyenda
+-::Y::--debug::[=PATH]
+-::Y::--check-only::[=FILENAME]
+#--score-only::
+#--model-build-only[=TEMPLATE]
+#--virtual-screening::
+-::Y::--extra-precision::
+-::Y::--default-filenames
+-::Y::--output-tabular::=FILENAME.[csv|txt]
+-::Y::-text-report::=FILENAME
+-::Y::--add-hydrogens::[=on|off|auto]
+-::Y::--crystallographic-distance::=X
+-::Y::--pH::=X
+-::Y::--ligand-reference::=FILENAME
+-::Y::--extract-reference::[=resname NAME|resnum X [Y]] [chain Z]
+-::Y::--additional-reference::=FILENAME
+-::Y::--grid-spacing::=X
+-::Y::--grid-npoints::=A,B,C
+-::N::--no-grid-reorientation
+-::Y::--types::=<comma-separated list>|all
+-::Y::--min-cavity-vol::=V
+-::Y::--poolsize::=X
+-::Y::--popsize::=X
+-::N::-retain-water
+-::Y::--environment::=solution|membrane
+-::Y::--metal-coord::=A,B
+-::Y::--covalent-bond::=A,B[,X]
+-::N::--rotate-amide
+-::N::--rotate-conjugated-bond
+LF::Y::-refined_energy:: [ LF | GR  ] (Leadfinder, Gromacs)
+

@@ -1,0 +1,264 @@
+===============================================================================
+
+		      MGLTOOLS development version 
+			BINARY DISTRIBUTION
+
+===============================================================================
+
+Thank you for downloading MGLTools.
+
+This distribution contains a pre-compiled Python interpreter (version 2.7),
+a collection of pure Python packages (including Pmv, AutoDockTools, 
+DejaVu, MolKit, ViewerFramework, Vision, NetworkEditor, etc.), various 
+platform dependent packages (including mslib, opengltk, bhtree, gle, 
+sff, cAutoDock, UTpackages, etc.), and the PMV, ADT and VISION applications 
+built on top of these software packages.
+
+
+**************************************************************************
+**  CITING THESE TOOLS IN PUBLICATIONS
+**************************************************************************
+
+Whether you downloaded the Academic or the Commercial distribution, we ask 
+that you acknowledge using these tools in any publications arising from their 
+use. 
+Under the PMV Help menu there is a citation command providing various
+papers to be cited for various tools included in this distribution.
+
+	PMV  Help->citations
+
+more license information is available below
+
+
+**************************************************************************
+**  INSTALLATION
+**************************************************************************
+
+    PREREQUISITES                
+    ------------
+       	- OpenGL version 1.2 or higher is required for using VolumeRendering 
+        tools available in VISION and PMV.
+	- For Mac OS X machines, X11(an implementation of the X Window System)
+          is required.
+	- This distribution is self contained and will not interact with
+        any other python interpreter installed on your machine.
+
+    If you downloaded the tar file:
+    -----------------------
+    1.
+
+	tar -zxvf mgltools_i86Linux2_latest.tar.gz
+
+
+    2. Run the installation script.
+	   > ./install.sh [options]
+
+	   The installation script can be used with the following options:
+             [-d InstDir]      specifies installation directory 
+                               (default-current directory)
+
+             [-c optimization] optimization option for compiling Python code
+                               0 - no optimization (generates .pyc files)
+    		               1 - with optimization (generates .pyo files);
+
+	     [-h]              help message.
+
+
+	The installation script installs MGLTools in
+	InstDir/MGLToolsPckgs .
+        
+	It also creates various shell scripts (pmv, adt, vision, pythonsh)
+	in InstDir/bin. 
+
+
+  RUNNING ADT, PMV or VISION
+  --------------------------
+
+  To be able to start any of these applications you will need to:
+
+  - either add "InstDir/bin" to the path environment variable in your 
+   .cshrc or .bashrc as in the following example:
+
+     .cshrc on Linux 
+     set path = (InstDir/bin $path)
+
+     .bashrc on Linux
+     export PATH="InstDir/bin:"$PATH
+
+  - or create aliases in your .cshrc or .bashrc as in the next examples:
+
+     .cshrc on Linux:
+
+     alias pmv InstDir/bin/pmv
+     alias adt InstDir/bin/adt
+     alias vision InstDir/bin/vision
+     alias pythonsh InstDir/bin/pythonsh
+
+     .bashrc on Linux:
+
+     alias pmv='InstDir/bin/pmv'
+     alias adt='InstDir/bin/adt'
+     alias vision='InstDir/bin/vision'
+     alias pythonsh='InstDir/bin/pythonsh'
+
+ - or run the following script that is created at installation:
+      source ./initMGLtools.sh 
+                          (bash) 
+      source ./initMGLtools.csh 
+                          (c-shell)
+
+
+  To use PMV, ADT or VISION type pmv, adt or vision respectively; 
+
+	for example:
+
+	> pmv 
+
+	A Python Molecule Viewer should come up.  
+ 	You can load files from the "Data" directory and start playing with 
+	PMV.  
+
+      To run Python interpreter type "pythonsh":
+
+	> pythonsh
+
+
+	
+  Mac OS X INSTALLATION
+  ---------------------
+  The Mac OS X version of MGLTools requires some form of X11 server to 
+be installed. Apple X11 is available for downloading at 
+http://developer.apple.com/opensource/tools/runningx11.html.
+
+MGLTools for Mac OS X are available in a disk image file format
+(with the extension ".dmg"). This file contains Mac OS X installer 
+created by PackageMaker.
+ NOTE: To install this package the user has to be logged in as root. 
+  - download mgltools_#platform#_latest.dmg file;
+  - double-click on the resulting ".dmg" file;
+  - double-click on the package file ".pkg" and follow the instructions given by    the installer;
+
+The installer installs MGLTools packages in /Library/MGLTools .
+
+The following applications are installed in /Applications folder: 
+PMV, AutoDockTools, Vision
+Vision Icon
+Double-click on the PMV, AutoDockTools or Vision icon to start the application.
+
+
+**************************************************************************
+**  Pmv script command line options
+**************************************************************************
+
+"pmv" script can be used with the following options:
+
+        -h or --help       : print help message
+        -a or --again      : play back lastlog file
+        --overwriteLog     : overwrite log file
+        --uniqueLog        : create a log file with a unique name
+        --noLog            : turn off logging
+        --noGUI            : start PMV without the Graphical User Interface
+        --noSplash         : turn off Splash Screen
+        --die              : do not start GUI event loop
+        --customizer file  : run the user specified file
+        --lib packageName  : add a libraries of commands
+        -v r or --vision run  : run vision networks on the command line
+        -v o or --vision once : run vision networks and exit PMV
+
+        --update [nightly|tested|clear] : update MGLTools
+                if no arguments are given Update Manager GUI is provided
+                'nightly': download and install Nightly Builds
+                'tested' : download and install tested Nightly Builds
+                'clear'  : clear/uninstall all the updates
+
+	-d or --dmode modes : specify a display mode
+	        modes can be any a combination of display mode
+		   'cpk'  : cpk
+		   'lines': lines
+		   'ss'   : secondary structure ribbon
+		   'sb'   : sticks and balls
+		   'ms'   : molecular surface
+		   'ca'   : C-alpha trace
+		   'bt'   : backbone trace
+		   'sp'   : CA-spline
+		   'sssb' : secondary structure for proteins,
+		            sticks and balls for other residues with bonds
+			    lines for other residues without bonds
+
+	-c or --cmode modes : specify a dispaly mode
+                color scheme:
+		    'ca' : color by atom
+		    'cr' : color by residue (RASMOL scheme)
+		    'cc' : color by chain
+		    'cm' : color by molecule
+		    'cdg': color using David Goodsell's scheme
+		    'cs' : color residues using Shapely scheme
+		    'css': color by secondary structure element
+	'-i', '--interactive' : PMV interactive shell
+
+
+ EXAMPLE::
+     Display protein as ribbon, non protein as sticks and balls
+     and color by atom type
+	         pmv -i --dmode sssb --cmode cr myprot.pdb
+	         pmv -i -m sssb -c cr myprot.pdb 
+ 	
+
+**************************************************************************
+**  LICENSES
+**************************************************************************
+
+You can refer to the license information available for the following packages:
+
+   -Python packages developed at MGL(Pmv, DejaVu, ViewerFramework, 
+    AutoDockTools, MolKit, NetworkEditor, Vision, PyBabel, mglutil): 
+        ./LICENSES or  http://mgltools.scripps.edu/downloads/license-agreements
+
+   -Platform dependent packages:
+      -- mslib - library to compute molecular surfaces,
+      ./LICENSES or http://www.scripps.edu/~sanner/python/tsrilicense.html
+
+Unless otherwise stated, packages that do not specify a license are released 
+under the MOZILLA Open Source License.
+
+
+
+**************************************************************************
+**  DOCUMENTATION
+**************************************************************************
+
+Documentation, tutorials and more information are
+available online:
+ http://mgltools.scripps.edu/documentation
+
+**************************************************************************
+**  HOW TO CONTACT US:
+**************************************************************************
+
+Several mailing lists are available for asking questions and getting answers
+You can subscribe or search the archives of these lists at:
+
+	http://mgldev.scripps.edu/mailman/listinfo
+
+The following lists are relevant to this distribution
+ 
+ -autodock: a community of AutoDock, AutoGrid and AutoDockTools (ADT) users 
+  with lots of experience to share
+  http://mgldev.scripps.edu/mailman/listinfo/autodock
+
+ -pmv for questions regarding the use of PMV;
+  http://mgldev.scripps.edu/mailman/listinfo/pmv
+
+ -vision for questions regarding the use of VISION;
+  http://mgldev.scripps.edu/mailman/listinfo/vision
+
+ -MGLTools support for questions regarding installing the MGLTools.
+  http://mgldev.scripps.edu/mailman/listinfo/mglsupport
+
+Please visit our Frequently Asked Questions page if you have any problems 
+installing or running our tools (http://mgltools.scripps.edu/documentation/faq).
+For other inquiries, send an email to mgltools:
+ mgltools@scripps.edu
+
+
+

@@ -1,0 +1,36 @@
+#!/bin/sh
+
+#
+# --- TSRI, Michel Sanner Copyright 2014 ---
+#
+
+######
+## Set some environment variables.
+
+MGL_ROOT="/mnt/home/users/ac_001_um/jorgedlpg/pruebasDoking/SENECA/docking/mgltools_x86_64Linux2_latest" 
+export MGL_ROOT
+########
+
+PATH="$MGL_ROOT/bin:$PATH"
+export PATH
+
+# Open Babel formats, plugins directory:
+BABEL_LIBDIR="$MGL_ROOT/lib/openbabel/2.3.2"
+export BABEL_LIBDIR
+BABEL_DATADIR="$MGL_ROOT/share/openbabel/2.3.2"
+export BABEL_DATADIR
+
+# set the LD_LIBRARY PATH for each platform
+case "`uname -s`" in
+    Linux)
+	LD_LIBRARY_PATH="$MGL_ROOT/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+	export LD_LIBRARY_PATH
+	;;
+    Darwin*)
+	DYLD_LIBRARY_PATH="$MGL_ROOT/lib${DYLD_LIBRARY_PATH:+:$DYLD_LIBRARY_PATH}"
+	export DYLD_LIBRARY_PATH
+	;;
+esac
+
+obexec="$MGL_ROOT/bin/obrotamer"
+exec $obexec  $@

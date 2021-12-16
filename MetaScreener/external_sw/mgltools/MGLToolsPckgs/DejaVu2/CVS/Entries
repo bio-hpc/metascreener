@@ -1,0 +1,89 @@
+/.packager.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/.project/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/.pydevproject/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/Arcs3D.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/Arrows.py/1.1.1.1/Thu Jun 19 19:41:02 2014/-kkv/
+/Box.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/Camera.py/1.5/Sat Jul 12 21:04:26 2014/-kkv/
+/Clip.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/ColorChooser.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/ColorWheel.py/1.1.1.1/Thu Jun 19 19:41:02 2014/-kkv/
+/ColormapGui.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/Common2d3dObject.py/1.1.1.1/Thu Jun 19 19:41:02 2014/-kkv/
+/Cylinders.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/DataInput.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/DataOutput.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/Displayable.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/Ellipsoids.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/Geom.py/1.2/Wed Jul 16 21:29:44 2014/-kkv/
+/GeomChooser.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/GleObjects.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/IndexedGeom.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/IndexedPolygons.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/IndexedPolylines.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/Insert2d.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/LICENSE/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/Legend.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/Light.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/MaterialEditor.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/Materials.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/NormalsViz.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/Nurbs.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/Points.py/1.3/Wed Oct  1 22:32:24 2014/-kkv/
+/Polylines.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/PropertyEditor.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/RELNOTES/1.1.1.1/Thu Jun 19 19:41:02 2014/-kkv/
+/SelectionGUI.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/Shapes.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/Spheres.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/StickerImage.py/1.1.1.1/Thu Jun 19 19:41:02 2014/-kkv/
+/Texture.py/1.1.1.1/Thu Jun 19 19:41:02 2014/-kkv/
+/Textured2DArray.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/Transformable.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/Viewer.py/1.2/Wed Jul 16 21:49:11 2014/-kkv/
+/VolumeGeom.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/__init__.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/bitPatterns.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/blenderScene.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/capGeom.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/colorMap.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/colorMapLegend.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/colorTool.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/colors.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/csgClip.py/1.1.1.1/Thu Jun 19 19:41:02 2014/-kkv/
+/cursors.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/cw.ppm/1.1.1.1/Thu Jun 19 19:41:03 2014/-kb/
+/datamodel.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/extendedSlider.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/gelato.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/geomTree.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/glfLabels.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/glfSticker.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/hpBalls.py/1.8/Tue Jul 22 23:53:21 2014/-kkv/
+/imageViewer.py/1.1.1.1/Thu Jun 19 19:41:02 2014/-kkv/
+/jitter.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/povray3.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/quad_strip.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/rotationMatrices.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/source.list/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/spline.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/states.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/testcsg3.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/tileRenderer.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/triangle_strip.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/utils.py/1.1.1.1/Thu Jun 19 19:41:02 2014/-kkv/
+/videoRecorder.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/viewerConst.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+/viewerFns.py/1.1.1.1/Thu Jun 19 19:41:03 2014/-kkv/
+D/Cursors////
+D/Icons////
+D/Qt////
+D/Tests////
+D/Tk////
+D/VisionInterface////
+D/doc////
+D/gui////
+D/hyperballs////
+D/materialsDef////
+D/scenarioInterface////
+D/shaders////

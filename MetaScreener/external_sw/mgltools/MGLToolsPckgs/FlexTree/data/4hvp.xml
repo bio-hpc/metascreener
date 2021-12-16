@@ -1,0 +1,50 @@
+<?xml version="1.0" ?>
+    <root
+        name="HIV"
+        id="12"
+        selectionString="4hvp"
+        convolve="FTConvolveApplyMatrix"
+        file="4hvp.pdb">
+        <node
+            name="chainA"
+            id="1"
+            selectionString="4hvp:A"
+            convolve="FTConvolveApplyMatrix">
+            <node
+                name="Core A"
+                id="2"
+                selectionString="4hvp:A:,PRO1,GLN2,ILE3,THR4,LEU5,TRP6,GLN7,ARG8,PRO9,LEU10,VAL11,THR12,ILE13,ARG14,ILE15,GLY16,GLY17,GLN18,LEU19,LYS20,GLU21,ALA22,LEU23,LEU24,ASP25,THR26,GLY27,ALA28,ASP29,ASP30,THR31,VAL32,LEU33,GLU34,LEU38,PRO39,GLY40,LYS41,TRP42,LYS43,MET46,ILE47,GLN58,TYR59,ASP60,GLN61,ILE62,PRO63,VAL64,GLU65,ILE66,ABA67,GLY68,HIS69,LYS70,ALA71,ILE72,GLY73,THR74,VAL75,LEU76,PRO81,VAL82,ASN83,ILE84,ILE85,GLY86,ARG87,ASN88,LEU89,LEU90,THR91,GLN92,ILE93,GLY94,ABA95,THR96,LEU97,ASN98,PHE99"
+                convolve="FTConvolveApplyMatrix">
+            </node>
+            <node
+                name="Flap A"
+                id="3"
+                selectionString="4hvp:A:,GLU35,MET36,ASN37,PRO44,LYS45,GLY48,GLY49,ILE50,GLY51,GLY52,PHE53,ILE54,LYS55,VAL56,ARG57,VAL77,GLY78,PRO79,THR80"
+                convolve="FTConvolveApplyMatrix">
+            </node>
+        </node>
+        <node
+            name="chainB"
+            id="4"
+            selectionString="4hvp:B"
+            convolve="FTConvolveApplyMatrix">
+            <node
+                name="Core B"
+                id="5"
+                shapeParams=""
+                selectionString="4hvp:B:,PRO1,GLN2,ILE3,THR4,LEU5,TRP6,GLN7,ARG8,PRO9,LEU10,VAL11,THR12,ILE13,ARG14,GLY16,GLY17,GLN18,LEU19,LYS20,GLU21,ALA22,LEU23,LEU24,ASP25,THR26,GLY27,ALA28,ASP29,ASP30,THR31,VAL32,LEU33,GLU34,GLU35,PRO39,GLY40,LYS41,TRP42,LYS43,PRO44,LYS45,MET46,ILE54,LYS55,VAL56,ARG57,GLN58,TYR59,ASP60,GLN61,ILE62,PRO63,VAL64,GLU65,ILE66,ABA67,GLY68,HIS69,LYS70,ALA71,ILE72,GLY73,THR74,VAL75,LEU76,VAL77,GLY78,PRO79,THR80,PRO81,VAL82,ASN83,ILE84,ILE85,GLY86,ARG87,ASN88,LEU89,LEU90,THR91,GLN92,ILE93,GLY94,ABA95,THR96,LEU97,ASN98,PHE99"
+                shape="FTConvexHull"
+                convolve="FTConvolveApplyMatrix">
+            </node>
+            <node
+                name="Flap B"
+                id="6"
+                shapeParams=""
+                selectionString="4hvp:B:,ILE15,MET36,ASN37,LEU38,ILE47,GLY48,GLY49,ILE50,GLY51,GLY52,PHE53"
+                motion="FTMotion_Hinge"
+                shape="FTConvexHull"
+                convolve="FTConvolveApplyMatrix"
+                motionParams="point1: list float 0.0 0.0 0.0, point2: list float 1.0 0.0 0.0, angle: float 0.0, min_angle: float 0.0, name: str hinge, max_angle: float 360.0">
+            </node>
+        </node>
+    </root>
