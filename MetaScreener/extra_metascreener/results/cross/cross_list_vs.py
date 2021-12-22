@@ -26,7 +26,6 @@ F_JOIN_SESSIONS = PYTHON_RUN + ' ' + JOIN_CL_SESSIONS + ' -f {} -d {} -r {} -o {
 
 parser = argparse.ArgumentParser()
 parser.add_argument('folder', type=str, nargs='+', help='Execution folders (2 at least) ')
-parser.add_argument('-c', '--cutoff', default=-8, type=float, help='Energy cuttoff')
 parser.add_argument('-r', '--receptor', default='', type=str)
 parser.add_argument('-o', '--output', default='', type=str, help='name of output file')
 
@@ -45,8 +44,7 @@ def read_energies(dir):
             line.strip()
             key = line.split(';')[4]
             data = float(line.split(';')[0])
-            if data <= args.cutoff:
-                dct[key] = data
+            dct[key] = data
             line = csv.readline()
             cnt += 1
     return dct
@@ -82,9 +80,16 @@ for dir in args.folder:
         exit()
     energies = read_energies(dir)
     if len(energies) > 0:
-        all[sw] = energies
+        if sw in all.keys():
+            all[sw].update(energies)
+            ORDER = True
+        else:
+            all[sw] = energies
     if first_sw == "":
         first_sw = sw
+if ORDER:
+    for sw in all.keys():
+        all[sw] = OrderedDict(sorted(all[sw].items(), key=lambda x: x[1]))
 print("Time for read and sort all single energy files: %s seconds " % (time.time() - start))
 
 name_out = name_out[:-1]
@@ -108,7 +113,7 @@ print("Total number of folders: " + str(len(all)))
 
 start = time.time()
 if len(all) == 0:
-    print("No results have been found with energy better than " + str(args.cutoff))
+    print("No results have been found")
     exit()
 for molecule in all[first_sw]:
     score = all[first_sw][molecule]

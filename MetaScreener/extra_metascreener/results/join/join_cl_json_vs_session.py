@@ -28,8 +28,6 @@ PML_HEAD_PYMOL = PYTHON_RUN + " MetaScreener/extra_metascreener/used_by_metascre
 def read_all_files(header):
     all_files = {}
     for path in args.dirs:
-        print
-        path
         lst_files = []
         for root, dirs, files in os.walk(path):
             for name in files:
@@ -82,17 +80,16 @@ def read_file(file_cross):
     return lst_cross
 
 
-def filter_date(lst_cross, num):
+def filter(lst_cross):
     """
          Filters the data with a certain method
         :param lst_cross: list with each line in an array
         :param int num: number of tests that can fail
         :return:
     """
-    num = num * 2
     data = []
     for line in lst_cross:
-        if (line.count('--')) == num:
+        if (line.count('--')) == 0:
             data.append(line)
     return data
 
@@ -106,7 +103,6 @@ def classification_strategy(lst_data, method):
     """
     dict = {}
     for line in lst_data:
-
         sum = getattr(sys.modules[__name__], method)(line)
         if sum not in dict:
             dict[sum] = line
@@ -139,7 +135,7 @@ def by_rank(line):
     """
     sum = 0
     cnt = 0
-    for i in range(0, len(line[:-1])):
+    for i in range(1, len(line[:-1])):
         if i % 2 == 0 and not '--' in line[i]:
             cnt += 1
             sum += int(line[i])
@@ -302,54 +298,53 @@ if __name__ == "__main__":
     all_files = read_all_files(header)
 
     lst_cross = read_file(args.file.name)
-    for cnt_discard in range(len(args.dirs) - 1):
 
-        for method in ['by_score', 'by_rank']:
-            lst_data = filter_date(lst_cross, cnt_discard)
-            pml_file = join(args.output, '{}_{}.pml'.format(cnt_discard, method))
+    for method in ['by_score', 'by_rank']:
+        lst_data = filter(lst_cross)
+        pml_file = join(args.output, '{}_{}.pml'.format(0, method))
 
-            dict_sort = classification_strategy(lst_data, method)
+        dict_sort = classification_strategy(lst_data, method)
 
-            #
-            #   copy files
-            #
-            pml_lst = [add_receptor(args.receptor.name, out_molecs)]
-            cnt_cluster = 1
-            for k, v in dict_sort.items():
-                print(k, v)
-                group = []
-                g_ranks = []
-                for sw in range(len(header)):
-                    if v[sw * 2] != '--':
-                        g_ranks.append(header[sw] + "_" + v[sw * 2])
-                        if args.verbose:
-                            print('Search: *_{}_*'.format(v[-1]))
-                        files = find(all_files[header[sw]], '*_{}_*'.format(v[-1]))
-                        if (len(files) == 0):
-                            print("ERROR: " + v[-1] + " not found. Check if there are any issues with cross_list_vs or any of the metascreener executions.")
-                        cp_files(files, out_molecs)
-                        query = get_file_molecule(files)
-                        name_query = basename(query)
+        #
+        # copy files
+        #
+        pml_lst = [add_receptor(args.receptor.name, out_molecs)]
+        cnt_cluster = 1
+        for k, v in dict_sort.items():
+            print(k, v)
+            group = []
+            g_ranks = []
+            for sw in range(len(header)):
+                if v[sw * 2] != '--':
+                    g_ranks.append(header[sw] + "_" + v[sw * 2])
+                    if args.verbose:
+                        print('Search: *_{}_*'.format(v[-1]))
+                    files = find(all_files[header[sw]], '*_{}_*'.format(v[-1]))
+                    if (len(files) == 0):
+                        print("ERROR: " + v[-1] + " not found. Check if there are any issues with cross_list_vs or any of the metascreener executions.")
+                    cp_files(files, out_molecs)
+                    query = get_file_molecule(files)
+                    name_query = basename(query)
 
-                        query = join(out_molecs, name_query)
-                        prefix = join(out_molecs, splitext(name_query)[0])
+                    query = join(out_molecs, name_query)
+                    prefix = join(out_molecs, splitext(name_query)[0])
 
-                        out_json_plip = '{}_interactions.json'.format(splitext(query)[0])
-                        if not get_string_pattern(files, 'interactions'):
-                            if not isfile(out_json_plip):  # if not exists interactions file
-                                execute_command(PLIP_SCRIPT.format(args.receptor.name, query, prefix))
+                    out_json_plip = '{}_interactions.json'.format(splitext(query)[0])
+                    if not get_string_pattern(files, 'interactions'):
+                        if not isfile(out_json_plip):  # if not exists interactions file
+                            execute_command(PLIP_SCRIPT.format(args.receptor.name, query, prefix))
 
-                        interactions_file = prefix + '_interactions.json'
-                        energy_json = prefix + '.json'
-                        cmd = PYMOL_SCRIPT.format('../' + query, energy_json, interactions_file, 0, False, "STANDARD_VS")
-                        pml_lst.append(execute_command(cmd))
+                    interactions_file = prefix + '_interactions.json'
+                    energy_json = prefix + '.json'
+                    cmd = PYMOL_SCRIPT.format('../' + query, energy_json, interactions_file, 0, False, "STANDARD_VS")
+                    pml_lst.append(execute_command(cmd))
 
-                        score = round(float(read_json(energy_json)['global_score']), 2)
+                    score = round(float(read_json(energy_json)['global_score']), 2)
 
-                        group.append('{}_{}'.format(splitext(name_query)[0], score))
-                pml_lst.append(
-                    "cmd.group('CL_{} {} ( {} )', '{}')\n".format(cnt_cluster, round(k, 2), ' '.join(g_ranks),
+                    group.append('{}_{}'.format(splitext(name_query)[0], score))
+            pml_lst.append(
+                "cmd.group('CL_{} {} ( {} )', '{}')\n".format(cnt_cluster, round(k, 2), ' '.join(g_ranks),
                                                                   ' '.join(group)))
-                cnt_cluster += 1
+            cnt_cluster += 1
 
-            write_file(pml_lst, pml_file)
+        write_file(pml_lst, pml_file)
