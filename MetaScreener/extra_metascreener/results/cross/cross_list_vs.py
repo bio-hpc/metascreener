@@ -52,23 +52,6 @@ def read_energies(dir):
     return dct
 
 
-def read_energies_old(dir):
-    dct = {}
-    for file in glob.glob(dir + "/*.json"):
-        with open(file) as json_file:
-            data = json.load(json_file)
-        key = os.path.splitext(os.path.basename(data['file_ori_query']))[0]
-        try:
-            if float(data['global_score']) <= args.cutoff:
-                dct[key] = float(data['global_score'])
-        except:
-            print("Warning: Can't read " + file)
-    lst = sorted(dct.items(), key=lambda x: x[1])
-
-    dd = OrderedDict(sorted(dct.items(), key=lambda x: x[1]))
-    return dd
-
-
 def make_tarfile(source_dir, output_filename):
     with tarfile.open(output_filename, "w:gz") as tar:
         tar.add(source_dir, arcname=os.path.basename(source_dir))
@@ -133,7 +116,7 @@ for molecule in all[first_sw]:
     for k, v in all.items():
         if k != first_sw:
             if v.has_key(molecule):
-                score_aux += '{} {} '.format(v.keys().index(molecule), v[molecule])
+                score_aux += '{} {} '.format(v.keys().index(molecule)+1, v[molecule])
             else:
                 score_aux += "-- --"
     print(' {} {} {} {} '.format(rank, score, score_aux, molecule))

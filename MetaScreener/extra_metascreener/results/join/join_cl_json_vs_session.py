@@ -28,7 +28,8 @@ PML_HEAD_PYMOL = PYTHON_RUN + " MetaScreener/extra_metascreener/used_by_metascre
 def read_all_files(header):
     all_files = {}
     for path in args.dirs:
-        print path
+        print
+        path
         lst_files = []
         for root, dirs, files in os.walk(path):
             for name in files:
@@ -187,6 +188,7 @@ def params():
     parser.add_argument('-r', '--receptor', required=True, type=argparse.FileType('r'), help='receptor')
     parser.add_argument('-o', '--output', required=True, help='Output folder')
     parser.add_argument('-m', '--max_results', default=100, help='Max Results', type=int)
+    parser.add_argument('-p', '--pse', default=False, help='Copy pse', action='store_true')
     parser.add_argument('-v', '--verbose', help='Verbose', action='store_true')
 
     return parser.parse_args()
@@ -201,7 +203,8 @@ def cp_files(files, folder):
         :return:
     """
     for file in files:
-        copyfile(file, join(folder, basename(file)))
+        if os.path.splitext(os.path.basename(file))[1] != '.pse' or args.pse:
+            copyfile(file, join(folder, basename(file)))
 
 
 def get_string_pattern(lst, pattern):
@@ -302,8 +305,6 @@ if __name__ == "__main__":
     for cnt_discard in range(len(args.dirs) - 1):
 
         for method in ['by_score', 'by_rank']:
-            # cnt_discard = 1
-
             lst_data = filter_date(lst_cross, cnt_discard)
             pml_file = join(args.output, '{}_{}.pml'.format(cnt_discard, method))
 
@@ -325,7 +326,7 @@ if __name__ == "__main__":
                             print('Search: *_{}_*'.format(v[-1]))
                         files = find(all_files[header[sw]], '*_{}_*'.format(v[-1]))
                         if (len(files) == 0):
-                             print("ERROR: "+ v[-1] +" not found. Check if there are any issues with cross_list_vs or any of the metascreener executions.")
+                            print("ERROR: " + v[-1] + " not found. Check if there are any issues with cross_list_vs or any of the metascreener executions.")
                         cp_files(files, out_molecs)
                         query = get_file_molecule(files)
                         name_query = basename(query)
@@ -352,14 +353,3 @@ if __name__ == "__main__":
                 cnt_cluster += 1
 
             write_file(pml_lst, pml_file)
-
-
-
-
-
-
-
-
-
-
-
