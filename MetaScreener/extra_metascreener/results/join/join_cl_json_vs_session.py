@@ -23,7 +23,7 @@ PLIP_SCRIPT = PYTHON_RUN + " " + join('MetaScreener', 'extra_metascreener', 'use
 PYMOL_SCRIPT = PYTHON_RUN + " " + join('MetaScreener', 'extra_metascreener', 'used_by_metascreener',
                                        'create_ligand_pymol.py {} {} {} {} {} {}')
 PML_HEAD_PYMOL = PYTHON_RUN + " MetaScreener/extra_metascreener/used_by_metascreener/create_header_pml.py -t {}"
-
+FILE_EXT = ['.pdb', '.pdbqt', '.mol2', '.json'] # Needed extensions to make join session
 
 def read_all_files(header):
     all_files = {}
@@ -31,7 +31,9 @@ def read_all_files(header):
         lst_files = []
         for root, dirs, files in os.walk(path):
             for name in files:
-                lst_files.append(join(root, name))
+                for ext in FILE_EXT:
+                    if name.endswith(ext):
+                        lst_files.append(join(root, name))
         for sw in header:
             if fnmatch.fnmatch(path, '*_' + sw + '_*'):
                 if sw in all_files:
@@ -199,8 +201,7 @@ def cp_files(files, folder):
         :return:
     """
     for file in files:
-        if os.path.splitext(os.path.basename(file))[1] != '.pse' or args.pse:
-            copyfile(file, join(folder, basename(file)))
+        copyfile(file, join(folder, basename(file)))
 
 
 def get_string_pattern(lst, pattern):
@@ -288,7 +289,8 @@ if __name__ == "__main__":
     args.output = '{}_{}'.format(args.output, datetime.date.today())
     with open(args.file.name) as f:
         header = f.readline().strip().replace(',', '').split(" ")
-
+    if args.pse:
+        FILE_EXT.append('.pse')
     out_molecs = join(args.output, 'Molecules', '')
     make_folder(args.output)
     make_folder(out_molecs)
