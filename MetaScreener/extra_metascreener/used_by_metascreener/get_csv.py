@@ -15,8 +15,11 @@ if len(sys.argv) != 2:
 
 data={}
 cnt_json=0
+json_files = "/energies/*.json"
 directory = sys.argv[1]
-for f_json in glob.glob(directory+"/energies/*.json"):
+if "VS_" in directory:
+    json_files = "/results/*.json"
+for f_json in glob.glob(directory+json_files):
     with open(f_json) as f:
         d = json.load(f)
     data [cnt_json] = [ float( d['global_score'] ),float(d['coords'][0]),float(d['coords'][1]),float(d['coords'][2]),str(os.path.splitext(os.path.basename(d['file_ori_query']))[0]),int(d['num_execution']) ]
@@ -27,4 +30,3 @@ file.write("Global score;x;y;z;Querie;Num_execution\n")
 for i, k in data.items():
     file.write(str(k)[1:-1].replace(', ', ';').replace("'", "")+"\n")
 file.close()
-

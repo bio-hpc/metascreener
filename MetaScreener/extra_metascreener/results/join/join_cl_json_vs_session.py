@@ -137,7 +137,7 @@ def by_rank(line):
     """
     sum = 0
     cnt = 0
-    for i in range(1, len(line[:-1])):
+    for i in range(0, len(line[:-1])):
         if i % 2 == 0 and not '--' in line[i]:
             cnt += 1
             sum += int(line[i])
