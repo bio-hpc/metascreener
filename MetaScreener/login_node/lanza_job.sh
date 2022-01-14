@@ -143,9 +143,9 @@ function get_histogram()
 	if [ $software != "LS" ];then
 
     if [[ $target_pdb == "no_target" ]];then
-      echo "singularity exec --bind $bind ${PWD}/singularity/metascreener.simg python ${path_analize_results}get_histogram_picture.py --prog=$software --opt=$option -i ${folder_experiment} -p $target -l $query --profile ${profile}">>${folder_templates_jobs}template_get_hystogram.sh
+      echo "singularity exec --bind $bind ${PWD}/singularity/metascreener.simg python ${path_analize_results}get_histogram_picture.py --prog=$software --opt=$option -i ${folder_experiment} -p $target -l $query --profile ${profile} -d $debug">>${folder_templates_jobs}template_get_hystogram.sh
     else
-      echo "singularity exec --bind $bind ${PWD}/singularity/metascreener.simg python ${path_analize_results}get_histogram_picture.py --prog=$software --opt=$option -i ${folder_experiment} -p $target --pdb=${target_pdb} -l $query --profile ${profile}">>${folder_templates_jobs}template_get_hystogram.sh
+      echo "singularity exec --bind $bind ${PWD}/singularity/metascreener.simg python ${path_analize_results}get_histogram_picture.py --prog=$software --opt=$option -i ${folder_experiment} -p $target --pdb=${target_pdb} -l $query --profile ${profile} -d $debug">>${folder_templates_jobs}template_get_hystogram.sh
     fi
 
     if [ $option = "VS" ];then

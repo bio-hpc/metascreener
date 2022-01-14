@@ -84,7 +84,7 @@ fi
 # Default values
 
 nodos=`empty_variable $nodos 1` 				#	One node by default
-debug=`empty_variable $debug -1` 			    #	Only works in secuencial mode
+debug=`empty_variable $debug -1`
 
 name_target=`empty_variable $name_target no_target `       #	Target's name without path and extension
 name_query=`empty_variable $name_query`         # Query's	name without path and extension
