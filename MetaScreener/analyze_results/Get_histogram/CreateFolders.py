@@ -27,7 +27,7 @@ class CreateFolders(object):
             self.cfg.OUTPUT_DIRS[kdir] = vdir
 
             if self.cfg.createFolders and os.path.exists(vdir) and vdir != self.cfg.file_input:
-                print("  + Delete directory '{}' ya existente".format(vdir))
+                print("  + Delete directory '{}' already exist".format(vdir))
                 shutil.rmtree(vdir)
 
             if not os.path.exists(vdir):
