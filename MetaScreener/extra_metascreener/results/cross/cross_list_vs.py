@@ -67,6 +67,7 @@ directories = ''
 all = OrderedDict()
 first_sw = ""
 name_out = ''
+ORDER = False
 
 start = time.time()
 for dir in args.folder:
