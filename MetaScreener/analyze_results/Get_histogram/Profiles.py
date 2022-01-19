@@ -50,7 +50,7 @@ PROFILES = {
             'distanceGraph':           False,
             'clustered':               False,
             'resultados_ficheros':     500,
-            'resultados_best_score':   50,
+            'resultados_best_score':   100,
             'resume':                  True,
             'pymol_show_docking_box':  True
         },
