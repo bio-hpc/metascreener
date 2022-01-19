@@ -18,7 +18,7 @@ cnt_json=0
 json_files = "/energies/*.json"
 directory = sys.argv[1]
 if "VS_" in directory:
-    json_files = "/results/best_scores/*.json"
+    json_files = "/results/best_scores/*[0-9].json"
 for f_json in glob.glob(directory+json_files):
     with open(f_json) as f:
         d = json.load(f)
