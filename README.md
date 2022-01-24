@@ -1,7 +1,7 @@
 ## MetaScreener
 MetaScreener is a collection of scripts developed in different languages (Shell script, Python, Java and C) that integrates, among others, docking, similarity and molecular modeling programs, through which jobs are sent to slurm on supercomputers and the data is processed automatically by sorting it into tables and graphs. 
 
-### Installation
+### Installation (choose one)
 1. git clone https://github.com/bio-hpc/metascreener.git
 2. git clone git@github.com:bio-hpc/metascreener.git
 3. gh repo clone bio-hpc/metascreener
@@ -9,6 +9,8 @@ MetaScreener is a collection of scripts developed in different languages (Shell 
 
 ### Download singularity image 
 Needed to secure compatibility with all cluster.
+
+cd metascreener/
 
 wget --no-check-certificate -r "https://drive.google.com/u/1/uc?export=download&confirm=TLUF&id=1L3HZ2l1XARqzEKaV14jToUtUOCmo4OjV" -O singularity/singularity.zip
 
