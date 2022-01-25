@@ -81,9 +81,9 @@ for dir in args.folder:
         exit()
     energies = read_energies(dir)
     if len(energies) > 0:
+        ORDER = True
         if sw in all.keys():
-            all[sw].update(energies)
-            ORDER = True
+            all[sw].update(energies)          
         else:
             all[sw] = energies
     if first_sw == "":
