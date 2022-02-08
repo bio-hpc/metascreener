@@ -25,7 +25,7 @@ for f_json in glob.glob(directory+json_files):
     data [cnt_json] = [ float( d['global_score'] ),float(d['coords'][0]),float(d['coords'][1]),float(d['coords'][2]),str(os.path.splitext(os.path.basename(d['file_ori_query']))[0]),int(d['num_execution']) ]
     cnt_json += 1
 data=OrderedDict(sorted(data.items(), key=lambda t: t[1][0]))
-file = open(os.path.join(directory+"/Resume.csv"), "w")
+file = open(os.path.join(directory+"/Results_scoring.csv"), "w")
 file.write("Global score;x;y;z;Querie;Num_execution\n")
 for i, k in data.items():
     file.write(str(k)[1:-1].replace(', ', ';').replace("'", "")+"\n")
