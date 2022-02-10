@@ -36,7 +36,7 @@ if len(args.folder) == 1:
 
 def read_energies(dir):
     dct = {}
-    with open(dir + "/Resume.csv") as csv:
+    with open(dir + "/Results_scoring.csv") as csv:
         line = csv.readline() # header
         line = csv.readline()
         cnt = 1
