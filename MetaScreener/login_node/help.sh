@@ -181,7 +181,8 @@ if [  -z "$option" ];then
 	printGlobalHelp "h" "O" " [ protocols ]" "Show all protocols to prepare proteins and ligands."
 	printGlobalHelp "em" "O" "" "Send email when finish all jobs. (only with -hi y parameter)."
 	printGlobalHelp "test" "O" "" "Launch a quick test with default parameters. Launch a quick test with default parameters. You can select option (-o) and software -(s) (By default BD AD in sequential with debug). "
-
+	printGlobalHelp "rb" "O" "" "Number of files saved as bestScore in VS. Default(50)."
+	printGlobalHelp "rf" "O" "" "Number of files saved in VS. Default(500)."
 	
 	echo ""
 	echo -e "${PURPLE}Queue Manager Options${NONE} "

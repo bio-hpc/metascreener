@@ -128,6 +128,8 @@ target_pdb=`empty_variable $target_pdb no_target`          # Target in pdb forma
 mode_test=`empty_variable $mode_test`           # Test Metascreener with a simple BD
 check_mol2=`empty_variable $check_mol2`         # Don't check mol2 protein residues
 project=`empty_variable $project`
+rf=`empty_variable $rf 500`
+rb=`empty_variable $rb 50`
 
 #
 #	Set parameters
@@ -165,7 +167,8 @@ while (( $# ))
 			-PRL) protocolL=$2;;
       -NN )  nodos=$2;;
 			-EM ) email=$2;;
-
+	    -RF ) rf=$2;;
+      -RB ) rb=$2;;
 			## Internal use
 			-RE) resName=$2;;
 			-NT) name_target=$2;;

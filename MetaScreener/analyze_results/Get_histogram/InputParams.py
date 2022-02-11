@@ -41,8 +41,8 @@ class InputParams(object):
             self.cfg.print_format_help("-f", "If folder exits don't overwrite; Deafult: y")
             self.cfg.print_format_help("-a", "Generate pymol sessions with plip;"
                                              "Deafult: n")
-            self.cfg.print_format_help("--rb", "Number of files saved as bestScore Deafult(10)")
-            self.cfg.print_format_help("--rf", "Number of files saved in VS. Deafult (100)")
+            self.cfg.print_format_help("--rb", "Number of files saved as bestScore in VS. Default(50)")
+            self.cfg.print_format_help("--rf", "Number of files saved in VS. Default (500)")
             self.cfg.print_format_help("-b", "Chain of residues split by ':', type cad_res_num, "
                                              " For example A_TYR_385:A_VAL_434:A_VAL_5")
             self.cfg.print_format_help("-e", "ONLY BD; calcula la distancia entre el centro del ligando original y el"
