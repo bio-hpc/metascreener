@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
    Author: Jorge de la Peña García
-   Email:  jorge.dlpg@gmail.com
+   Email:  jpena@ucam.edu
    Description: Convert molecule folders between sdf, pdb, pdbqt and mol2 formats
 
 """

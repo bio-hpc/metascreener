@@ -21,6 +21,6 @@ MirrorURL: http://us.archive.ubuntu.com/ubuntu/
     export LC_ALL=C
 
 %labels
-    AUTHOR Jorge de la Peña (jorge.dlpg@gmail.com)
+    AUTHOR Jorge de la Peña (jpena@ucam.edu)
     Maintainer Carlos Martínez Cortés
     Version v1
