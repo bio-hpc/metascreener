@@ -17,15 +17,17 @@ data={}
 cnt_json=0
 json_files = "/energies/*.json"
 directory = sys.argv[1]
+if not os.path.isdir("/energies/"):
+    json_files = "/results/*[0-9].json"
 for f_json in glob.glob(directory+json_files):
     with open(f_json) as f:
         d = json.load(f)
     if d['global_score'] != "":
-        data [cnt_json] = [ float( d['global_score'] ),float(d['coords'][0]),float(d['coords'][1]),float(d['coords'][2]),str(os.path.splitext(os.path.basename(d['file_ori_query']))[0]),int(d['num_execution']) ]
+        data [cnt_json] = [ float( d['global_score'] ),float(d['coords'][0]),float(d['coords'][1]),float(d['coords'][2]),str(os.path.splitext(os.path.basename(d['file_ori_query']))[0]),int(d['num_execution']), str( os.path.splitext((os.path.abspath(f_json)))[0]) ]
         cnt_json += 1
 data=OrderedDict(sorted(data.items(), key=lambda t: t[1][0]))
 file = open(os.path.join(directory+"/Results_scoring.csv"), "w")
-file.write("Global score;x;y;z;Querie;Num_execution\n")
+file.write("Global score;x;y;z;Querie;Num_execution;Path\n")
 for i, k in data.items():
     file.write(str(k)[1:-1].replace(', ', ';').replace("'", "")+"\n")
 file.close()

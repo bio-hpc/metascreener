@@ -44,7 +44,8 @@ def read_energies(dir):
             line.strip()
             key = line.split(';')[4]
             data = float(line.split(';')[0])
-            dct[key] = data
+            data2 = str(line.split(';')[6])
+            dct[key] = [data, data2.replace("\n", " ")]
             line = csv.readline()
             cnt += 1
     return dct
@@ -83,7 +84,7 @@ for dir in args.folder:
     if len(energies) > 0:
         ORDER = True
         if sw in all.keys():
-            all[sw].update(energies)          
+            all[sw].update(energies)
         else:
             all[sw] = energies
     if first_sw == "":
@@ -117,16 +118,17 @@ if len(all) == 0:
     print("No results have been found")
     exit()
 for molecule in all[first_sw]:
-    score = all[first_sw][molecule]
-    score_aux = ""
+    score = all[first_sw][molecule][0]
+    path = all[first_sw][molecule][1]
+    aux = ""
     for k, v in all.items():
         if k != first_sw:
             if v.has_key(molecule):
-                score_aux += '{} {} '.format(v.keys().index(molecule)+1, v[molecule])
+                aux += '{} {} {}'.format(v.keys().index(molecule)+1, v[molecule][0], v[molecule][1] )
             else:
-                score_aux += "-- --"
-    print(' {} {} {} {} '.format(rank, score, score_aux, molecule))
-    f_out.write(' {} {} {} {} \n'.format(rank, score, score_aux, molecule))
+                aux += "-- -- --"
+    print(' {} {} {} {} {}'.format(rank, score, path, aux, molecule))
+    f_out.write(' {} {} {} {} {}\n'.format(rank, score, path, aux, molecule))
     rank += 1
 f_out.close()
 print("Time sort all files: %s seconds " % (time.time() - start))

@@ -23,40 +23,9 @@ PLIP_SCRIPT = PYTHON_RUN + " " + join('MetaScreener', 'extra_metascreener', 'use
 PYMOL_SCRIPT = PYTHON_RUN + " " + join('MetaScreener', 'extra_metascreener', 'used_by_metascreener',
                                        'create_ligand_pymol.py {} {} {} {} {} {}')
 PML_HEAD_PYMOL = PYTHON_RUN + " MetaScreener/extra_metascreener/used_by_metascreener/create_header_pml.py -t {}"
-FILE_EXT = ['.pdb', '.pdbqt', '.mol2', '.json'] # Needed extensions to make join session
-
-def read_all_files(header):
-    all_files = {}
-    for path in args.dirs:
-        lst_files = []
-        for root, dirs, files in os.walk(path):
-            for name in files:
-                for ext in FILE_EXT:
-                    if name.endswith(ext):
-                        lst_files.append(join(root, name))
-        for sw in header:
-            if fnmatch.fnmatch(path, '*_' + sw + '_*'):
-                if sw in all_files:
-                    all_files[sw] += lst_files
-                else:
-                    all_files[sw] = lst_files
-    return all_files
-
-
-def find(option_files, pattern):
-    """
-        find file
-        https://stackoverflow.com/questions/1724693/find-a-file-in-python
-        :param pattern:
-        :param path:
-        :return:
-    """
-    result = []
-    for i in option_files:
-        if fnmatch.fnmatch(i, pattern):
-            result.append(i)
-    return result
-
+FILE_EXT = {}
+FILE_EXT["AD"] = [ '.pdbqt', '.json' ]
+FILE_EXT["LF"] = [ '.mol2', '.json' ]
 
 def is_dir(dirname):
     """Checks if a path is an actual directory"""
@@ -69,7 +38,7 @@ def is_dir(dirname):
 
 def read_file(file_cross):
     """
-        Receives a file with the cross_list_vvs format and returns a list with each line in an array
+        Receives a file with the cross_list_vs format and returns a list with each line in an array
         :param str file_cross:
         :return: list with each line in an array
     """
@@ -95,6 +64,23 @@ def filter(lst_cross):
             data.append(line)
     return data
 
+def read_paths(lst_data):
+    ligands = {}
+    lst_files = []
+    for line in lst_data:
+        for sw in header:
+            for i in range(2, len(line[:-1]), 3):
+                if fnmatch.fnmatch(line[i], '*_' + sw + '_*'):
+                    for ext in FILE_EXT[sw]:
+                        if ext is ".json":
+                            lst_files.append(line[i] + ext)
+                        else:
+                            lst_files.append(line[i].replace("/energies/","/molecules/") + ext)
+                    if sw not in ligands:
+                        ligands[sw] = {}
+                    ligands[sw][line[-1]] = lst_files
+                    lst_files = []
+    return ligands
 
 def classification_strategy(lst_data, method):
     """
@@ -138,7 +124,7 @@ def by_rank(line):
     sum = 0
     cnt = 0
     for i in range(0, len(line[:-1])):
-        if i % 2 == 0 and not '--' in line[i]:
+        if i % 3 == 0 and not '--' in line[i] and not "/" in line[i]:
             cnt += 1
             sum += int(line[i])
     return sum / cnt
@@ -153,7 +139,7 @@ def by_score(line):
     sum = 0
     cnt = 0
     for i in range(0, len(line[:-1])):
-        if i % 2 != 0 and not '--' in line[i]:
+        if i % 2 != 0 and not '--' in line[i] and not "/" in line[i]:
             cnt += 1
             sum += float(line[i])
     return sum / cnt
@@ -297,16 +283,12 @@ if __name__ == "__main__":
     #
     #   Sort data
     #
-    all_files = read_all_files(header)
-
     lst_cross = read_file(args.file.name)
-
+    lst_data = filter(lst_cross)
+    ligands = read_paths(lst_data)
     for method in ['by_score', 'by_rank']:
-        lst_data = filter(lst_cross)
         pml_file = join(args.output, '{}_{}.pml'.format(0, method))
-
         dict_sort = classification_strategy(lst_data, method)
-
         #
         # copy files
         #
@@ -321,7 +303,8 @@ if __name__ == "__main__":
                     g_ranks.append(header[sw] + "_" + v[sw * 2])
                     if args.verbose:
                         print('Search: *_{}_*'.format(v[-1]))
-                    files = find(all_files[header[sw]], '*_{}_*'.format(v[-1]))
+                    files = ligands[header[sw]][v[-1]]
+                    print(files)
                     if (len(files) == 0):
                         print("ERROR: " + v[-1] + " not found. Check if there are any issues with cross_list_vs or any of the metascreener executions.")
                     cp_files(files, out_molecs)
