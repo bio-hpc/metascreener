@@ -17,7 +17,7 @@ data={}
 cnt_json=0
 json_files = "/energies/*.json"
 directory = sys.argv[1]
-if not os.path.isdir("/energies/"):
+if not os.path.isdir(directory+"/energies/"):
     json_files = "/results/*[0-9].json"
 for f_json in glob.glob(directory+json_files):
     with open(f_json) as f:
