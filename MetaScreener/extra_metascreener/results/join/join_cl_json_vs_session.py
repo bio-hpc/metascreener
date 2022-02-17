@@ -123,8 +123,8 @@ def by_rank(line):
     """
     sum = 0
     cnt = 0
-    for i in range(0, len(line[:-1])):
-        if i % 3 == 0 and not '--' in line[i]:
+    for i in range(0, len(line[:-1]), 3):
+        if not '--' in line[i]:
             cnt += 1
             sum += int(line[i])
     return sum / cnt
@@ -138,8 +138,8 @@ def by_score(line):
     """
     sum = 0
     cnt = 0
-    for i in range(0, len(line[:-1])):
-        if i % 3 != 0 and not '--' in line[i]:
+    for i in range(1, len(line[:-1]), 3):
+        if not '--' in line[i]:
             cnt += 1
             sum += float(line[i])
     return sum / cnt
@@ -328,7 +328,7 @@ if __name__ == "__main__":
 
                     group.append('{}_{}'.format(splitext(name_query)[0], score))
             pml_lst.append(
-                "cmd.group('CL_{} {} ( {} )', '{}')\n".format(cnt_cluster, round(k, 2), ' '.join(g_ranks),
+                "cmd.group('CL_{} {} ( {} )', '{}')\n".format(cnt_cluster, round(k, 3), ' '.join(g_ranks),
                                                                   ' '.join(group)))
             cnt_cluster += 1
 
