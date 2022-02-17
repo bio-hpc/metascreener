@@ -124,7 +124,8 @@ for molecule in all[first_sw]:
     for sw in all.keys():
         if sw != first_sw:
             if all[sw].has_key(molecule):
-                aux += '{} {} {}'.format(all[sw].keys().index(molecule)+1, all[sw][molecule][0], all[sw][molecule][1] )
+                result = all[sw][molecule]
+                aux += '{} {} {}'.format(all[sw].keys().index(molecule)+1, result[0], result[1] )
             else:
                 aux += "-- -- --"
     print(' {} {} {} {} {}'.format(rank, score, path, aux, molecule))
