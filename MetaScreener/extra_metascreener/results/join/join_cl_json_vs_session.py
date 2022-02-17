@@ -299,8 +299,8 @@ if __name__ == "__main__":
             group = []
             g_ranks = []
             for sw in range(len(header)):
-                if v[sw * 2] != '--':
-                    g_ranks.append(header[sw] + "_" + v[sw * 2])
+                if v[sw * 3] != '--':
+                    g_ranks.append(header[sw] + "_" + v[sw * 3])
                     if args.verbose:
                         print('Search: *_{}_*'.format(v[-1]))
                     files = ligands[header[sw]][v[-1]]
@@ -328,7 +328,7 @@ if __name__ == "__main__":
 
                     group.append('{}_{}'.format(splitext(name_query)[0], score))
             pml_lst.append(
-                "cmd.group('CL_{} {} ( {} )', '{}')\n".format(cnt_cluster, round(k, 3), ' '.join(g_ranks),
+                "cmd.group('CL_{} {} ( {} )', '{}')\n".format(cnt_cluster, round(k, 2), ' '.join(g_ranks),
                                                                   ' '.join(group)))
             cnt_cluster += 1
 
