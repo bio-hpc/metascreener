@@ -72,7 +72,7 @@ def read_paths(lst_data):
             for i in range(2, len(line[:-1]), 3):
                 if fnmatch.fnmatch(line[i], '*_' + sw + '_*'):
                     for ext in FILE_EXT[sw]:
-                        if ext is ".json":
+                        if ext == ".json":
                             lst_files.append(line[i] + ext)
                         else:
                             lst_files.append(line[i].replace("/energies/","/molecules/") + ext)
@@ -124,7 +124,7 @@ def by_rank(line):
     sum = 0
     cnt = 0
     for i in range(0, len(line[:-1])):
-        if i % 3 == 0 and not '--' in line[i] and not "/" in line[i]:
+        if i % 2 == 0 and not '--' in line[i] and not "/" in line[i]:
             cnt += 1
             sum += int(line[i])
     return sum / cnt
