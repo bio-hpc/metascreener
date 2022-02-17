@@ -124,7 +124,7 @@ def by_rank(line):
     sum = 0
     cnt = 0
     for i in range(0, len(line[:-1])):
-        if i % 2 == 0 and not '--' in line[i] and not "/" in line[i]:
+        if i % 3 == 0 and not '--' in line[i]:
             cnt += 1
             sum += int(line[i])
     return sum / cnt
@@ -139,7 +139,7 @@ def by_score(line):
     sum = 0
     cnt = 0
     for i in range(0, len(line[:-1])):
-        if i % 2 != 0 and not '--' in line[i] and not "/" in line[i]:
+        if i % 3 != 0 and not '--' in line[i]:
             cnt += 1
             sum += float(line[i])
     return sum / cnt

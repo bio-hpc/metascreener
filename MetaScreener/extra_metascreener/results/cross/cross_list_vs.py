@@ -44,7 +44,7 @@ def read_energies(dir):
             line.strip()
             key = line.split(';')[4]
             data = float(line.split(';')[0])
-            data2 = str(line.split(';')[6])
+            data2 = str(line.split(';')[-1])
             dct[key] = [data, data2.replace("\n", " ")]
             line = csv.readline()
             cnt += 1
@@ -73,7 +73,7 @@ ORDER = False
 start = time.time()
 for dir in args.folder:
     index = dir.find('VS_')
-    directories += '{} '.format(dirname(dirname(dir)))
+    directories += '{} '.format(dir)
     sw = dir[index + 3:index + 5]
     if (sw not in name_out):
         name_out += '{}_'.format(sw)
@@ -111,7 +111,7 @@ f_out = open(file_out, 'w')
 print(header)
 f_out.write('{}\n'.format(header))
 rank = 1;
-print("Total number of folders: " + str(len(all)))
+print("Total number of softwares: " + str(len(all)))
 
 start = time.time()
 if len(all) == 0:
@@ -121,17 +121,17 @@ for molecule in all[first_sw]:
     score = all[first_sw][molecule][0]
     path = all[first_sw][molecule][1]
     aux = ""
-    for k, v in all.items():
-        if k != first_sw:
-            if v.has_key(molecule):
-                aux += '{} {} {}'.format(v.keys().index(molecule)+1, v[molecule][0], v[molecule][1] )
+    for sw in all.keys():
+        if sw != first_sw:
+            if all[sw].has_key(molecule):
+                aux += '{} {} {}'.format(all[sw].keys().index(molecule)+1, all[sw][molecule][0], all[sw][molecule][1] )
             else:
                 aux += "-- -- --"
     print(' {} {} {} {} {}'.format(rank, score, path, aux, molecule))
     f_out.write(' {} {} {} {} {}\n'.format(rank, score, path, aux, molecule))
     rank += 1
 f_out.close()
-print("Time sort all files: %s seconds " % (time.time() - start))
+print("Time for cross all softwares results: %s seconds " % (time.time() - start))
 
 if (args.receptor):
     if (os.path.isfile(args.receptor)):
