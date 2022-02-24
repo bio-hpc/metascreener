@@ -61,7 +61,7 @@ for i in $(ls -p $target | grep -v /);do
                 extension="${i##*.}"
                 if [[ $extension == "pmz" ]] || [[ $extension == "pml" ]];then
                         for j in $(seq 0 $it);do                          
-                          ./sm.sh -t $target/${i} -q ${library} -s LS -o VSB -j ${JOBS_PER_EXECUTION}  -prp LS -prl LS -tj 24:00:00 -d LS_${lib}/LS_${filename}_${lib}_a_${j}   -a ${j} -TT 50m  -sf relative -qu ${queue}
+                          ./ms.sh -t $target/${i} -q ${library} -s LS -o VSB -j ${JOBS_PER_EXECUTION}  -prp LS -prl LS -tj 24:00:00 -d LS_${lib}/LS_${filename}_${lib}_a_${j}   -a ${j} -TT 50m  -sf relative -qu ${queue}
                         done
                 fi
               
