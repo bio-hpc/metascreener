@@ -166,7 +166,7 @@ if [  -z "$option" ];then
 	printGlobalHelp "q" "N" "" "Ligand's file or query's directory."
 	printGlobalHelp "o" "N" "" "Technique `readTechniquesSW ${pathSL}techniques/ SLTechnique`."
 	printGlobalHelp "s" "N" "" "Available Software `readTechniquesSW ${pathSL}templateParams/ template`*."
-	echo -e "${RED}            * Lead Finder (LF) and LigandScout (LS) require a license. You must also put the executables in their MetaScreener/external_software/ directories.${NONE}"
+	echo -e "            * Lead Finder (LF) and LigandScout (LS) require a license. You must also put the executables in their MetaScreener/external_software/ directories.${NONE}"
 	printGlobalHelp "se" "O" " [ Y | N ]" "Secuencial Mode Y, queue manager N. ( Default N )."
 	printGlobalHelp "de" "O" " [ 1-10  ]" "Debug mode range[1-10]. (default 0)."
 	printGlobalHelp "prp" "N" "" "Protocol used to prepare receptor or query."
