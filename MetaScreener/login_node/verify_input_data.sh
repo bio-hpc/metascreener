@@ -38,7 +38,7 @@ readParams()
 		lanzTimeOut=`readParam "$lanzTimeOut" "lanzTimeOut"`
 		lanzCreateResume=`readParam "$lanzCreateResumen" "lanzCreateResumen"`
 	else
-		txtErrror="-s .Not Available Software, see the help"
+		txtError="-s .Not Available Software, see the help"
 		f_help
 	fi
 }
@@ -64,7 +64,7 @@ showVersion()
 isEmpty()
 {
 	if [ "$1" == "N/A" ] || [  -z "$1" ] ;then
-		txtErrror="$2"
+		txtError="$2"
 	 	f_help
 	fi
 }
