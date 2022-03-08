@@ -113,11 +113,11 @@ validateExtProt()
 		extensionProtAux="."${target##*.}
 		ext_target=`existInLst "$extensionesProt" "$extensionProtAux"`
 		if [ "$ext_target" == "" ];then
-			txtErrror="-s Software does not support that extension "
+			txtError="-s Software does not support that extension "
 			f_help
 		fi 
 	else
-		txtErrror="-t Target file does not exist"
+		txtError="-t Target file does not exist"
 		f_help
 	fi
 }
@@ -142,7 +142,7 @@ validate_ext_query()
             done
             IFS=$auxIFS
             if [ "$ext_query" == "" ];then
-                txtErrror="-q You must enter a folder with valid queries for the software"
+                txtError="-q You must enter a folder with valid queries for the software"
                 f_help
             fi
         fi
@@ -151,11 +151,11 @@ validate_ext_query()
 			extensionLigAux="."${query##*.}
 			ext_query=`existInLst "$extensionesLig" "$extensionLigAux"`
 			if [ "$ext_query" == "" ];then
-				txtErrror="-s The Software does not support ligand's extension"
+				txtError="-s The Software does not support ligand's extension"
 				f_help
 			fi
 		else
-			txtErrror="Querie does not exist"
+			txtError="Querie does not exist"
 			f_help
 		fi
 	fi
@@ -244,7 +244,7 @@ isEmpty "$protocolP" 				"-prp Not indicated protocol for convert target"
 isEmpty "$protocolL" 				"-prl Not indicated protocol for convert querie or queries"
 
 if [ ! -f "${path_login_node}techniques/SLTechnique${option}.sh" ];then
-	txtErrror="-o ${option} option does not exist"
+	txtError="-o ${option} option does not exist"
 	f_help
 fi
 
@@ -258,7 +258,7 @@ for i in "${ADDR[@]}"; do
 done
 IFS=${OLD_IFS}
 if [[ $valid_option == false ]];then
-    txtErrror="Error option ($option) not valid for $software"
+    txtError="Error option ($option) not valid for $software"
     f_help
 fi
 
