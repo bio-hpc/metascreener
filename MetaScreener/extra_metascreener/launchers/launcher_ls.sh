@@ -19,8 +19,8 @@ function ayuda()
         printHelp "t" "N" "Folder with .pmz files."
         printHelp "l" "N" "Folder where the library is."
         printHelp "qu" "N" "Partition for the resource allocation."
-        printHelp "AE" "O" "Lower stop of -a parameter."
-        printHelp "AS" "O" "Upper stop of -a parameter."
+        printHelp "AS" "O" "Lower stop of -a parameter."
+        printHelp "AE" "O" "Upper stop of -a parameter."
         printHelp "TT" "O" "Time for LigandScout."
         printHelp "j" "O" "Number of job per execution."
         echo ""
@@ -43,8 +43,8 @@ while (( $# ))
                         -T )  target=$2;;
                         -L )  library=$2;;
                         -QU)  queue=$2;;
-                        -AS )  fin=$2;;
-                        -AE )  ini=$2;;
+                        -AE )  fin=$2;;
+                        -AS )  ini=$2;;
                         -J )  JOBS_PER_EXECUTION=$2;;
                         -TT ) time=$2;;
                         -H )  ayuda
