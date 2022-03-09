@@ -1,5 +1,5 @@
 #!/bin/bash
-name_metascreener="./sm.sh"
+name_metascreener="./ms.sh"
 path_analize_results="MetaScreener/analyze_results/"
 path_external_sw="MetaScreener/external_sw/"
 printHelpAux(){
@@ -76,7 +76,6 @@ printExample()
 	printHelpAux "Grid:" ${grid}
 	printHelpAux "Cores:" ${cores}
 	printHelpAux "RAM:" ${mem}
-	printHelpAux "TimeDocking:" ${time_experiment}" sec"
 	if [ $sizeGridX != 0 ];then
 		printHelpAux "SizeGridX: " ${sizeGridX}" Å"
 		printHelpAux "SizeGridY: " ${sizeGridY}" Å"
@@ -189,7 +188,7 @@ if [  -z "$option" ];then
 	echo -e "${PURPLE}____________________________________________________${NONE} "
 	printGlobalHelp "qu" "N" "" "Set a specific partition for the resource allocation. We recommend the avaliable partition with more idle nodes (Check with \"sinfo -s\")."
 	printGlobalHelp "pj" "O" "" "Set a project or an account for the jobs."
-  printGlobalHelp "td" "O" "" "Set execution time of a program. Default ./sm.sh -h software (Not all programs have this option)."
+  printGlobalHelp "td" "O" "" "Set execution time of a program. Default ./ms.sh -h software (Not all programs have this option)."
 	printGlobalHelp "tj" "O" "" "Time allocated to the job. Default multiply -td  by runs in a job. Format 00:05:00."
 	printGlobalHelp "mm" "O" "" "Memory reserved for a job."
 	printGlobalHelp "j" "O" "" "Number of jobs that will be sent to supercomputer."

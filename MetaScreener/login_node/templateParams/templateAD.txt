@@ -2,7 +2,7 @@
 #LanzNombre:AD - AutoDock Vina 1.1.2 (May 11, 2011)
 #LanzExtensionProtQ:.pdbqt
 #LanzExtensionligB:.pdbqt
-#lanzOptions:VS,BD,VSR
+#lanzOptions:VS,BD
 #LanzCoordX: 
 #LanzCoordY:
 #LanzCoordZ:

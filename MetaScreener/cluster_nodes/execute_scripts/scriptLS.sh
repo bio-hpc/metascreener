@@ -35,7 +35,6 @@ execute_script()
                 execute "query=/${name}"
 				execute "file_result=$fich"
                 execute "standar_out_file"
-                #                
                 mv ${fich} ${folder_grid}
 			done
 

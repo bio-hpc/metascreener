@@ -19,7 +19,9 @@ function ayuda()
         printHelp "t" "N" "Folder with .pmz files."
         printHelp "l" "N" "Folder where the library is."
         printHelp "qu" "N" "Partition for the resource allocation."
-        printHelp "a" "O" "Upper stop of -a parameter."
+        printHelp "AE" "O" "Lower stop of -a parameter."
+        printHelp "AS" "O" "Upper stop of -a parameter."
+        printHelp "TT" "O" "Time for LigandScout."
         printHelp "j" "O" "Number of job per execution."
         echo ""
         exit
@@ -29,8 +31,10 @@ function ayuda()
 target=no_target
 library=no_library
 queue=no_queue
-it=5
+ini=0
+fin=5
 JOBS_PER_EXECUTION=15
+time=50m
 
 while (( $# ))
  do
@@ -39,8 +43,10 @@ while (( $# ))
                         -T )  target=$2;;
                         -L )  library=$2;;
                         -QU)  queue=$2;;
-                        -A )  it=$2;;
+                        -AS )  fin=$2;;
+                        -AE )  ini=$2;;
                         -J )  JOBS_PER_EXECUTION=$2;;
+                        -TT ) time=$2;;
                         -H )  ayuda
             esac
         fi
@@ -60,8 +66,8 @@ for i in $(ls -p $target | grep -v /);do
                 filename=${i%.*}
                 extension="${i##*.}"
                 if [[ $extension == "pmz" ]] || [[ $extension == "pml" ]];then
-                        for j in $(seq 0 $it);do                          
-                          ./ms.sh -t $target/${i} -q ${library} -s LS -o VS -j ${JOBS_PER_EXECUTION}  -prp LS -prl LS -tj 24:00:00 -d LS_${lib}/LS_${filename}_${lib}_a_${j}   -a ${j} -TT 50m  -sf relative -qu ${queue}
+                        for j in $(seq $ini $fin);do
+                          ./ms.sh -t $target/${i} -q ${library} -s LS -o VS -j ${JOBS_PER_EXECUTION}  -prp LS -prl LS -tj 24:00:00 -d LS_${lib}/LS_${filename}_${lib}_a_${j}   -a ${j} -TT ${time}  -sf relative -qu ${queue}
                         done
                 fi
               

@@ -80,6 +80,6 @@ do
   for querie in `ls ${queries_files[@]}`
   do
     echo "BD $software for protein $target with ligand $querie and $jobs jobs"
-    ./sm.sh -t $target -q $querie -o BD -s $software -j $jobs -hi y -qu $queue
+    ./ms.sh -t $target -q $querie -o BD -s $software -j $jobs -hi y -qu $queue
   done
 done

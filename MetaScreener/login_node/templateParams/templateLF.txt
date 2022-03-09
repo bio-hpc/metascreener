@@ -2,7 +2,7 @@
 #LanzNombre:LF - Lead Finder version 2104 build 1, 18 April 2021
 #LanzExtensionProtQ:.mol2
 #LanzExtensionligB:.mol2
-#lanzOptions:VS,BD,BCD,BDVS
+#lanzOptions:VS,BD
 #LanzCoordX: 
 #LanzCoordY:
 #LanzCoordZ:
