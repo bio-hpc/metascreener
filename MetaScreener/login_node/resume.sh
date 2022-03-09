@@ -39,7 +39,7 @@ generate_informe()
 	rama=`git branch -avv 2>/dev/null|grep "\*" |awk '{print $2}'`
 	informe="${informe}-- numVersion:\t $numVersion codVersion:\t\t$codVersion  \t branch: $rama\n"
 	informe="${informe}-- date:\t\t$fecha (Y-m-d)\n"
-	informe=${informe}"-- Command:\t\t$allComand $optAux"
+	informe=${informe}"-- Command:\t\t$allComand $optAdicionals"
 	echo -e "${informe}" >>${salidaResume}
 	echo  "--">>${salidaResume}
 	echo  "--">>${salidaResume}
