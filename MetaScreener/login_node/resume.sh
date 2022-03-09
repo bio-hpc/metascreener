@@ -89,5 +89,5 @@ elif [ "$lanzCreateResume" == "C" ];then
         n_command=`expr $n_command + 1`
         command_number=Command_${n_command}
     fi
-    sed  -i "${num_last_command} i --\n-- ${command_number}:\t\t$allComand $optAux" ${file_resume}
+    sed  -i "${num_last_command} i --\n-- ${command_number}:\t\t$allComand $optAdicionals" ${file_resume}
 fi
