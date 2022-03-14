@@ -25,11 +25,11 @@ function ayuda()
         echo -e "${PURPLE}Options${NONE} "
         echo -e "${PURPLE}____________________________________________________${NONE} "
         printHelp "o" "N" "Option [ BD | VS | LS ]."
-        printHelp "f" "N" "String with folder list or folder prefix (only LS)."
-        printHelp "r" "O" "Receptor."
+        printHelp "f" "N" "String with folder list or folder prefix. Only LS."
+        printHelp "r" "O" "Receptor. Necesary for VS and BD)."
         printHelp "c" "O" "Cutoff (only LS [0-1])."
-        printHelp "out" "O" "Folder output."
-        printHelp "cl" "O" "String with options to launch in the cluster. For example: \"-p standard --time 5:00:00 ... \""
+        printHelp "out" "O" "Folder output Don't use name with \"_\". Necesary for VS and BD."
+        printHelp "cl" "O" "String with options to launch in the cluster. For example: \"-p standard --time 5:00:00 ...\""
         printHelp "h" "O" "Print help"
         echo ""
         exit
@@ -73,13 +73,13 @@ if [[ "$option" == "no_option" ]] || [[ "$folders" == "no_folder" ]];then
         ayuda
 fi
 
-# Prepare commandas
+# Prepare commands
 case `printf "%s" "$option" | tr '[:lower:]' '[:upper:]'` in
   BD )
     if [[ "$receptor" == "no_receptor" ]];then echo -e "\e[31mERROR: Receptor Missing.\e[0m";ayuda;fi
     if [[ "$out" == "no_out" ]];then echo -e "\e[31mERROR: Output Missing.\e[0m";ayuda;fi
     cross="${simg} python ${extra_metascreener}/results/cross/cross_list_bd.py ${folders}"
-    join="${simg} python ${extra_metascreener}/results/join/join_cl_json_bd_session.py ${receptor} $(basename ${receptor} | cut -f 1 -d '.').json ${out}"
+    join="${simg} python ${extra_metascreener}/results/join/join_cl_json_bd_session.py ${receptor} $(basename ${receptor} | cut -f 1 -d '_')*.json ${out}"
     ;;
   VS )
     if [[ "$receptor" == "no_receptor" ]];then echo -e "\e[31mERROR: Receptor Missing.\e[0m";ayuda;fi
@@ -101,7 +101,7 @@ if [[ "$cluster_opt" == "sequential" ]];then
   echo ${join}
   $join
   if [[ "$option" != "LS" ]];then
-    for pml in $(find ${out}* -name *.pml)
+    for pml in $(find *${out}* -name *.pml)
     do
       echo "cmd.save(\"$(basename ${pml} ".pml").pse\")" >> $pml
     done
