@@ -194,7 +194,7 @@ if [  -z "$option" ];then
 	printGlobalHelp "j" "O" "" "Number of jobs that will be sent to supercomputer."
 	printGlobalHelp "ni" "O" "" "Priority of the job managers, Sbatch [0-10000] being 10000 the lowest. Qsub [-1024- + 1023] default or higher priority the higher the number."
 	printGlobalHelp "co" "O" "" "Number of cores for execution. Important: can't reserve more cores than contained in the node."
-	printGlobalHelp "nm" "O" "" "Number of nodes for execution."
+	printGlobalHelp "nn" "O" "" "Number of nodes for execution."
 	printGlobalHelp "gp" "O" "" "Number of GPUs for execution. Important: can't reserve the resources if the supercomputer don't have them."
 	printGlobalHelp "nj" "O" "" "Name of job."
 
