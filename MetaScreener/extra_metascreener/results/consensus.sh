@@ -51,7 +51,7 @@ while (( $# ))
                         -F )
                           folders=$2
                           shift
-                          while [[ $2 != -* ]]
+                          while [[ $2 != -* ]] && [[ $2 != "" ]]
                           do
                             folders="${folders} $2"
                             shift
@@ -106,9 +106,9 @@ if [[ "$cluster_opt" == "sequential" ]];then
       echo "cmd.save(\"$(basename ${pml} ".pml").pse\")" >> $pml
     done
     find *${out}* -name *.pml -execdir ${simg} pymol -c -q -k -Q {} \;
+    folder=$(find . -type d -name ${out}_*)
+    tar -cf ${folder}.tar.gz ${folder}
   fi
-  folder=$(find . -type d -name ${out}_*)
-  tar -cf ${folder}.tar.gz ${folder}
 else
   name_job="consensus_${option}.sh"
   echo "#!/bin/bash" > $name_job
@@ -124,9 +124,9 @@ else
     echo "  echo \"cmd.save(\\\"\$(basename \${pml} \\\".pml\\\").pse\\\")\" >> \$pml" >> $name_job
     echo "done" >> $name_job
     echo "find *${out}* -name *.pml -execdir ${simg} pymol -c -q -k -Q {} \;" >> $name_job
+    echo "folder=\$(find . -type d -name ${out}_*)" >> $name_job
+    echo "tar -cf \${folder}.tar.gz \${folder}" >> $name_job
   fi
-  echo "folder=\$(find . -type d -name ${out}_*)" >> $name_job
-  echo "tar -cf \${folder}.tar.gz \${folder}" >> $name_job
   echo "rm ${name_job}" >> $name_job
   sbatch $cluster_opt $name_job
 fi
