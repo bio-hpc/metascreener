@@ -13,7 +13,7 @@
 #lanzSizeGridX:0
 #lanzSizeGridY:0
 #lanzSizeGridZ:0
-#lanzTimeOut:Y
+#lanzTimeOut:N
 #lanzCreateResumen:Y
 -::Y::-l::{logfile} output file for logging-messages       
 -::N::-e::disable checking for exclusion volume  
