@@ -43,8 +43,8 @@ def write_excel(lst_molecules, prefix):
 	if not args.summary:
 	    try:
 		    import pandas as pd
-		    read_file = pd.read_csv (out+".csv", delimiter=';')
-		    read_file.to_excel (out+'.xlsx', index = None, header=True, engine='xlsxwriter')
+		    read_file = pd.read_csv (prefix+".csv", delimiter=';')
+		    read_file.to_excel (prefix+'.xlsx', index = None, header=True, engine='xlsxwriter')
 				
 	    except Exception as e:
 		    print ("Error convert csv to xlsx")
