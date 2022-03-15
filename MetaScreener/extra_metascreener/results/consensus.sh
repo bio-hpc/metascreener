@@ -85,7 +85,7 @@ case `printf "%s" "$option" | tr '[:lower:]' '[:upper:]'` in
     if [[ "$receptor" == "no_receptor" ]];then echo -e "\e[31mERROR: Receptor Missing.\e[0m";ayuda;fi
     if [[ "$out" == "no_out" ]];then echo -e "\e[31mERROR: Output Missing.\e[0m";ayuda;fi
     cross="${simg} python ${extra_metascreener}/results/cross/cross_list_vs.py ${folders}"
-    join="${simg} python ${extra_metascreener}/results/join/join_cl_json_vs_session.py -d ${folders} -o ${out} -r ${receptor} -v -f \$(find . -name lst_*_$(basename ${receptor} | cut -f 1 -d '.')*) "
+    join="${simg} python ${extra_metascreener}/results/join/join_cl_json_vs_session.py -d ${folders} -o ${out} -r ${receptor} -v -f lst_*_$(basename ${receptor} | cut -f 1 -d '.')* "
     ;;
   LS )
     join="${simg} python ${extra_metascreener}/results/join/join_ls_sessions.py ${folders} -c ${cutoff}"
