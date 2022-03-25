@@ -86,7 +86,6 @@ class Clusters:
                         self.clusters[i['lig_name']] = []
 
                     self.clusters[i['lig_name']].append(Cluster(i, f_molecules, f_o))
-            print ("")
         
 
     def get_ligand_pml(self, num_cl):
@@ -111,15 +110,19 @@ class Clusters:
                 cl.pml = cl.pml.replace(group, cl.group)
 
     def write_pml(self, n_cl, file_pml_score, cnt_cluster):
-        group = "CCL_{}{}".format(cnt_cluster,n_cl)
+        #group = "CCL_{}{}".format(cnt_cluster,n_cl)
         aux_group =""
                 
         f = open(file_pml_score, "a")
+        i=0
+        score=0.0
         for key, lst_cl in self.clusters.items():
             for cl in lst_cl:
+                i+=1
+                score+=cl.score
                 f.write(cl.pml)
                 aux_group += " "+cl.group
-
+        group = "CCL_{}{}{}".format(cnt_cluster,n_cl,round((score/i),2))
         group = "cmd.group('{}', '{}')\n".format(group, aux_group)
         f.write(group)
         f.close()
