@@ -216,12 +216,12 @@ def add_struct(n_cl, clusters, file_pml_score, cnt_cluster):
     clusters.write_pml(n_cl, file_pml_score, cnt_cluster)
 
 
-def create_dir(fodler):
-    if not os.path.exists(fodler):
-        os.makedirs(fodler)
+def create_dir(folder):
+    if not os.path.exists(folder):
+        os.makedirs(folder)
     else:
-        shutil.rmtree(fodler)
-        os.makedirs(fodler)
+        shutil.rmtree(folder)
+        os.makedirs(folder)
 
 def get_score(cl, type_score):
     for i in range(0,len(cl.data_json['graph_global_field'])):
