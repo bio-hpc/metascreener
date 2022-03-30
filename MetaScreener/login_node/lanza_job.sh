@@ -190,9 +190,9 @@ function balance_jobs()
 	    exit
 	fi
 	if [ $resto -eq 0 ];then
-		echo -e ${BLUEB}"Conpensando la carga de jobs: se lanzan "$num_per_job   ${NONE}
+		echo -e ${BLUEB}"Offsetting the load of jobs: the following are launched "$num_per_job   ${NONE}
 	else
-		echo -e ${BLUEB}"Conpensando la carga de jobs: se lanzan "$num_per_job "+1"  ${NONE}
+		echo -e ${BLUEB}"Offsetting the load of jobs: the following are launched "$num_per_job "+1"  ${NONE}
 	fi
 }
 #
