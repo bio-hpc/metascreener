@@ -20,10 +20,10 @@ readParam()
 }
 readParams()
 {
-	
+
 	if [ -f "${path_login_node}/templateParams/template${software}.txt" ];then
 		extensionesProt=`readParam "$extensionesProt" "LanzExtensionProtQ"`
-		extensionesLig=`readParam "$extensionesLig" "LanzExtensionligB"` 
+		extensionesLig=`readParam "$extensionesLig" "LanzExtensionligB"`
 		cores=`readParam "$cores" "LanzCores"`
 		time_experiment=`readParam "$time_experiment" "LanzTimeExecution"`
 		x=`readParam "$x" "LanzCoordX"`
@@ -69,15 +69,104 @@ isEmpty()
 	fi
 }
 
+check_technique()
+{
+  if [ "$1" == "N/A" ] || [  -z "$1" ] ;then
+    echo "Enter a technique [ SBVS, LBVS, BD ]"
+    read option
+    case `printf "%s" "$option" | tr '[:lower:]' '[:upper:]'` in
+      SBVS|VS ) option="VS";;
+      LBVS ) option="VS"; software="LS";;
+      BD ) option="BD";;
+      * ) ;;
+    esac
+    allComand="${allComand} -o ${option}"
+  fi
+}
+
+check_sw()
+{
+  if [ "$1" == "N/A" ] || [  -z "$1" ] ;then
+    echo "Enter a software [ AD, LF, LS ]"
+    read sw
+    case `printf "%s" "$sw" | tr '[:lower:]' '[:upper:]'` in
+      AD ) software="AD";;
+      LF ) software="LF";;
+      LS ) software="LS";;
+      * ) ;;
+    esac
+    allComand="${allComand} -s ${software}"
+  fi
+}
+
+check_squeue()
+{
+  if [ "$1" == "N/A" ] || [  -z "$1" ] ;then
+    echo "Select a partition in your cluster"
+    sinfo -s
+    read queue
+    allComand="${allComand} -qu ${queue}"
+  fi
+  if [ "$project" == "N/A" ] || [  -z "$project" ] ;then
+    echo "Enter account (press enter if not required)"
+    read project
+    allComand="${allComand} -pj ${project}"
+  fi
+}
+
+check_querie()
+{
+  if [ "$1" == "N/A" ] || [  -z "$1" ] ;then
+    if [[ ${option} == "BD" ]] || [[ ${software} == "LS" ]] ;then
+      echo "Enter querie ($extensionesLig)"
+      read -e query
+    else
+      echo "Enter folder with queries ($extensionesLig)"
+      read -e query
+    fi
+    allComand="${allComand} -q ${query}"
+  fi
+}
+
+check_target()
+{
+  if [ "$1" == "no_target" ] || [  -z "$1" ] ;then
+    echo "Enter target ($extensionesProt)"
+    read -e target
+    allComand="${allComand} -t ${target}"
+  fi
+}
+
+check_jobs()
+{
+  if [ "$1" == "N/A" ] || [  -z "$1" ] ;then
+    echo "How many jobs do you want?"
+    read num_per_job
+    allComand="${allComand} -j ${num_per_job}"
+  fi
+}
+
+check_histograms()
+{
+  if [ "$histograms" == "N/A" ] || [  -z "$histograms" ] ;then
+    echo "Do you want to make an analysis of the results (pymol session, plip interaction, postview graphs, ...)?"
+    read response
+    case `printf "%s" "$response" | tr '[:lower:]' '[:upper:]'` in
+      Y|YES ) histograms="y"; allComand="${allComand} -hi y";;
+      * ) ;;
+    esac
+  fi
+}
+
 #
 #	Search in a array ($1) if a word is found ($2)
 #
 existInLst()
 {
 
-	
+
 	auxIFS=$IFS
-	
+
 	IFS=',' read -ra extx <<< "$1"
 	aux=""
 
@@ -95,8 +184,16 @@ existInLst()
 #
 verifyXYZ()
 {
-	if [[ ${option} == "BD"* ]] || [[ ${option} == "VSR" ]];then
+	if [[ ${option} == "BD" ]] || [[ ${software} == "LS" ]] ;then
 		x=0;y=0;z=0;
+	else
+	  echo "Enter the x-coordinate for docking."
+	  read x
+	  echo "Enter the y-coordinate for docking."
+	  read y
+	  echo "Enter the z-coordinate for docking."
+	  read z
+	  allComand="${allComand} -x $x -y $y -z $z"
 	fi
 	if [ -z $x ] || [ -z $y ] || [ -z $z ];then
 		error=7
@@ -107,15 +204,15 @@ verifyXYZ()
 #	Validates if target's extension is valid for SW
 #
 validateExtProt()
-{   
+{
 	if [ -f ${target} ];then
-		
+
 		extensionProtAux="."${target##*.}
 		ext_target=`existInLst "$extensionesProt" "$extensionProtAux"`
 		if [ "$ext_target" == "" ];then
 			txtError="-s Software does not support that extension "
 			f_help
-		fi 
+		fi
 	else
 		txtError="-t Target file does not exist"
 		f_help
@@ -209,20 +306,19 @@ if [ "${versionHelp}" != "N/A" ];then
 	showVersion
 fi
 
-isEmpty "$software" 				"-s Software is empty"
+check_technique "$option"
+check_sw "$software"
 readParams
-isEmpty "$option" 					"-o Option is empty"
-isEmpty "$queue"					"-qu Queue is empty"
 
 if [ "$extensionesLig"  != "" ];then
-    isEmpty "$query" 					"-q Ligand is empty"
+    check_querie "$query"
 else
     query="no_query"
 fi
 
 
 if [ "$extensionesProt" != "" ];then
-	isEmpty "$target" 			"-t Receptor is empty"
+	check_target "$target"
 	validateExtProt
 	name_target=$(basename $target)
 	name_target="${name_target%.*}"
@@ -238,8 +334,6 @@ if [ "${extensionesProt}" == ".mol2" ];then
   fi
 fi
 
-
-isEmpty "$num_per_job" 				"-j Not indicated number of jobs"
 isEmpty "$protocolP" 				"-prp Not indicated protocol for convert target"
 isEmpty "$protocolL" 				"-prl Not indicated protocol for convert querie or queries"
 
@@ -266,7 +360,34 @@ validate_ext_query
 OpcionesExtras
 verifyXYZ
 find_name_job
+check_histograms
+check_squeue "$queue"
+check_jobs "$num_per_job"
 
+if [[ "${profile}" == "" ]];then
+  if [[ ${software} == "LS" ]];then
+    profile="STANDARD_VS_LS"
+	else
+	  profile="STANDARD_${option}"
+  fi
+fi
+
+# Check software
+ext_sw=MetaScreener/external_sw/
+
+if [[ ${software} == "LS" ]] ;then
+  if [[ ! -f "${ext_sw}ligandScout/iscreen" ]]; then
+    echo -e "${RED} Error: ${ext_sw}ligandScout/iscreen doesn't exist${NONE}"
+    exit
+  fi
+fi
+
+if [[ ${software} == "LF" ]] ;then
+  if [[ ! -f "${ext_sw}leadFinder/leadfinder" ]]; then
+    echo -e "${RED} Error: ${ext_sw}leadFinder/leadfinder doesn't exist${NONE}"
+    exit
+  fi
+fi
 
 debugB "_________________________________________Input Data________________________________________"
 debugB ""

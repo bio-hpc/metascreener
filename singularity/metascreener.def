@@ -12,8 +12,15 @@ MirrorURL: http://us.archive.ubuntu.com/ubuntu/
 %post
     apt-get update
     export DEBIAN_FRONTEND=noninteractive
-    apt-get -y install vim openbabel plip python-rdkit python-pip imagemagick pymol libsm-dev
-    pip install matplotlib pandas xlsxwriter 
+    apt-get -y install vim openbabel plip python-rdkit python-pip imagemagick libsm-dev git
+    pip install matplotlib pandas xlsxwriter
+    # pymol-oss intall
+    apt-get -y install git build-essential python3 python3-dev libglew-dev libpng-dev libfreetype6-dev libxml2-dev libmsgpack-dev python3-pyqt5.qtopengl libglm-dev libnetcdf-dev
+    git clone https://github.com/schrodinger/pymol-open-source.git
+    git clone https://github.com/rcsb/mmtf-cpp.git
+    mv mmtf-cpp/include/mmtf* pymol-open-source/include/
+    cd pymol-open-source
+    python3 setup.py install --pymol-path=~/pymol
     apt-get clean
 
 %environment

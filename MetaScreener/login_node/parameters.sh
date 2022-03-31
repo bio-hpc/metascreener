@@ -220,28 +220,3 @@ while (( $# ))
   shift
 done
 
-if [[ "${profile}" == "" ]];then
-  if [[ ${software} == "LS" ]];then
-    profile="STANDARD_VS_LS"
-	else
-	  profile="STANDARD_${option}"
-  fi
-fi
-
-# Check software
-ext_sw=MetaScreener/external_sw/
-
-if [[ ${software} == "LS" ]] ;then
-  if [[ ! -f "${ext_sw}ligandScout/iscreen" ]]; then
-    echo -e "${RED} Error: ${ext_sw}ligandScout/iscreen doesn't exist${NONE}"
-    exit
-  fi
-fi
-
-if [[ ${software} == "LF" ]] ;then
-  if [[ ! -f "${ext_sw}leadFinder/leadfinder" ]]; then
-    echo -e "${RED} Error: ${ext_sw}leadFinder/leadfinder doesn't exist${NONE}"
-    exit
-  fi
-fi
-

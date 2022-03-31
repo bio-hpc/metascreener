@@ -21,7 +21,7 @@ PML_LIGAND_PYMOL = PYTHON_RUN + " MetaScreener/extra_metascreener/used_by_metasc
 PML_HEAD_PYMOL = PYTHON_RUN + " MetaScreener/extra_metascreener/used_by_metascreener/create_header_pml.py {} -head {} -tail {}"
 GLOBAL_ENERGY = 'global_score'
 
-key_pat = re.compile(r"^(\D+)(\d+)$")   #usado para ordenar el diccionario
+key_pat = re.compile(r"^(\D+)(\d+)$")
 
 def key(item):
     m = key_pat.match(item[0])
@@ -110,7 +110,6 @@ class Clusters:
                 cl.pml = cl.pml.replace(group, cl.group)
 
     def write_pml(self, n_cl, file_pml_score, cnt_cluster):
-        #group = "CCL_{}{}".format(cnt_cluster,n_cl)
         aux_group =""
                 
         f = open(file_pml_score, "a")
