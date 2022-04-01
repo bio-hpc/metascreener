@@ -11,8 +11,8 @@ PURPLE='\033[00;35m'
 CYAN='\033[00;36m'
 
 ms_path=${PWD/metascreener*/}/metascreener
-simg="singularity exec --bind=${PWD} $ms_path/singularity/metascreener.simg)"
-extra_metascreener="$ms_path/extra_metascreener"
+simg="singularity exec --bind=${PWD} $ms_path/singularity/metascreener.simg"
+extra_metascreener="$ms_path/MetaScreener/extra_metascreener"
 
 printHelp(){
         printf "${GREEN} %6s ${CYAN}%5s ${NONE}%-s \n" "-$1 )" "[ $2 ]" "$3"
