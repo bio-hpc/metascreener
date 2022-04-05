@@ -106,12 +106,13 @@ check_squeue()
     sinfo -s
     read queue
     allComand="${allComand} -qu ${queue}"
-  fi
-  if [ "$project" == "N/A" ] || [  -z "$project" ] ;then
+    if [ "$project" == "N/A" ] || [  -z "$project" ] ;then
     echo "Enter account (press enter if not required)"
     read project
     allComand="${allComand} -pj ${project}"
+    fi
   fi
+
 }
 
 check_querie()
