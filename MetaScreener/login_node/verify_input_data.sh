@@ -186,6 +186,7 @@ verifyXYZ()
 {
 	if [[ ${option} == "BD" ]] || [[ ${software} == "LS" ]] ;then
 		x=0;y=0;z=0;
+        fi
 	if [ -z $x ] || [ -z $y ] || [ -z $z ];then
 	  echo "Enter the x-coordinate for docking."
 	  read x
