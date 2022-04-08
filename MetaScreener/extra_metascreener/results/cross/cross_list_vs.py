@@ -99,10 +99,11 @@ name_out = name_out[:-1]
 if args.output == '':
     prefix_out = os.path.basename(args.folder[0])
     prefix_out = prefix_out[prefix_out.find(first_sw) + len(first_sw):]
+    file_out = FORMAT_OUT.format(name_out, prefix_out)
 else:
-    prefix_out = '_' + args.output
+    file_out = args.output
 
-file_out = FORMAT_OUT.format(name_out, prefix_out)
+
 
 header = " Rank ".join(all.keys()) + " Rank Molecule"
 header = ", ".join(all.keys())
