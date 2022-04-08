@@ -87,7 +87,7 @@ case `printf "%s" "$option" | tr '[:lower:]' '[:upper:]'` in
     if [[ "$out" == "no_out" ]];then echo -e "\e[31mERROR: Output Missing.\e[0m";ayuda;fi
     lst="lst_VS_"$(basename ${receptor} | cut -f 1 -d ".")".txt"
     cross="${simg} python ${extra_metascreener}/results/cross/cross_list_vs.py ${folders} -o ${lst}"
-    join="${simg} python ${extra_metascreener}/results/join/join_cl_json_vs_session.py -d ${folders} -o ${out} -r ${receptor} -v -f ${lst})"
+    join="${simg} python ${extra_metascreener}/results/join/join_cl_json_vs_session.py -d ${folders} -o ${out} -r ${receptor} -v -f ${lst}"
     ;;
   LS )
     join="${simg} python ${extra_metascreener}/results/join/join_ls_sessions.py ${folders} -c ${cutoff}"
