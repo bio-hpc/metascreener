@@ -149,13 +149,15 @@ check_jobs()
 
 check_histograms()
 {
-  if [ "$histograms" == "N/A" ] || [  -z "$histograms" ] ;then
-    echo "Do you want to make an analysis of the results (pymol session, plip interaction, postview graphs, ...)?"
-    read response
-    case `printf "%s" "$response" | tr '[:lower:]' '[:upper:]'` in
-      Y|YES ) histograms="y"; allComand="${allComand} -hi y";;
-      * ) ;;
-    esac
+  if [ $software != "LS"  ];then
+    if [ "$histograms" == "N/A" ] || [  -z "$histograms" ] ;then
+      echo "Do you want to make an analysis of the results (pymol session, plip interaction, postview graphs, ...)?"
+      read response
+      case `printf "%s" "$response" | tr '[:lower:]' '[:upper:]'` in
+        Y|YES ) histograms="y"; allComand="${allComand} -hi y";;
+        * ) ;;
+      esac
+    fi
   fi
 }
 
