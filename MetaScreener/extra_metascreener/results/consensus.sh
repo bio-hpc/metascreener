@@ -27,7 +27,7 @@ function ayuda()
         echo -e "${PURPLE}____________________________________________________${NONE} "
         printHelp "o" "N" "Option [ BD | VS | LS ]."
         printHelp "f" "N" "String with folder list or folder prefix. Only LS."
-        printHelp "r" "O" "Receptor. Necesary for VS and BD)."
+        printHelp "r" "O" "Receptor (Necesary for VS and BD)."
         printHelp "c" "O" "Cutoff (only LS [0-1])."
         printHelp "out" "O" "Folder output Don't use name with \"_\". Necesary for VS and BD."
         printHelp "cl" "O" "String with options to launch in the cluster. For example: \"-p standard --time 5:00:00 ...\""
