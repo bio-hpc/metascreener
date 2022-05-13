@@ -172,7 +172,6 @@ def params():
     parser.add_argument('-r', '--receptor', required=True, type=argparse.FileType('r'), help='receptor')
     parser.add_argument('-o', '--output', required=True, help='Output folder')
     parser.add_argument('-m', '--max_results', default=100, help='Max Results', type=int)
-    parser.add_argument('-p', '--pse', default=False, help='Copy pse', action='store_true')
     parser.add_argument('-v', '--verbose', help='Verbose', action='store_true')
 
     return parser.parse_args()
@@ -275,8 +274,6 @@ if __name__ == "__main__":
     args.output = '{}_{}'.format(args.output, datetime.date.today())
     with open(args.file.name) as f:
         header = f.readline().strip().replace(',', '').split(" ")
-    if args.pse:
-        FILE_EXT.append('.pse')
     out_molecs = join(args.output, 'Molecules', '')
     make_folder(args.output)
     make_folder(out_molecs)
