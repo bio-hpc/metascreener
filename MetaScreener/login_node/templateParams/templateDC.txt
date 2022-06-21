@@ -1,0 +1,18 @@
+#VINA 
+#LanzNombre:QS - QSAR with dragon
+#LanzExtensionProtQ:.csv
+#LanzExtensionligB:.mol2
+#lanzOptions:VS
+#LanzCoordX:0
+#LanzCoordY:0
+#LanzCoordZ:0
+#LanzGrid:N
+#LanzCores:4
+#LanzTimeExecution:900
+#LanzMem:1G
+#lanzSizeGridX:30
+#lanzSizeGridY:30
+#lanzSizeGridZ:30
+#lanzTimeOut:Y
+#lanzCreateResumen:Y
+#defecto::param con condicion::parametro::leyenda
