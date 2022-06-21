@@ -30,7 +30,9 @@ rm singularity/singularity.zip
    You can get an Academic license in http://www.moltech.ru/leadfinder/versions.html.
 3. **LS LigandScout** V4.4.7:
    Commercial software. License and software required(copy in "metascreener/MetaScreener/external_sw/ligandScout/").    
-
+4. **DC Dragon** v.6.0.38:
+   Commercial software. License and software required(copy in "metascreener//MetaScreener/external_sw/dragon/").
+   
 ### Aditional Commercial software
 1. **Poseview [Required ChemAxon]**:  generates publication-quality 2D structure-diagrams of protein-ligand complexes.
    Copy the software in "metascreener/MetaScreener/external_sw/poseview/" (Settings.pxx is provided).
