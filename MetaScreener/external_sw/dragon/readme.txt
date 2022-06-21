@@ -1,0 +1,1 @@
+Necessary license and software. Dragon v.6.0.38.
