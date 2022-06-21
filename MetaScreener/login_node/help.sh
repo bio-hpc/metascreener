@@ -248,7 +248,9 @@ case $option in
 	LS)
 		printOp
 		printExample "${name_metascreener} -t targets/PHM_Migrastatin_and_Dorrigocin_FAST.pmz -s LS -q queries/10-lig-zinc/ -o VS -j 2";;
-
+     DC)
+          printOp
+          printExample "${name_metascreener} -t targets/FDB_v10_mol2_name.csv -s DC -q queries/10-lig-zinc/ -o VS -j 1";;
 	AD)
 		printOp
 		printExample "${name_metascreener} -t targets/1le0.pdbqt -s AD -q queries/test/GLA.pdbqt -o BD -j 5 -prp PDBQT_ADT_PROT -prl PDBQT_ADT_LIG "

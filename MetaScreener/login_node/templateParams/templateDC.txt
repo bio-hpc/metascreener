@@ -1,5 +1,5 @@
-#VINA 
-#LanzNombre:QS - QSAR with dragon
+#DRAGON 
+#LanzNombre:DC - Descriptor LBVS with dragon
 #LanzExtensionProtQ:.csv
 #LanzExtensionligB:.mol2
 #lanzOptions:VS
@@ -16,3 +16,4 @@
 #lanzTimeOut:Y
 #lanzCreateResumen:Y
 #defecto::param con condicion::parametro::leyenda
+

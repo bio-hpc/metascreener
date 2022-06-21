@@ -140,7 +140,7 @@ function get_histogram()
 	echo "date +\"%s   %c\" 1>&2"							>>${folder_templates_jobs}template_get_hystogram.sh
 	echo "${modules_get_histogram}"							>>${folder_templates_jobs}template_get_hystogram.sh
 
-	if [ $software != "LS" ];then
+  if [ $software != "LS" ] && [ $software != "DC" ] ;then
 
     if [[ $target_pdb == "no_target" ]];then
       echo "singularity exec --bind $bind ${PWD}/singularity/metascreener.simg python ${path_analize_results}get_histogram_picture.py --prog=$software --opt=$option -i ${folder_experiment} -p $target -l $query --rf $rf --rb $rb --profile ${profile} -d $debug">>${folder_templates_jobs}template_get_hystogram.sh
@@ -155,16 +155,17 @@ function get_histogram()
     fi
     echo "find ${folder_experiment} -name \${pml} -execdir singularity exec --bind $bind \$PWD/singularity/metascreener.simg pymol -c -q -k -Q "{}" \;">>${folder_templates_jobs}template_get_hystogram.sh
     echo "find ${folder_experiment} -name \`basename ${folder_experiment}\`.pse -exec cp "{}" . \;">>${folder_templates_jobs}template_get_hystogram.sh
-
     echo "python ${path_extra_metascreener}used_by_metascreener/get_csv.py ${folder_experiment}" >>${folder_templates_jobs}template_get_hystogram.sh
 
   # For LS only needs a summary in .csv
-  else
+  elif [ $software == "LS" ];then
     echo "singularity exec --bind $bind ${PWD}/singularity/metascreener.simg python ${path_extra_metascreener}results/join/join_ls_sessions.py ${folder_experiment} -q $query -s " >>${folder_templates_jobs}template_get_hystogram.sh
+  else
+    rm ${folder_templates_jobs}template_get_hystogram.sh
+    exit
   fi
 
-  echo " sh ${path_extra_metascreener}used_by_metascreener/get_time_resume.sh ${folder_out_jobs} >> ${folder_experiment}time.txt">>${folder_templates_jobs}template_get_hystogram.sh
-
+     echo " sh ${path_extra_metascreener}used_by_metascreener/get_time_resume.sh ${folder_out_jobs} >> ${folder_experiment}time.txt">>${folder_templates_jobs}template_get_hystogram.sh
 	echo "mv ${folder_templates_jobs}template_get_hystogram.sh ${folder_jobs_done}">>${folder_templates_jobs}template_get_hystogram.sh
 	echo "echo \"end job\" 1>&2">>${folder_templates_jobs}template_get_hystogram.sh
 	echo "date +\"%s   %c\" 1>&2">>${folder_templates_jobs}template_get_hystogram.sh

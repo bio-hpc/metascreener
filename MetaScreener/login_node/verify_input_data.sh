@@ -76,7 +76,7 @@ check_technique()
     read option
     case `printf "%s" "$option" | tr '[:lower:]' '[:upper:]'` in
       SBVS|VS ) option="VS";;
-      LBVS ) option="VS"; software="LS";;
+      LBVS ) option="VS";;
       BD ) option="BD";;
       * ) ;;
     esac
@@ -87,10 +87,11 @@ check_technique()
 check_sw()
 {
   if [ "$1" == "N/A" ] || [  -z "$1" ] ;then
-    echo "Enter a software [ AD, LF, LS ]"
+    echo "Enter a software [ AD, DC, LF, LS ]"
     read sw
     case `printf "%s" "$sw" | tr '[:lower:]' '[:upper:]'` in
       AD ) software="AD";;
+      DC ) software="DC";;
       LF ) software="LF";;
       LS ) software="LS";;
       * ) ;;
@@ -149,15 +150,13 @@ check_jobs()
 
 check_histograms()
 {
-  if [ $software != "LS"  ];then
-    if [ "$histograms" == "N/A" ] || [  -z "$histograms" ] ;then
-      echo "Do you want to make an analysis of the results (pymol session, plip interaction, postview graphs, ...)?"
-      read response
-      case `printf "%s" "$response" | tr '[:lower:]' '[:upper:]'` in
-        Y|YES ) histograms="y"; allComand="${allComand} -hi y";;
-        * ) ;;
-      esac
-    fi
+  if [ "$histograms" == "N/A" ] || [  -z "$histograms" ] ;then
+    echo "Do you want to make an analysis of the results (pymol session, plip interaction, postview graphs, ...)?"
+    read response
+    case `printf "%s" "$response" | tr '[:lower:]' '[:upper:]'` in
+      Y|YES ) histograms="y"; allComand="${allComand} -hi y";;
+      * ) ;;
+    esac
   fi
 }
 
@@ -389,6 +388,14 @@ if [[ ${software} == "LF" ]] ;then
     exit
   fi
 fi
+
+if [[ ${software} == "DC" ]] ;then
+  if [[ ! -f "${ext_sw}dragon/dragon6shell" ]]; then
+    echo -e "${RED} Error: ${ext_sw}dragon/dragon6shell doesn't exist${NONE}"
+    exit
+  fi
+fi
+
 
 debugB "_________________________________________Input Data________________________________________"
 debugB ""
