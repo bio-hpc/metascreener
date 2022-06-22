@@ -80,7 +80,7 @@ case `printf "%s" "$option" | tr '[:lower:]' '[:upper:]'` in
     if [[ "$receptor" == "no_receptor" ]];then echo -e "\e[31mERROR: Receptor Missing.\e[0m";ayuda;fi
     if [[ "$out" == "no_out" ]];then echo -e "\e[31mERROR: Output Missing.\e[0m";ayuda;fi
     cross="${simg} python ${extra_metascreener}/results/cross/cross_list_bd.py ${folders}"
-    join="${simg} python ${extra_metascreener}/results/join/join_cl_json_bd_session.py ${receptor} $(basename ${receptor} | cut -f 1 -d '_')*.json ${out}"
+    join="${simg} python ${extra_metascreener}/results/join/join_cl_json_bd_session.py ${receptor} $(basename ${receptor} | cut -f 1 -d '.')*.json ${out}"
     ;;
   VS )
     if [[ "$receptor" == "no_receptor" ]];then echo -e "\e[31mERROR: Receptor Missing.\e[0m";ayuda;fi
