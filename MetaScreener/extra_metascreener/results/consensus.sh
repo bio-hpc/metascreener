@@ -107,7 +107,7 @@ if [[ "$cluster_opt" == "sequential" ]];then
     do
       echo "cmd.save(\"$(basename ${pml} ".pml").pse\")" >> $pml
     done
-    find *${out}* -name *.pml -execdir ${simg} pymol -c -q -k -Q {} \;
+    find *${out}* -name *.pml -execdir ${simg} pymol -c -q -k -Q {} \; > /dev/null
     folder=$(find . -type d -name "${out}_*")
     tar -cf ${folder}.tar.gz ${folder}
   fi
@@ -125,7 +125,7 @@ else
     echo "do" >> $name_job
     echo "  echo \"cmd.save(\\\"\$(basename \${pml} \\\".pml\\\").pse\\\")\" >> \$pml" >> $name_job
     echo "done" >> $name_job
-    echo "find *${out}* -name *.pml -execdir ${simg} pymol -c -q -k -Q {} \;" >> $name_job
+    echo "find *${out}* -name *.pml -execdir ${simg} pymol -c -q -k -Q {} \; > /dev/null" >> $name_job
     echo "folder=\$(find . -type d -name \"${out}_*\")" >> $name_job
     echo "tar -cf \${folder}.tar.gz \${folder}" >> $name_job
   fi
