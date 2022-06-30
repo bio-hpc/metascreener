@@ -119,7 +119,6 @@ printOp()
 {
 	printTitle
 	printHelpAux "-t"  "`getOptions "\#LanzExtensionProtQ"`"  "Receptor or target's file."
-	printHelpAux "-pdb"  "[ .pdb ]"  "Receptor or target's file in pdb format (Usesfull if plip interactions shows any problem)."
 	printHelpAux "-q"  "`getOptions "\#LanzExtensionligB"`"  "Ligand's file or query's directory."
 	printHelpAux "-s" "[ $option ]"   "Software."
 	printHelpAux "-o" "`getOptions "\#lanzOptions"`"   "Options available."
@@ -172,7 +171,7 @@ if [  -z "$option" ];then
 	printGlobalHelp "prl" "N" "" "Protocol used to prepare ligand/s."
 	printGlobalHelp "hi" "O" "" "At the end of calculations generate graphs and pymol session. "
   	printGlobalHelp "thi" "O" "" "Time allocated to generate graphs and pymol session (Default 05:00:00). Only works if -hi y."
- 	 printGlobalHelp "mhi" "O" "" "Memory reserved to generate graphs and pymol session (Default 500M). Only works if -hi y."
+ 	printGlobalHelp "mhi" "O" "" "Memory reserved to generate graphs and pymol session (Default 500M). Only works if -hi y."
 	printGlobalHelp "v" "O" "" "Show version of metascreener."
 	printGlobalHelp "h" "O" " [ Opt | SW ]" "Show help or specific help for a technique or a program." 
 	printGlobalHelp "h" "O" " [ allsw ]" "Show all programs (not all software work)." 
@@ -277,6 +276,7 @@ ligand_out.pdbqt -A 'hydrogens' -U \'\'${NONE}"
 
 	LF)
 		printOp
+		printHelpAux "-pdb"  "[ .pdb ]"  "Receptor or target's file in pdb format (Usesfull if plip interactions shows any problem)."
 		printExample "Example: ${name_metascreener} -t targets/1le0.pdbqt -s LF -q queries/test/GLA.pdbqt -o BD -j 5";;
 
 	PDBQT)
