@@ -144,12 +144,8 @@ funcionFlexibilidad()
 			mkdir -p $dirFL
 			fl=$(python2 ${path_extra_metascreener}used_by_metascreener/get_flex_for_CA.py ${CWD}${target} $num_amino_acid | tee ${dirFL}/${number_execution}flex_str_${name_target}_${chain}_${num_amino_acid}.txt)
 		else
-			if [ -f ${CWD}$flex ];then
-				fl=`cat ${CWD}targets/${name_target}F.txt  |head -1|awk '{print \$2}'`  #head -1 no se si se usa  #Obtengo los  residuos que deben ser flexibles en la target#head -1 no se si se usa
-			else
-				echo python ${path_extra_metascreener}used_by_metascreener/distanceXYZ.py $target $x $y $z $flex
-				fl=`python ${path_extra_metascreener}used_by_metascreener/distanceXYZ.py $target $x $y $z $flex`
-			fi
+			echo python ${path_extra_metascreener}used_by_metascreener/distanceXYZ.py $target $x $y $z $flex
+			fl=`python ${path_extra_metascreener}used_by_metascreener/distanceXYZ.py $target $x $y $z $flex`
 			
 			aux=${chain}${name_target}-${nomLigando}-${x}-${y}-${z}-${num_amino_acid}
 			dirFL=${directorio}${aux}
