@@ -171,8 +171,8 @@ if [  -z "$option" ];then
 	printGlobalHelp "prp" "N" "" "Protocol used to prepare receptor or query."
 	printGlobalHelp "prl" "N" "" "Protocol used to prepare ligand/s."
 	printGlobalHelp "hi" "O" "" "At the end of calculations generate graphs and pymol session. "
-  printGlobalHelp "thi" "O" "" "Time allocated to generate graphs and pymol session (Default 05:00:00). Only works if -hi y."
-  printGlobalHelp "mhi" "O" "" "Memory reserved to generate graphs and pymol session (Default 500M). Only works if -hi y."
+  	printGlobalHelp "thi" "O" "" "Time allocated to generate graphs and pymol session (Default 05:00:00). Only works if -hi y."
+ 	 printGlobalHelp "mhi" "O" "" "Memory reserved to generate graphs and pymol session (Default 500M). Only works if -hi y."
 	printGlobalHelp "v" "O" "" "Show version of metascreener."
 	printGlobalHelp "h" "O" " [ Opt | SW ]" "Show help or specific help for a technique or a program." 
 	printGlobalHelp "h" "O" " [ allsw ]" "Show all programs (not all software work)." 
@@ -188,7 +188,7 @@ if [  -z "$option" ];then
 	echo -e "${PURPLE}____________________________________________________${NONE} "
 	printGlobalHelp "qu" "N" "" "Set a specific partition for the resource allocation. We recommend the avaliable partition with more idle nodes (Check with \"sinfo -s\")."
 	printGlobalHelp "pj" "O" "" "Set a project or an account for the jobs."
-  printGlobalHelp "td" "O" "" "Set execution time of a program. Default ./ms.sh -h software (Not all programs have this option)."
+  	printGlobalHelp "td" "O" "" "Set execution time of a program. Default ./ms.sh -h software (Not all programs have this option)."
 	printGlobalHelp "tj" "O" "" "Time allocated to the job. Default multiply -td  by runs in a job. Format 00:05:00."
 	printGlobalHelp "mm" "O" "" "Memory reserved for a job."
 	printGlobalHelp "j" "O" "" "Number of jobs that will be sent to supercomputer."
@@ -234,7 +234,7 @@ case $option in
 		printHelpAux "-o|-O" "[ BD ]" "Option (VirtualScreening VS o BlindDoking BD)."
 		printExampleTechnique "Example: ${name_metascreener} -t targets/1le0.pdbqt -s AD -q queries/test/GLA.pdbqt -o BD -j 5 -prp PDBQT_ADT_PROT -prl PDBQT_ADT_LIG ";;
 
-  VS)
+ 	VS)
 		printTitletechnique "Virtual Screening"
 		printHelpAux "-t|-T" "[ mol2 | pdbqt ]"  "Receptor to check."
 		printHelpAux "-q|-Q" "[ mol2 | pdbqt ]"  "Ligand to check."
@@ -248,9 +248,12 @@ case $option in
 	LS)
 		printOp
 		printExample "${name_metascreener} -t targets/PHM_Migrastatin_and_Dorrigocin_FAST.pmz -s LS -q queries/10-lig-zinc/ -o VS -j 2";;
-     DC)
-          printOp
-          printExample "${name_metascreener} -t targets/FDB_v10_mol2_name.csv -s DC -q queries/10-lig-zinc/ -o VS -j 1";;
+        DC)
+          	printOp
+          	printExample "${name_metascreener} -t targets/FDB_v10_mol2_name.csv -s DC -q queries/10-lig-zinc/ -o VS -j 1";;
+	S3)
+          	printOp
+          	printExample "${name_metascreener} -t queries/ADPF.ser -q queries/ligThomas/ -o VS -s S3 -j 10";;	
 	AD)
 		printOp
 		printExample "${name_metascreener} -t targets/1le0.pdbqt -s AD -q queries/test/GLA.pdbqt -o BD -j 5 -prp PDBQT_ADT_PROT -prl PDBQT_ADT_LIG "
@@ -276,9 +279,6 @@ ligand_out.pdbqt -A 'hydrogens' -U \'\'${NONE}"
 		printOp
 		printExample "Example: ${name_metascreener} -t targets/1le0.pdbqt -s LF -q queries/test/GLA.pdbqt -o BD -j 5";;
 
-	#
-	#	Conversiones
-	#
 	PDBQT)
 		printOp
 		printExample "Example: ${name_metascreener} -q queries/natural_products_mol2/ -o VS -s PDBQT -j 100"
