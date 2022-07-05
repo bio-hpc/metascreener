@@ -1,8 +1,3 @@
-
-212
-MetaScreener/cluster_nodes/execute_scripts/scriptAD.sh
-@@ -0,0 +1,212 @@
-#!/usr/bin/env bash
 #_______________________________________________________________________________________________________________________
 #   Author: Jorge de la Peña García
 #   Author: Carlos Martínez Cortés
