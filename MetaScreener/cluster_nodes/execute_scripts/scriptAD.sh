@@ -1,6 +1,7 @@
+#!/usr/bin/env bash
 #_______________________________________________________________________________________________________________________
-#   Author: Jorge de la Peña García
-#   Author: Carlos Martínez Cortés
+#   Author: Jorge de la Peña Garcia
+#   Author: Carlos Martinez Cortes
 #   Email:  cmartinez1@ucam.edu
 #   Description: Docking with Vina
 # ______________________________________________________________________________________________________________________
@@ -35,18 +36,13 @@ read_params()
 	if [ $refined_energy != "AD" ] && [ $refined_energy != "GR" ] && [ $refined_energy != "QU" ]  && [ $refined_energy != "ALL" ];then
 		echo "ERROR: bad -refined_energy $refined_energy"
 		exit
-	fi
-
-	opt_aux=`echo "${opt_aux/-refined_energy $refined_energy/}"`
-
-
+	fi	
+	opt_aux=`echo "${opt_aux/-refined_energy $refined_energy/}"`	
 }
 execute_script()
 {
 	read_params 
-
-	TAG=`echo $(basename $BASH_SOURCE)`
-
+	TAG=`echo $(basename $BASH_SOURCE)`	
 	checkAminChainFlex
 	debugY "$TAG option: ${option} flexibilidad: ${flexFile} chain: ${chain} "
 	tokken='\-----+------------+----------+----------'
@@ -59,58 +55,42 @@ execute_script()
 					execute "funcionAdScore"
 				fi
 				coords=${x}":"${y}":"${z}
-				create_out
 			;;
 			BD*)
 				execute "funcionAdScore"
-				execute "coords=\"`${path_extra_metascreener}used_by_metascreener/get_center_ligand.py ${out_molec}.pdbqt`\""
-				create_out
+				execute "coords=\"`${path_extra_metascreener}used_by_metascreener/get_center_ligand.py ${out_molec}.pdbqt`\""		
 			;;
 		esac
 	fi
+  for i in `seq 1 $numPoses` ;do
+	  if [ "$numPoses" -eq "1" ];then
+	    create_out
+	  else
+	    create_out "_${i}"
+	  fi
+	done
 }
 function create_out()
 {
-	gauss_1=`cat ${out_energies}.en | grep "gauss\ 1"|awk -v vg="$vGauss1" -F: '{print $2*vg}'`
-	gauss_2=`cat ${out_energies}.en | grep "gauss\ 2"|awk -v vg="$vGauss2" -F: '{print $2*vg}'`
-	v_repulsion=`cat ${out_energies}.en | grep "repulsion"|tail -1|awk -v vg="$vRepulsion" -F: '{print $2*vg}'`
-	v_hydrophobic=`cat ${out_energies}.en | grep "hydrophobic"|tail -1|awk -v vg="$vHydrophobic" -F: '{print $2*vg}'`
-	v_hydrogen=`cat ${out_energies}.en | grep "Hydrogen"|tail -1|awk -v vg="$vHydrogen" -F: '{print $2*vg}'`
+	gauss_1=`cat ${out_energies}${1}.en | grep "gauss\ 1"|awk -v vg="$vGauss1" -F: '{print $2*vg}'`
+	gauss_2=`cat ${out_energies}${1}.en | grep "gauss\ 2"|awk -v vg="$vGauss2" -F: '{print $2*vg}'`
+	v_repulsion=`cat ${out_energies}${1}.en | grep "repulsion"|tail -1|awk -v vg="$vRepulsion" -F: '{print $2*vg}'`
+	v_hydrophobic=`cat ${out_energies}${1}.en | grep "hydrophobic"|tail -1|awk -v vg="$vHydrophobic" -F: '{print $2*vg}'`
+	v_hydrogen=`cat ${out_energies}${1}.en | grep "Hydrogen"|tail -1|awk -v vg="$vHydrogen" -F: '{print $2*vg}'`
 	v_rot=`cat ${out_molec}.pdbqt |tail -1 | awk -v vg="$vRot" '{print $2*vg}'`
 	file_result=${out_molec}.pdbqt
-	execute "global_score=\"` cat ${out_energies}.en |grep Affinity:|awk '{print $2}'`\""	
+	execute "global_score=\"` cat ${out_energies}${1}.en |grep Affinity:|awk '{print $2}'`\""
 	graph_global_score=${gauss_1}:${gauss_2}:${v_repulsion}:${v_hydrophobic}:${v_hydrogen}:${v_rot}:${global_score}
-	star_energies_atom=`cat ${out_energies}.en |grep -n "___________" |awk -F: '{print $1}' |head  -1`
-	end_energies_atom=`cat ${out_energies}.en |grep -n "___________" |awk -F: '{print $1}' |head  -2 |tail -1`
-	graph_atoms_score=`cat ${out_energies}.en|sed -n "$star_energies_atom,$end_energies_atom p" |grep -v "\_____" | \
+	star_energies_atom=`cat ${out_energies}${1}.en |grep -n "___________" |awk -F: '{print $1}' |head  -1`
+	end_energies_atom=`cat ${out_energies}${1}.en |grep -n "___________" |awk -F: '{print $1}' |head  -2 |tail -1`
+	graph_atoms_score=`cat ${out_energies}${1}.en|sed -n "$star_energies_atom,$end_energies_atom p" |grep -v "\_____" | \
 	 awk -v a="${vGauss1}" -v b="${vGauss2}" -v c="${vRepulsion}" -v d="${vHydrophobic}" -v e="${vHydrogen}" '{print $7*a":"$8*b":"$9*c":"$10*d":"$11*e "\\\n"}'`
 	graph_atoms_score=`echo $graph_atoms_score |sed 's/\ //g'`
-	graph_atoms_type=`cat ${out_energies}.en|sed -n "$star_energies_atom,$end_energies_atom p" |grep -v "\_____" | awk '{print $2"_"$1":"}'`
+	graph_atoms_type=`cat ${out_energies}${1}.en|sed -n "$star_energies_atom,$end_energies_atom p" |grep -v "\_____" | awk '{print $2"_"$1":"}'`
 	graph_atoms_type=`echo $graph_atoms_type |sed 's/\ //g'`
 
-	if [ $refined_energy  == "ALL" ];then
-	    refined_dm
-	    refined_ad
-	elif [ $refined_energy  == "GR" ];then
-	    refined_dm
+  execute "standar_out_file ${1}"
 
-	elif [ $refined_energy  == "QU" ];then
-        refined_qu
-	fi
-
-    execute "standar_out_file"
-
-}
-refined_dm()
-{
-	python2.7 ${path_extra_metascreener}/used_by_metascreener/get_energy_gromcas.py ${target} ${out_molec}.pdbqt > ${out_energies}".enmd"
-    aux=`cat ${out_energies}".enmd" |tail -1`
-	global_score_md=`echo $aux | cut -d ":" -f 2`
-}
-refined_qu()
-{
-    python2.7 ${path_extra_metascreener}/used_by_metascreener/get_energy_xtb.py ${target} ${out_molec}.pdbqt > ${out_energies}".enqu"
-	global_score_qu=`cat ${out_energies}".enqu" |grep TOTAL |awk '{print $4}'`
 }
 
 checkAminChainFlex()
@@ -149,15 +129,13 @@ funcionFlexibilidad()
 				echo python ${path_extra_metascreener}used_by_metascreener/distanceXYZ.py $target $x $y $z $flex
 				fl=`python ${path_extra_metascreener}used_by_metascreener/distanceXYZ.py $target $x $y $z $flex`
 			fi
-
+			
 			aux=${chain}${name_target}-${nomLigando}-${x}-${y}-${z}-${num_amino_acid}
 			dirFL=${directorio}${aux}
 			if [ -d  "$dirFL" ] ;then
 				rm -r $dirFL
 			fi
 			mkdir -p $dirFL
-
-
 			fl=$(cat ${CWD}targets/${name_target}F.txt  | head -1 | awk '{print \$2}' | tee ${dirFL}/flex_str_${name_target}_${chain}_${num_amino_acid}.txt)
 		fi
 
@@ -170,8 +148,6 @@ funcionFlexibilidad()
 
 funcionAdScore()
 {
-
-
 	if [ "${flex}" == "N/A" ] && [ "${flexFile}" == "N/A" ];then
 
 		debugY "$TAG: Rigido numPoses: $numPoses"

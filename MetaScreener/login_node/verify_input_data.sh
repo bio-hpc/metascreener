@@ -356,6 +356,11 @@ if [[ $valid_option == false ]];then
     f_help
 fi
 
+if [ $numPoses -ne 1 ] && [[ ${option} == "BD" ]];then
+    txtError="Error Number of conformations for output docking not valid for $option"
+    f_help
+fi
+
 validate_ext_query
 OpcionesExtras
 verifyXYZ

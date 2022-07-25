@@ -41,7 +41,7 @@ function standar_out_file()
 	out_put=${out_put}${graph_atoms_field}${DELIMITER}
 	out_put=${out_put}${graph_atoms_type}${DELIMITER}
 	out_put=${out_put}${graph_atoms_score}${DELIMITER}
-	python ${path_cluster_nodes}standar_out_put.py "${out_energies}.json" "$out_put"
+	python ${path_cluster_nodes}standar_out_put.py "${out_energies}${1}.json" "$out_put"
 }
 
 #
@@ -86,5 +86,4 @@ out_molec=${folder_molec}${out_prefix}
 out_energies=${folder_energies}${out_prefix}
 execute "source ${path_cluster_nodes}execute_scripts/script${software}.sh"
 execute "execute_script"
-
 

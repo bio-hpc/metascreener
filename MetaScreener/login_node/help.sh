@@ -200,7 +200,7 @@ if [  -z "$option" ];then
 	echo ""
 	echo -e "${PURPLE}Docking Options${NONE} "
 	echo -e "${PURPLE}____________________________________________________${NONE} "
-	printGlobalHelp "nc" "O" "" "Number of conformations for output docking."
+	printGlobalHelp "nc" "O" "" "Number of conformations for output docking (only for VS)."
 	printGlobalHelp "x" "D" "" "X coordinate of the center of grid."
 	printGlobalHelp "y" "D" "" "Y coordinate of the center of grid."
 	printGlobalHelp "z" "D" "" "Z coordinate of the center of grid."
