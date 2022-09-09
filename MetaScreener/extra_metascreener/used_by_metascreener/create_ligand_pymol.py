@@ -177,5 +177,5 @@ elif json_simulation['option'] == "BD" and profile == "UNCLUSTERED_BD":
         score, json_simulation['file_name'], str_interactions))
     
 elif json_simulation['option'] == "VS":
-    pml.append("cmd.group('{0}','{1} {2}'  )\n".format(json_simulation['file_name'] + " " + str(score),
+    pml.append("cmd.group('{0}','{1} {2}'  )\n".format(json_simulation['file_name'] + " " + str(score),json_simulation['file_name'], str_interactions))
 
