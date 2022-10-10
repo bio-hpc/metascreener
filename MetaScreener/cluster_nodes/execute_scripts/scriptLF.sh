@@ -78,13 +78,24 @@ function create_out()
 }
 function  graph_global_score
 {
-    n_lines=(`cat ${out_energies}_$1.eng |grep -A 13 "Total Energy components :" |wc -l`)
-    if [ $n_lines == 14 ];then
-      g_ener=(`cat ${out_energies}_$1.eng |grep -A 13 "Total Energy components :" |tail -13`)
-      graph_global_score=${g_ener[1]}:${g_ener[5]}:${g_ener[7]}:${g_ener[9]}:${g_ener[11]}:${g_ener[19]}:${g_ener[3]}:${g_ener[21]}:${g_ener[25]}:${g_ener[30]}
+    if [ ${numPoses} -gt 1 ];then
+      n_lines=(`cat ${out_energies}_$1.eng |grep -A 13 "Total Energy components :" |wc -l`)
+      if [ $n_lines == 14 ];then
+        g_ener=(`cat ${out_energies}_$1.eng |grep -A 13 "Total Energy components :" |tail -13`)
+        graph_global_score=${g_ener[1]}:${g_ener[5]}:${g_ener[7]}:${g_ener[9]}:${g_ener[11]}:${g_ener[19]}:${g_ener[3]}:${g_ener[21]}:${g_ener[25]}:${g_ener[30]}
+      else
+        g_ener=(`cat ${out_energies}_$1.eng |grep -A 11 "Total Energy components :" |tail -11`)
+        graph_global_score=${g_ener[1]}:${g_ener[5]}:${g_ener[7]}:${g_ener[9]}:${g_ener[11]}:${g_ener[13]}:${g_ener[3]}:${g_ener[15]}:${g_ener[19]}:${g_ener[24]}
+      fi
     else
-      g_ener=(`cat ${out_energies}_$1.eng |grep -A 11 "Total Energy components :" |tail -11`)
-      graph_global_score=${g_ener[1]}:${g_ener[5]}:${g_ener[7]}:${g_ener[9]}:${g_ener[11]}:${g_ener[13]}:${g_ener[3]}:${g_ener[15]}:${g_ener[19]}:${g_ener[24]}
+      n_lines=(`cat ${out_energies}.eng |grep -A 13 "Total Energy components :" |wc -l`)
+      if [ $n_lines == 14 ];then
+        g_ener=(`cat ${out_energies}.eng |grep -A 13 "Total Energy components :" |tail -13`)
+        graph_global_score=${g_ener[1]}:${g_ener[5]}:${g_ener[7]}:${g_ener[9]}:${g_ener[11]}:${g_ener[19]}:${g_ener[3]}:${g_ener[21]}:${g_ener[25]}:${g_ener[30]}
+      else
+        g_ener=(`cat ${out_energies}.eng |grep -A 11 "Total Energy components :" |tail -11`)
+        graph_global_score=${g_ener[1]}:${g_ener[5]}:${g_ener[7]}:${g_ener[9]}:${g_ener[11]}:${g_ener[13]}:${g_ener[3]}:${g_ener[15]}:${g_ener[19]}:${g_ener[24]}
+      fi
     fi
 }
 function graph_atom_score
