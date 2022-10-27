@@ -60,7 +60,7 @@ execute_script()
 function create_out()
 {
     file_result=${out_molec}.mol2
-    execute "global_score=\"`cat ${out_energies}.log |grep '^/' | grep -P "mol2\t0\t$1\t" |awk '{print \$4}'`\""
+    execute "global_score=\"`cat ${out_energies}.log |grep '^/' | grep -P "mol2\t0\t$1" |awk '{print \$4}'`\""
     if [ ${numPoses} -gt 1 ];then
       cat ${out_energies}.eng | sed -n "/Detailed energy of pose     $1 :/,/dG of binding/p" > ${out_energies}_$1.eng
     fi
