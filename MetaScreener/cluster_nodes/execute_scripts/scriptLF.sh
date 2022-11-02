@@ -100,12 +100,23 @@ function  graph_global_score
 }
 function graph_atom_score
 {
-    start_ener=`grep -n Name ${out_energies}_$1.eng |head -1 | awk -F: '{print $1}'`
-    start_ener=`expr $start_ener + 1`
-    end_ener=`grep -n Total  ${out_energies}_$1.eng| head -1 |awk -F: '{print $1}'`
-    end_ener=`expr $end_ener - 2`
-    graph_atoms_score=`sed -n "$start_ener,$end_ener p" ${out_energies}_$1.eng |awk '{print $5":"$7":"$8":"$9":"$10":"$11 "\\\n"}'`
-    graph_atoms_score=`echo $graph_atoms_score |sed 's/\ //g'`
-    graph_atoms_type=`sed -n "$start_ener,$end_ener p"  ${out_energies}_$1.eng | awk '{print $1"_"$2":"}'`
-    graph_atoms_type=`echo $graph_atoms_type |sed 's/\ //g'`
+    if [ ${numPoses} -gt 1 ];then
+        start_ener=`grep -n Name ${out_energies}_$1.eng |head -1 | awk -F: '{print $1}'`
+        start_ener=`expr $start_ener + 1`
+        end_ener=`grep -n Total  ${out_energies}_$1.eng| head -1 |awk -F: '{print $1}'`
+        end_ener=`expr $end_ener - 2`
+        graph_atoms_score=`sed -n "$start_ener,$end_ener p" ${out_energies}_$1.eng |awk '{print $5":"$7":"$8":"$9":"$10":"$11 "\\\n"}'`
+        graph_atoms_score=`echo $graph_atoms_score |sed 's/\ //g'`
+        graph_atoms_type=`sed -n "$start_ener,$end_ener p"  ${out_energies}_$1.eng | awk '{print $1"_"$2":"}'`
+        graph_atoms_type=`echo $graph_atoms_type |sed 's/\ //g'`
+    else
+        start_ener=`grep -n Name ${out_energies}.eng |head -1 | awk -F: '{print $1}'`
+        start_ener=`expr $start_ener + 1`
+        end_ener=`grep -n Total  ${out_energies}.eng| head -1 |awk -F: '{print $1}'`
+        end_ener=`expr $end_ener - 2`
+        graph_atoms_score=`sed -n "$start_ener,$end_ener p" ${out_energies}.eng |awk '{print $5":"$7":"$8":"$9":"$10":"$11 "\\\n"}'`
+        graph_atoms_score=`echo $graph_atoms_score |sed 's/\ //g'`
+        graph_atoms_type=`sed -n "$start_ener,$end_ener p"  ${out_energies}.eng | awk '{print $1"_"$2":"}'`
+        graph_atoms_type=`echo $graph_atoms_type |sed 's/\ //g'`
+    fi
 }
