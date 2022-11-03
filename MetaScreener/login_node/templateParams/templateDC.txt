@@ -1,7 +1,7 @@
 #DRAGON 
 #LanzNombre:DC - Descriptor LBVS with dragon
 #LanzExtensionProtQ:.csv
-#LanzExtensionligB:.mol2
+#LanzExtensionligB:.sdf,.mol2
 #lanzOptions:VS
 #LanzCoordX:0
 #LanzCoordY:0
