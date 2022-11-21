@@ -4,7 +4,7 @@
 funcionBlindDocking()
 {
 
-	numFicheros=`python ${path_extra_metascreener}used_by_metascreener/standar_file_coords.py ${CWD}${target} |grep -v "##" |grep ${bd_atom_default} |wc -l`
+	numFicheros=`singularity exec --bind ${PWD} ${PWD}/singularity/metascreener.simg python ${path_extra_metascreener}used_by_metascreener/standar_file_coords.py ${CWD}${target} |grep -v "##" |grep ${bd_atom_default} |wc -l`
 	x=0
 	y=0
 	z=0

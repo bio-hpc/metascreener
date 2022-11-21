@@ -326,7 +326,7 @@ fi
 echo ${software}
 if [ "${extensionesProt}" == ".mol2" ];then
   if ([ ${software} == "LF" ] || [ ${software} == "FB" ] ) && [ ${check_mol2} != "N" ] ;then
-    result_check=`python ${path_extra_metascreener}/used_by_metascreener/check_protein_mol2.py $target`
+    result_check=`singularity exec --bind ${PWD} ${PWD}/singularity/metascreener.simg python ${path_extra_metascreener}/used_by_metascreener/check_protein_mol2.py $target`
     if [ "${result_check}" != "" ];then
         echo -e "\n${result_check}\n"
         read -p "Press enter to continue"
