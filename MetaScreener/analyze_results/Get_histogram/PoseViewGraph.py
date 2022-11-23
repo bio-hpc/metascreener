@@ -33,6 +33,6 @@ class PoseviewGraph(object):
                 self.cfg.ligand_poseview,
                 name_aux,
                 lig_name,
-                posvw_name + "_." + format_out
+                posvw_name + "." + format_out
             )
             print(self.cfg.execute("PoseviewGrpah.py", cmd))

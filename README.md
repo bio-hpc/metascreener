@@ -44,7 +44,7 @@ rm singularity/singularity.zip
 ### extra_metascreener
 It is a directory that contains multiple scripts used or related to metasreener. 
 
-It is recommended to use these scripts with the metascreener singularity image "metascreener / singularity / metascreener.simg". 
+It is recommended to use these pyhton scripts with the metascreener singularity image "metascreener / singularity / metascreener.simg". 
 For instance:
 
 singularity exec singularity/metasreener.simg python MetaScreener/extra_metascreener/convert/conv_to.py
@@ -54,8 +54,8 @@ singularity exec singularity/metasreener.simg python MetaScreener/extra_metascre
 - **saltRemover.py [Required ChemAxon]**: Remove fragments from mol2 file and prints smi without given elements.
 - **frament_mol2.sh**: Define **saltRemover.py** by adding molecules to Cl,Br. Enter separated by commas and without white spaces. Default [Cl,Br].
 #### launchers
-- **launcher_bd.py**: Launch Blind Dockings with AutoDock Vina or Lead Finder from a protein directory and a ligand directory. 
-- **launcher_ls.py**: Launch LigandScout with for 0 to a given number of omit features (default 0 to 5).
+- **launcher_bd.sh**: Launch Blind Dockings with AutoDock Vina or Lead Finder from a protein directory and a ligand directory. 
+- **launcher_ls.sh**: Launch LigandScout with for 0 to a given number of omit features (default 0 to 5).
 #### results
 - **analyse_residues_plip.py**: Script to analyze a set of Blind Docking results by residues.
 - **cross_list_bd.py**: Cluster binding of Blind Docking with different ligands or the same.
