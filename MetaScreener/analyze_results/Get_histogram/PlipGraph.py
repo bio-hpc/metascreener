@@ -28,7 +28,7 @@ class PlipGraph(object):
                     self.cfg.python_exe,
                     self.cfg.ligand_plip,
                     pose.file_ori_target,
-                    prefix_out + pose.ligand_ext,
+                    pose.file_result,
                     prefix_out,
                     self.cfg.file_target_pdb
                 )
@@ -37,7 +37,7 @@ class PlipGraph(object):
                     self.cfg.python_exe,
                     self.cfg.ligand_plip,
                     pose.file_ori_target,
-                    prefix_out + pose.ligand_ext,
+                    pose.file_result,
                     prefix_out,       
-                )            
+                )
             self.cfg.execute("Plip Interactions", cmd)
