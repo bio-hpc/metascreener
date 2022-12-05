@@ -167,8 +167,8 @@ if [  -z "$option" ];then
 	echo -e "            * All software require a license (except AD). You must also put the executables in their MetaScreener/external_software/ directories.${NONE}"
 	printGlobalHelp "se" "O" " [ Y | N ]" "Secuencial Mode Y, queue manager N. ( Default N )."
 	printGlobalHelp "de" "O" " [ 1-10  ]" "Debug mode range[1-10]. (default 0)."
-	printGlobalHelp "prp" "N" "" "Protocol used to prepare receptor or query."
-	printGlobalHelp "prl" "N" "" "Protocol used to prepare ligand/s."
+	printGlobalHelp "prp" "O" "" "Protocol used to prepare receptor or query."
+	printGlobalHelp "prl" "O" "" "Protocol used to prepare ligand/s."
 	printGlobalHelp "hi" "O" "" "At the end of calculations generate graphs and pymol session. "
   	printGlobalHelp "thi" "O" "" "Time allocated to generate graphs and pymol session (Default 05:00:00). Only works if -hi y."
  	printGlobalHelp "mhi" "O" "" "Memory reserved to generate graphs and pymol session (Default 500M). Only works if -hi y."
@@ -231,7 +231,7 @@ case $option in
 		printTitletechnique "Blinding Docking"
 		printOpTchnique
 		printHelpAux "-o|-O" "[ BD ]" "Option (VirtualScreening VS o BlindDoking BD)."
-		printExampleTechnique "Example: ${name_metascreener} -t targets/1le0.pdbqt -s AD -q queries/test/GLA.pdbqt -o BD -j 5 -prp PDBQT_ADT_PROT -prl PDBQT_ADT_LIG ";;
+		printExampleTechnique "Example: ${name_metascreener} -t targets/test/1le0.pdbqt -s AD -q queries/test/GLA.pdbqt -o BD -j 5";;
 
  	VS)
 		printTitletechnique "Virtual Screening"
@@ -255,7 +255,7 @@ case $option in
           	printExample "${name_metascreener} -t queries/ADPF.ser -q queries/ligThomas/ -o VS -s S3 -j 10";;	
 	AD)
 		printOp
-		printExample "${name_metascreener} -t targets/1le0.pdbqt -s AD -q queries/test/GLA.pdbqt -o BD -j 5 -prp PDBQT_ADT_PROT -prl PDBQT_ADT_LIG "
+		printExample "${name_metascreener} -t targets/test/1le0.pdbqt -s AD -q queries/test/GLA.pdbqt -o BD -j 5 -prp PDBQT_ADT_PROT -prl PDBQT_ADT_LIG "
 		echo -e "${GREEN}prepare receptor: 2 ways"
 		
 		echo -e "path=MetaScreener/external_ws/mgltools_x86_64Linux2_latest/"
@@ -277,7 +277,7 @@ ligand_out.pdbqt -A 'hydrogens' -U \'\'${NONE}"
 	LF)
 		printOp
 		printHelpAux "-pdb"  "[ .pdb ]"  "Receptor or target's file in pdb format (Usesfull if plip interactions shows any problem)."
-		printExample "Example: ${name_metascreener} -t targets/1le0.pdbqt -s LF -q queries/test/GLA.pdbqt -o BD -j 5";;
+		printExample "Example: ${name_metascreener} -t targets/test/1le0.pdbqt -s LF -q queries/test/GLA.pdbqt -o BD -j 5";;
 
 	PDBQT)
 		printOp
