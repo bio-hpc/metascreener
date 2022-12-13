@@ -99,14 +99,5 @@ printTitle1 "1" "Open Moe"
 printTitle2 "1.a" "File-> Open->protein.pdb"
 printTitle2 "1.b" "File -> save mol2"
 
-printTitle "FR_LIGAND_NM" "OE_CONVERT LigandPreparation"
-printTitle1 "1" "MetaScreener/external_sw/tools/oe_convert lig.pdb outLig.oeb"
-
-printTitle "FR_RECEPTOR_NM" "OE_CONVERT LigandPreparation"
-printTitle1 "1" "-pdb 4LXZ_HDAC2_FR.pdb -ligand_residue SHH -receptor 4LXZ_HDAC2_FR.oeb"
-
-
-printTitle "GR_ACEPYPE_NM" "ACepype amberTools topol for gromacs (ambersb)"
-printTitle1 "1" "python MetaScreener/external_sw/gromacs/topol/generate_topology.py proyectos/3ua0/3UA0-cured.pdb proyectos/3ua0/ligsC/"
 echo ""
 echo ""
