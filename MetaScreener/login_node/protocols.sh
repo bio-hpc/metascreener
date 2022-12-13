@@ -80,7 +80,7 @@ printTitle2 "1.g" "File -> export"
 printTitle3 "1.g.a" "Chose format (default mdb)"
 printTitle2 "1.h" "File -> save"
 
-printTitle "CONF_OMEGA" "OMEEGA CONFOMATION"
+printTitle "CONF_OMEGA" "OMEGA CONFOMATION"
 printTitle1 "1" "Take library previously prepared by MOE as in Ligand preparation for Docking"
 
 printTitle "AD_RECEPTOR_NM" "MGTools Receptor without modifications"
