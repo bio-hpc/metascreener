@@ -47,12 +47,12 @@ printTitle1 "3" "File -> save -> Write pdbqt"
 printTitle "PDBQT_MGTOOLS_PROT" "MGTOOLS Receptor"
 printTitle1 "1" "We cut into monomers or as appropriate, looking at the info of the PDB using pymol "
 printTitle1 "2" "We use script prepare_receptor: "
-printTitle2 "2.a" "pythonsh prepare_receptor4.py -r receptor.pdbqt -o outReceptor.pdbqt"" -A checkhydrogens"
+printTitle2 "2.a" "./MetaScreener/external_sw/mgltools/bin/pythonsh MetaScreener/external_sw/mgltools/MGLToolsPckgs/AutoDockTools/Utilities24/prepare_receptor4.py -r receptor.pdbqt -o outReceptor.pdbqt"" -A checkhydrogens"
       
 
 printTitle "PDBQT_MGTOOLS_LIG" "MGTOOLS Receptor"
 printTitle1 "1" "We use script prepare_ligand4"
-printTitle2 "1.a" "pythonsh prepare_ligand4.py -l query.pdbqt -o outLigand.pdbqt -A 'hydrogens' -U \'\'"
+printTitle2 "1.a" "./MetaScreener/external_sw/mgltools/bin/pythonsh MetaScreener/external_sw/mgltools/MGLToolsPckgs/AutoDockTools/Utilities24/prepareligand4.py -l query.pdbqt -o outLigand.pdbqt -A 'hydrogens' -U \'\'"
 
 printTitle "MOL2_MOE_PROT" "Moe Receptor"
 printTitle1 "1" "We cut into monomers or as appropriate, looking at the info of the PDB using pymol "
@@ -84,10 +84,10 @@ printTitle "CONF_OMEGA" "OMEEGA CONFOMATION"
 printTitle1 "1" "Take library previously prepared by MOE as in Ligand preparation for Docking"
 
 printTitle "AD_RECEPTOR_NM" "MGTools Receptor without modifications"
-printTitle1 "1" "pythonsh prepare_receptor4.py -r receptor.pdbqt -o outReceptor.pdbqt"
+printTitle1 "1" "./MetaScreener/external_sw/mgltools/bin/pythonsh MetaScreener/external_sw/mgltools/MGLToolsPckgs/AutoDockTools/Utilities24/prepare_receptor4.py -r receptor.pdbqt -o outReceptor.pdbqt"
 
 printTitle "AD_LIGAND_NM" "MGTools Ligando without modifications"
-printTitle1 "1" "pythonsh prepare_ligand4.py -l query.pdbqt -o outLigand.pdbqt"
+printTitle1 "1" "./MetaScreener/external_sw/mgltools/bin/pythonsh MetaScreener/external_sw/mgltools/MGLToolsPckgs/AutoDockTools/Utilities24/prepare_ligand4.py -l query.pdbqt -o outLigand.pdbqt"
 
 printTitle "LF_RECEPTOR_NM" "MOE Receptor  without modifications"
 printTitle1 "1" "Open Moe"
