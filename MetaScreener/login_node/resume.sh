@@ -8,8 +8,6 @@ generate_informe()
 	echo  "--">>${salidaResume}
 	informe=${informe}"-- LigandIn:\t\t${query}\n"
 	informe=${informe}"-- ReceptorIn:\t\t${target}\n"
-	informe=${informe}"-- protocolProtIn:\t\t${protocolP}\n"
-	informe=${informe}"-- protocolLigIn:\t${protocolL}\n"
 	informe=${informe}"-- X:\t\t\t$x\n"
 	informe=${informe}"-- Y:\t\t\t$y\n"
 	informe=${informe}"-- Z:\t\t\t$z\n"

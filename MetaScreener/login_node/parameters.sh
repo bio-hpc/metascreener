@@ -115,8 +115,6 @@ gridSizeX=`empty_variable $gridSizeX`
 gridSizeY=`empty_variable $gridSizeY`
 gridSizeZ=`empty_variable $gridSizeZ`
 queue=`empty_variable $queue`		   	            # Partition for the resource allocation
-protocolP=`empty_variable $protocolP na`        #	Target's conversion protocol
-protocolL=`empty_variable $protocolL na`        #	Query's conversion protocol
 chain=`empty_variable $chain`                   #	Target's chain
 lanzTimeOut=`empty_variable $lanzTimeOut`       #	Launch timeout
 email=`empty_variable $email`                   # Send results to email (doesn't work in all clusters)
@@ -163,8 +161,6 @@ while (( $# ))
 			-J )  num_per_job=$2;;
 			-DE ) debug=$2;; 		# Debug mode
 			-V  ) versionHelp="ve";;
-			-PRP) protocolP=$2;;
-			-PRL) protocolL=$2;;
       -NN )  nodos=$2;;
 			-EM ) email=$2;;
 	    -RF ) rf=$2;;

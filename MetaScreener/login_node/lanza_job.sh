@@ -165,7 +165,7 @@ function get_histogram()
     exit
   fi
 
-     echo " sh ${path_extra_metascreener}used_by_metascreener/get_time_resume.sh ${folder_out_jobs} >> ${folder_experiment}time.txt">>${folder_templates_jobs}template_get_hystogram.sh
+     echo " bash ${path_extra_metascreener}used_by_metascreener/get_time_resume.sh ${folder_out_jobs} >> ${folder_experiment}time.txt">>${folder_templates_jobs}template_get_hystogram.sh
 	echo "mv ${folder_templates_jobs}template_get_hystogram.sh ${folder_jobs_done}">>${folder_templates_jobs}template_get_hystogram.sh
 	echo "echo \"end job\" 1>&2">>${folder_templates_jobs}template_get_hystogram.sh
 	echo "date +\"%s   %c\" 1>&2">>${folder_templates_jobs}template_get_hystogram.sh

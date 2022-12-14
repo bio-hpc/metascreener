@@ -8,5 +8,4 @@ profile="STANDARD_VS"
 x=-4.054
 y=8.999
 z=-2.299
-protocolP="PDBQT_ADT_PROT"
-protocolL="PDBQT_ADT_LIG"
+

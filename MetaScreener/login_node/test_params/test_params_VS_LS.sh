@@ -5,5 +5,4 @@ software="LS"
 histograms="y"
 num_per_job="1"
 profile="STANDARD_VS_LS"
-protocolP="na"
-protocolL="na"
+

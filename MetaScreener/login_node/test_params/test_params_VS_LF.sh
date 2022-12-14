@@ -8,5 +8,4 @@ profile="STANDARD_VS"
 x=-3
 y=10
 z=1
-protocolP="LF_RECEPTOR_NM"
-protocolL="LF_LIGAND_NM"
+

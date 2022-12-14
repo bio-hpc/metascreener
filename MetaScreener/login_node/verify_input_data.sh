@@ -334,9 +334,6 @@ if [ "${extensionesProt}" == ".mol2" ];then
   fi
 fi
 
-isEmpty "$protocolP" 				"-prp Not indicated protocol for convert target"
-isEmpty "$protocolL" 				"-prl Not indicated protocol for convert querie or queries"
-
 if [ ! -f "${path_login_node}techniques/SLTechnique${option}.sh" ];then
 	txtError="-o ${option} option does not exist"
 	f_help
