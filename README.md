@@ -55,7 +55,7 @@ singularity exec singularity/metasreener.simg python MetaScreener/extra_metascre
 - **frament_mol2.sh**: Use **saltRemover.py** with the indicated salt remover by adding molecules to Cl,Br.
 #### launchers
 - **launcher_bd.sh**: Launch Blind Dockings with AutoDock Vina or Lead Finder from a protein directory and a ligand directory. 
-- **launcher_ls.sh**: Launch LigandScout with for 0 to a given number of omit features (default 0 to 5).
+- **launcher_ls.sh**: Launch virtual scrrening with LigandScout for 0 to a given number of omit features (default 0 to 5).
 #### results
 - **analyse_residues_plip.py**: Script to analyze a set of Blind Docking results by residues.
 - **cross_list_bd.py**: Cluster binding of Blind Docking with different ligands or the same.
