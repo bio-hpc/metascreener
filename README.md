@@ -52,7 +52,7 @@ singularity exec singularity/metasreener.simg python MetaScreener/extra_metascre
 #### convert
 - **conv_to.py***: Convert molecule folders between sdf, pdb, pdbqt and mol2 formats. *Requires ChemAxom for mol2 conversions 
 - **saltRemover.py [Required ChemAxon]**: Remove fragments from mol2 file and prints smi without given elements.
-- **frament_mol2.sh**: Define **saltRemover.py** by adding molecules to Cl,Br. Enter separated by commas and without white spaces. Default [Cl,Br].
+- **frament_mol2.sh**: Use **saltRemover.py** with the indicated salt remover by adding molecules to Cl,Br.
 #### launchers
 - **launcher_bd.sh**: Launch Blind Dockings with AutoDock Vina or Lead Finder from a protein directory and a ligand directory. 
 - **launcher_ls.sh**: Launch LigandScout with for 0 to a given number of omit features (default 0 to 5).
