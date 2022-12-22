@@ -67,4 +67,4 @@ singularity exec singularity/metasreener.simg python MetaScreener/extra_metascre
 #### used_by_metascreener
 Scripts used internally by metascreener to process the results. 
 #### utils
-- **distance_ligand_point-py**: Calculate distance between a ligand and a point.
+- **distance_ligand_point-py**: Calculate the distance between a ligand and a point.
