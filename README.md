@@ -1,5 +1,5 @@
-## MetaScreener
-MetaScreener is a collection of scripts developed in different languages (Shell script, Python, Java and C) that integrates, among others, docking, similarity and molecular modeling programs, through which jobs are sent to slurm on supercomputers and the data is processed automatically by sorting it into tables and graphs. 
+## MetaScreener [(manual)](https://github.com/bio-hpc/metascreener/wiki)
+MetaScreener is a collection of scripts developed in different languages (Shell script, Python, Java and C) that integrates, among others, docking, similarity and molecular modeling programs, through which jobs are sent to slurm on supercomputers and the data is processed automatically by sorting it into tables and graphs.
 
 ### Installation (choose one)
 1. git clone https://github.com/bio-hpc/metascreener.git
