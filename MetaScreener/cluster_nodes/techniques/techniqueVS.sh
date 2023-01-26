@@ -8,7 +8,7 @@ if [[ $software == "LS"* ]];then
 	executeTecnique "bash ${path_cluster_nodes}run_software.sh  -c $CWD -q $query  -nq `basename ${query%.*}_${ini}-${fin}`"
 fi
 
-for fil in ${CWD}${query}*"$ext_query"; do
+for fil in ${CWD}${query}/*"$ext_query"; do
 	if [ $ctr_queries -ge $ini ] && [ $ctr_queries -lt $fin ];then
 	    name_query=${fil##$CWD}
 		executeTecnique "bash ${path_cluster_nodes}run_software.sh -c ${CWD} -q ${name_query} -nq ${query_aux}"
