@@ -19,6 +19,6 @@ echo "#SBATCH -p "${queue}>>$name_template_job
 echo "#SBATCH -J ${name_job}"							>>$name_template_job
 echo "#SBATCH --time=$time_job"							>>$name_template_job
 echo "#SBATCH --cpus-per-task=$cores"						>>$name_template_job
-echo "#SBATCH --nodes=${nodes}"							>>$name_template_job
+echo "#SBATCH --nodes=${cores}"							>>$name_template_job
 source ${path_cluster_nodes}templates_queue/codigo.sh
 
