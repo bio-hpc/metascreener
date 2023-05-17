@@ -33,6 +33,7 @@ AMINOACIDS = ['CYS', 'GLN', 'GLU', 'GLY', 'HIS', 'ILE', 'LEU', 'LYS', 'MET', 'PH
 path_ext_sw = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))),'external_sw/')
 
 BABEL_EXE = 'babel '
+OBABLE_EXE = 'obabel '
 
 #
 #   pdbqt sw
@@ -65,6 +66,7 @@ SMILES_SDF_CONVERT = path_ext_sw+"/omega/bin/omega2 -in {} -out {} -maxconfs 1 -
 #   babel run
 #_______________________________________________________________________________________________________________________
 babel_run = BABEL_EXE+" {} {}"
+obabel_run = OBABLE_EXE+" {} -O {}"
 
 ON_POSIX = 'posix' in sys.builtin_module_names
 from threading  import Thread
@@ -118,11 +120,7 @@ def conv_pdb_pdbqt(mol_in, mol_out):
     return execute_cmd(cmd)
 
 def conv_pdb_mol2(mol_in, mol_out):
-    cmd = mol2_pdb.format(
-        mol_in,
-        os.path.splitext(mol_in)[1][1:],
-        mol_out,
-        os.path.splitext(mol_out)[1][1:])
+    cmd = obabel_run.format(mol_in, mol_out)
     return execute_cmd(cmd)
 
 
