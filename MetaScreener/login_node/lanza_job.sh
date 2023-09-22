@@ -154,7 +154,7 @@ function get_histogram()
       echo "pml=\`basename ${folder_experiment}\`_clusters.pml">>${folder_templates_jobs}template_get_hystogram.sh
     fi
     echo "find ${folder_experiment} -name \${pml} -execdir singularity exec --bind $bind \$PWD/singularity/metascreener.simg pymol -c -q -k -Q "{}" \;">>${folder_templates_jobs}template_get_hystogram.sh
-    echo "find ${folder_experiment} -name \`basename ${folder_experiment}\`.pse -exec cp "{}" . \;">>${folder_templates_jobs}template_get_hystogram.sh
+    echo "find ${folder_experiment} -name \`basename ${folder_experiment}\`.pse -exec cp "{}" ${folder_experiment} \;">>${folder_templates_jobs}template_get_hystogram.sh
     echo "python ${path_extra_metascreener}used_by_metascreener/get_csv.py ${folder_experiment}" >>${folder_templates_jobs}template_get_hystogram.sh
 
   # For LS only needs a summary in .csv
