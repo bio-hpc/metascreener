@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
-#   Author: Jorge de la Peña García
-#   Author: Carlos Martínez Cortés
+#   Author: Jorge de la PeÃ±a GarcÃ­a
+#   Author: Carlos MartÃ­nez CortÃ©s
 #   Email:  cmartinez1@ucam.edu
 #   Description: Parameters of metascreener
 # ______________________________________________________________________________________________________________________
@@ -104,7 +104,7 @@ mem_hist=`empty_variable $mem_hist `            # Memory to use in get_histogram
 time_job=`empty_variable $time_job `
 versionHelp=`empty_variable $versionHelp`
 renice=`empty_variable $renice`
-GPU=`empty_variable $GPU`                       #	Use GPU or not (numerical parameter)
+GPU=`empty_variable $GPU`                       #	Use GPU or not
 time_experiment=`empty_variable $time_experiment`       #	Maximum docking time
 specialCommand=`empty_variable $specialCommand`
 ext_query=`empty_variable $ext_query`           # Query's extension
@@ -119,7 +119,7 @@ chain=`empty_variable $chain`                   #	Target's chain
 lanzTimeOut=`empty_variable $lanzTimeOut`       #	Launch timeout
 email=`empty_variable $email`                   # Send results to email (doesn't work in all clusters)
 number_execution=`empty_variable $number_execution -1`
-bd_exhaustiveness=`empty_variable $bd_exhaustiveness  1` # Exaustiovity in BD
+bd_exhaustiveness=`empty_variable $bd_exhaustiveness  1` # Exhaustiveness in BD
 bd_atom_default=`empty_variable $bd_atom_default CA`
 target=`empty_variable $target no_target`
 target_pdb=`empty_variable $target_pdb no_target`          # Target in pdb format
@@ -181,7 +181,7 @@ while (( $# ))
 			-TD) time_experiment=$2;;
 			-NI) renice=$2;;
 			-CO) cores=$2;;
-			-GP) GPU=$2;;
+			-GPU) GPU=1;;
 			-SC ) scoreCorte=$2;;		# Score threshold
 			-MM ) mem=$2;;
 			-EJ ) number_execution=$2 ;;

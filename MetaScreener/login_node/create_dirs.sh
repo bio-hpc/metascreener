@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
-# Author: Jorge de la Peña García
-# Author: Carlos Martínez Cortés
+# Author: Jorge de la Pe��a Garc��a
+# Author: Carlos Mart��nez Cort��s
 #	Email: 	cmartinez1@ucam.edu
 #	Description: 	Create the folder of experiment
 #_________________________________________________________________________________________________________________________________________
@@ -28,14 +28,11 @@ search_directory()
 {
 
 	folder_experiment=${PWD}/${option}_${software}_${name_target}_${name_query}
-	if [ "$x" == "0" ] && [ "$y" == "0" ] && [ "$z" == "0" ];then
-		if [ "$GPU" != "N/A" ];then	
-			folder_experiment=${folder_experiment}_GPU
-		else
-			folder_experiment=${PWD}/${option}_${software}_${name_target}_${name_query}
-		fi
-	else
-		folder_experiment=${folder_experiment}_${x}_${y}_${z} 	  				#
+	if [ "$GPU" != "N/A" ];then	
+		folder_experiment=${folder_experiment}_GPU
+	fi
+	if [ "$x" != "0" ] || [ "$y" != "0" ] || [ "$z" != "0" ];then
+		folder_experiment=${folder_experiment}_${x}_${y}_${z}		
 	fi 
 
 	folder_experiment=${folder_experiment}_${fecha}/

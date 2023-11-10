@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
-#   Author: Jorge de la Peña García
-#   Author: Carlos Martínez Cortés
+#   Author: Jorge de la PeÃ±a GarcÃ­a
+#   Author: Carlos MartÃ­nez CortÃ©s
 #   Email:  cmartinez1@ucam.edu
 #   Description: Code in charge of validating the necessary options for the operation of metascreener: recetor, query, jobs, protocols, ...
 # ______________________________________________________________________________________________________________________
@@ -87,11 +87,12 @@ check_technique()
 check_sw()
 {
   if [ "$1" == "N/A" ] || [  -z "$1" ] ;then
-    echo "Enter a software [ AD, DC, LF, LS ]"
+    echo "Enter a software [ AD, DC, GN, LF, LS ]"
     read sw
     case `printf "%s" "$sw" | tr '[:lower:]' '[:upper:]'` in
       AD ) software="AD";;
       DC ) software="DC";;
+      GN ) software="GN";;
       LF ) software="LF";;
       LS ) software="LS";;
       * ) ;;
@@ -120,7 +121,7 @@ check_querie()
 {
   if [ "$1" == "N/A" ] || [  -z "$1" ] ;then
     if [[ ${option} == "BD" ]] || [[ ${software} == "LS" ]] ;then
-      echo "Enter querie ($extensionesLig)"
+      echo "Enter query ($extensionesLig)"
       read -e query
     else
       echo "Enter folder with queries ($extensionesLig)"
@@ -376,6 +377,21 @@ fi
 
 # Check software
 ext_sw=MetaScreener/external_sw/
+
+if [[ ${software} == "GN" ]]; then
+  if [[ ! -f "${ext_sw}gnina/gnina" ]]; then
+    echo -e "${RED} Error: ${ext_sw}gnina/gnina doesn't exist. Download the executable to this directory, give it execution permissions and try again.${NONE}"
+    exit 1
+  fi
+  
+  if [[ ! "${cores%% *}" =~ ^[0-9]+$ ]]; then
+    if [[ "${GPU}" != "N/A" ]]; then
+      cores=4
+    else
+      cores=1
+    fi
+  fi
+fi
 
 if [[ ${software} == "LS" ]] ;then
   if [[ ! -f "${ext_sw}ligandScout/iscreen" ]]; then

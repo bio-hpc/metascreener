@@ -5,7 +5,7 @@ executeTecnique()
 	params=" -d ${folder_experiment} -s $software -o $option -t $target \
 	-x $x -y $y -z $z -nt $name_target  -ch ${chain} \
 	-fx $flex -in $ini -fn $fin -nc ${numPoses} -fl ${flexFile} \
-	-de ${debug} -co ${cores} -gp ${GPU} -mm ${mem} -tr ${torsion} \
+	-de ${debug} -co ${cores} -gpu ${GPU} -mm ${mem} -tr ${torsion} \
 	-sc ${scoreCorte} -grid ${grid} -EXP ${ext_target} -EXL ${ext_query} \
 	-RE ${resName} -NA ${num_amino_acid} -GX ${gridSizeX} -GY ${gridSizeY} \
 	-GZ ${gridSizeZ} -nn ${nodos} -nj ${name_job} -bda ${bd_atom_default}"

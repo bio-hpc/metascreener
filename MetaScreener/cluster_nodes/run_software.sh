@@ -1,6 +1,6 @@
 #!/bin/bash
-# Author: Jorge de la Peña García
-# Author: Carlos Martínez Cortés
+# Author: Jorge de la Pe������a Garc������a
+# Author: Carlos Mart������nez Cort������s
 #	Email:  cmartinez@ucam.edu
 #	Description: It takes care of calling the corresponding Software scripts
 #_________________________________________________________________________________________________________________________________________________________________________
@@ -41,6 +41,10 @@ function standar_out_file()
 	out_put=${out_put}${graph_atoms_field}${DELIMITER}
 	out_put=${out_put}${graph_atoms_type}${DELIMITER}
 	out_put=${out_put}${graph_atoms_score}${DELIMITER}
+	if [[ ${software} == "GN" ]];then
+		out_put=${out_put}${CNNscores}
+	fi
+
 	python ${path_cluster_nodes}standar_out_put.py "${out_energies}${1}.json" "$out_put"
 }
 

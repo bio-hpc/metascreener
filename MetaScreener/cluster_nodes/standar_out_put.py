@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# 	Author: Jorge de la Peña García
-#	Author: Carlos Martínez Cortés
+# 	Author: Jorge de la Pe������a Garc������a
+#	Author: Carlos Mart������nez Cort������s
 #	Email:  cmartinez1@ucam.edu
 #	Description: Generates a json with Metascreener output
 #
@@ -40,7 +40,11 @@ data = sys.argv[2].split("\\n")
 atom_score = []
 
 if len(data) > 20:
-	for i in range(21,len(data)):
+	if data[11] == "GN":
+		loopRange = range(21,len(data)-1)
+	else:
+		loopRange = range(21,len(data))
+	for i in loopRange:
 		if data[i]:
 			atom_score.append(data[i].split(":"))	
 data_json={
@@ -66,6 +70,15 @@ data_json={
 	"graph_atoms_type":data[20].split(":"),
 	"graph_atoms_score":atom_score,
 }
+
+if data_json["software"] == "GN":
+
+	minimizedAffinity, CNNscore, CNNaffinity = data[-1].split(":")
+	
+	data_json["CNNscore"] = CNNscore
+	data_json["CNNAffinity"] = CNNaffinity
+
+	data_json["global_score"] = minimizedAffinity
 
 with open(file_output, 'w') as outfile:
 	json.dump(data_json, outfile, indent=4, sort_keys=True)

@@ -120,7 +120,7 @@ function get_histogram()
 		fi
 
 		if [ "$mem_hist" == "N/A" ];then
-		  echo "#SBATCH --mem=500M" 						>>${folder_templates_jobs}template_get_hystogram.sh
+		  echo "#SBATCH --mem=2G" 						>>${folder_templates_jobs}template_get_hystogram.sh
 		else
 		  echo "#SBATCH --mem=${mem_hist}" 						>>${folder_templates_jobs}template_get_hystogram.sh
 		fi
@@ -131,7 +131,7 @@ function get_histogram()
 		fi
 		echo ${queue_direc_job_name}"${name_job}_g_h"			>>${folder_templates_jobs}template_get_hystogram.sh
 		if [ $time_hist == "N/A" ];then
-			time_hist="5:00:00"
+			time_hist="24:00:00"
 		fi
 		echo ${queue_direc_time}${time_hist}				>>${folder_templates_jobs}template_get_hystogram.sh
 		echo ${queue_direc_cpus}"1"							>>${folder_templates_jobs}template_get_hystogram.sh

@@ -1,0 +1,17 @@
+#GNINA
+#LanzNombre:GN - Gnina
+#LanzExtensionProtQ:.pdbqt
+#LanzExtensionligB:.pdbqt
+#lanzOptions:VS,BD
+#LanzCoordX: 
+#LanzCoordY:
+#LanzCoordZ:
+#LanzGrid:N
+#LanzCores:auto ## Without a GPU, "auto" will default to 1 core per job, with a GPU this will be 4 cores
+#LanzTimeExecution:900
+#LanzMem:2G
+#lanzSizeGridX:30
+#lanzSizeGridY:30
+#lanzSizeGridZ:30
+#lanzTimeOut:Y
+#lanzCreateResumen:Y
