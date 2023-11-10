@@ -13,14 +13,15 @@ MirrorURL: http://us.archive.ubuntu.com/ubuntu/
     apt-get update
     export DEBIAN_FRONTEND=noninteractive
     apt-get -y install vim openbabel plip python-rdkit python-pip imagemagick git
-    pip install matplotlib pandas xlsxwriter
+    pip install matplotlib pandas xlsxwriter tqdm
     # pymol-oss intall
-    apt-get -y install git build-essential python3 python3-dev libsm-dev libglew-dev libpng-dev libfreetype6-dev libxml2-dev libmsgpack-dev python3-pyqt5.qtopengl libglm-dev libnetcdf-dev
+    apt-get -y install git build-essential python3 python3-dev python3-pip libsm-dev libglew-dev libpng-dev libfreetype6-dev libxml2-dev libmsgpack-dev python3-pyqt5.qtopengl libglm-dev libnetcdf-dev
+    pip3 install tqdm
     git clone https://github.com/schrodinger/pymol-open-source.git
     git clone https://github.com/rcsb/mmtf-cpp.git
     mv mmtf-cpp/include/mmtf* pymol-open-source/include/
     cd pymol-open-source
-    python3 setup.py install --pymol-path=~/pymol
+    python3 setup.py install --pymol-path=~/pymol  
     apt-get clean
 
 %environment
@@ -28,6 +29,6 @@ MirrorURL: http://us.archive.ubuntu.com/ubuntu/
     export LC_ALL=C
 
 %labels
-    AUTHOR Jorge de la Peña (jpena@ucam.edu)
-    Maintainer Carlos Martínez Cortés
+    AUTHOR Jorge de la Pena (jpena@ucam.edu)
+    Maintainer Carlos Martinez Cortes
     Version v1

@@ -25,10 +25,10 @@ CORES = 1
 
 def help():
     print("Error: Parameters")
-    print("1º [ Receptor | Complex ] ")
-    print("2º [ Ligand  | None ]")
-    print("3º Output prefix")
-    print("4º Receptor in pdb format")
+    print("1. [ Receptor | Complex ] ")
+    print("2. [ Ligand  | None ]")
+    print("3. Output prefix")
+    print("4. Receptor in pdb format")
     exit()
 
 
@@ -135,7 +135,7 @@ if __name__ == "__main__":
 
     if len(sys.argv) == 5:
         shutil.copy(sys.argv[4], rec_name + ".pdb")
-    elif rec_ext != ".pdb":
+    elif not os.path.isfile(rec_name + ".pdb"):
         convert_molecule(rec, rec_name + ".pdb")
     rec = rec_name + ".pdb"
 
