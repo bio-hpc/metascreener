@@ -26,7 +26,7 @@ rm singularity/singularity.zip
 1. **AD AutoDock Vina** 1.1.2 (May 11, 2011):
    Open source. https://github.com/ccsb-scripps/AutoDock-Vina.
 2. **GN Gnina** v1.0.3 (Feb 11, 2023):  
-   Open source. [https://github.com/ccsb-scripps/AutoDock-Vina](https://github.com/gnina/gnina).  
+   Open source. https://github.com/gnina/gnina.  
    Download the executable to metascreener/MetaScreener/external_sw/gnina/ and give execution permissions.                               
 4. **LF Lead Finder** version 2104 build 1, 18 April 2021: 
    Commercial software. License and software required (copy to "metascreener/MetaScreener/external_sw/leadFinder/").
