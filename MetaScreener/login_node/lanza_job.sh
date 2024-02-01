@@ -151,7 +151,7 @@ function get_histogram()
     if [ $option = "VS" ];then
       echo "pml=\`basename ${folder_experiment}\`.pml">>${folder_templates_jobs}template_get_hystogram.sh
     else
-      echo "pml=\`basename ${folder_experiment}\`_clusters.pml">>${folder_templates_jobs}template_get_hystogram.sh
+      echo "pml=\`basename ${folder_experiment}\`_*.pml">>${folder_templates_jobs}template_get_hystogram.sh
     fi
     echo "find ${folder_experiment} -name \${pml} -execdir singularity exec --bind $bind \$PWD/singularity/metascreener.simg pymol -c -q -k -Q "{}" \;">>${folder_templates_jobs}template_get_hystogram.sh
     echo "find ${folder_experiment} -name \`basename ${folder_experiment}\`.pse -exec cp "{}" ${folder_experiment} \;">>${folder_templates_jobs}template_get_hystogram.sh
