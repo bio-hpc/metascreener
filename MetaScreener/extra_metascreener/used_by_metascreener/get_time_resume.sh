@@ -32,6 +32,9 @@ sum_h=$(grep "Finished experiment" "$1/post.out" | grep -Eo '[0-9]*\.?[0-9]*')
 IFS=$'\n'
 max=$(echo "${total[*]}" | sort -nr | head -n1)
 
-echo -e "\n Real time:" "$(( max + sum_h ))"
+# Use awk for floating-point arithmetic
+real_time=$(awk "BEGIN {print $max + $sum_h}")
+cpu_time=$(awk "BEGIN {print $sum + $sum_h}")
 
-echo -e "\n CPU time:" "$(( sum + sum_h ))"
+echo -e "\n Real time:" "$real_time"
+echo -e "\n CPU time:" "$cpu_time"
