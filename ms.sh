@@ -21,7 +21,7 @@ path_metascreener="${PWD}/MetaScreener/"
 if [ ! -f "singularity/metascreener.simg" ]; then
   echo -e "${RED}WARNING: singularity/metascreener.simg does not exist"
   echo "Downloading singularity/metascreener.simg..."
-  wget --no-check-certificate -r "https://drive.google.com/u/1/uc?export=download&confirm=TLUF&id=1L3HZ2l1XARqzEKaV14jToUtUOCmo4OjV" -O singularity/singularity.zip > /dev/null 2>&1
+  wget --no-check-certificate -r "https://drive.usercontent.google.com/download?id=1L3HZ2l1XARqzEKaV14jToUtUOCmo4OjV&export=download&authuser=1&confirm=t&uuid=0c83343d-17fe-4282-bf07-9a2321537a9a&at=APZUnTW_78yhd6klINcZBOjxIU6g:1706872870521" -O singularity/singularity.zip > /dev/null 2>&1
   unzip singularity/singularity.zip -d singularity/ > /dev/null 2>&1
   rm singularity/singularity.zip
 fi
