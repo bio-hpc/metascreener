@@ -12,7 +12,7 @@ Needed to secure compatibility with the HPC cluster.
 
 cd metascreener/
 
-wget --no-check-certificate -r "https://drive.google.com/u/1/uc?export=download&confirm=TLUF&id=1L3HZ2l1XARqzEKaV14jToUtUOCmo4OjV" -O singularity/singularity.zip
+wget --no-check-certificate -r "[https://drive.google.com/u/1/uc?export=download&confirm=TLUF&id=1L3HZ2l1XARqzEKaV14jToUtUOCmo4OjV](https://drive.usercontent.google.com/download?id=1L3HZ2l1XARqzEKaV14jToUtUOCmo4OjV&export=download&authuser=1&confirm=t&uuid=0c83343d-17fe-4282-bf07-9a2321537a9a&at=APZUnTW_78yhd6klINcZBOjxIU6g:1706872870521)" -O singularity/singularity.zip
 
 unzip singularity/singularity.zip -d singularity/
 
