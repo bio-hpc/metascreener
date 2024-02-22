@@ -1,6 +1,6 @@
 #!/bin/bash
-# Author: Jorge de la Pe������a Garc������a
-# Author: Carlos Mart������nez Cort������s
+# Author: Jorge de la Peña García
+# Author: Carlos Martínez Cortés
 #	Email:  cmartinez@ucam.edu
 #	Description: It takes care of calling the corresponding Software scripts
 #_________________________________________________________________________________________________________________________________________________________________________
