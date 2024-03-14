@@ -140,7 +140,7 @@ function get_histogram()
 	echo "date +\"%s   %c\" 1>&2"							>>${folder_templates_jobs}template_get_hystogram.sh
 	echo "${modules_get_histogram}"							>>${folder_templates_jobs}template_get_hystogram.sh
 
-  if [ $software != "LS" ] && [ $software != "DC" ] ;then
+  if [ $software == "AD" ] || [ $software == "LF" ] || [ $software == "GN" ] ;then
 
     if [[ $target_pdb == "no_target" ]];then
       echo "singularity exec --bind $bind ${PWD}/singularity/metascreener.simg python ${path_analize_results}get_histogram_picture.py --prog=$software --opt=$option -i ${folder_experiment} -p $target -l $query --rf $rf --rb $rb --profile ${profile} -d $debug">>${folder_templates_jobs}template_get_hystogram.sh
@@ -153,7 +153,7 @@ function get_histogram()
     else
       echo "pml=\`basename ${folder_experiment}\`_*.pml">>${folder_templates_jobs}template_get_hystogram.sh
     fi
-    echo "find ${folder_experiment} -name \${pml} -execdir singularity exec --bind $bind \$PWD/singularity/metascreener.simg pymol -c -q -k -Q "{}" \;">>${folder_templates_jobs}template_get_hystogram.sh
+    echo "find ${folder_experiment} -name \${pml} -execdir singularity exec --bind $bind \$PWD/singularity/metascreener.simg pymol -c -q -k -Q "{}" \; > /dev/null 2>&1">>${folder_templates_jobs}template_get_hystogram.sh
     echo "find ${folder_experiment} -name \`basename ${folder_experiment}\`.pse -exec cp "{}" ${folder_experiment} \;">>${folder_templates_jobs}template_get_hystogram.sh
     echo "python ${path_extra_metascreener}used_by_metascreener/get_csv.py ${folder_experiment}" >>${folder_templates_jobs}template_get_hystogram.sh
 
