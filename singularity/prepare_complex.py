@@ -27,6 +27,8 @@ def prepare_complexes_pdb(prot_pdb, ligand_pdb, out_complex):
     pymol.cmd.load('{}'.format(ligand_pdb), object='lig')
 
     pymol.cmd.alter('all', 'resn="UNK"')
+   
+    pymol.cmd.alter('all', 'chain="d"')
 
     pymol.cmd.load('{}'.format(prot_pdb), object='rec')
 
