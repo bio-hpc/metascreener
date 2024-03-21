@@ -157,7 +157,7 @@ funcionAdScore()
 			execute "${path_external_sw}autodock/vina --score_only --ligand $out_molec.pdbqt --receptor  ${CWD}${target} --cpu ${cores} > ${out_energies}.en"
 		else
 			${path_external_sw}autodock/vina_split --input ${out_molec}.pdbqt > /dev/null
-			for i in `seq 1 $numPoses` ;do
+			for i in `seq 0 $numPoses` ;do
 				${path_external_sw}autodock/vina --score_only --ligand ${out_molec}_ligand_${i}.pdbqt --receptor  ${CWD}${target} --cpu ${cores}> ${out_energies}_${i}.en
 				mv ${out_molec}_ligand_${i}.pdbqt ${out_molec}_${i}.pdbqt
 			done
