@@ -49,7 +49,7 @@ execute_script()
 	if [ ${numPoses} -gt 1 ];then
 	  babel ${out_molec}.mol2 ${out_molec}_.mol2 -m 2> /dev/null
 	  rm ${out_molec}.mol2
-       for i in `seq 1 $numPoses`;do
+       for i in `seq 0 $numPoses`;do
 	    create_out "${i}"
 	  done
      else
