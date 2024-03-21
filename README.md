@@ -43,14 +43,25 @@ rm singularity/singularity.zip
 2. **ChemAxon**: It is required in poseview for convert to mol2 format.
    Copy the software in "metascreener/MetaScreener/external_sw/"
    You can get an academic license at https://chemaxon.com/academic-license.
-   
+### ESSENCE-Dock
+ESSENCE-Dock can take in docking runs from different algorithms, and uses all of the information to rescore the compounds using a consensus-based approach.
+For more information about ESSENCE-Dock, you check out the manuscript [here](https://pubs.acs.org/doi/10.1021/acs.jcim.3c01982).
+To use ESSENCE-Dock, you need to make sure the individual docking calculations used `metascreener`, finished correctly and contain a `Results_scoring.csv`. If this is not present, or if you moved the directory you can regenerate the file using:  
+ ```
+python MetaScreener/extra_metascreener/used_by_metascreener/get_csv.py <docking directory>
+ ```
+After that, you can use ESSENCE-Dock:
+ ```
+./MetaScreener/extra_metascreener/results/ESSENCE-Dock.sh -f <docking_dir1> <docking_dir2> ... -p <proteinFile> -out <output_dir>
+ ```
+There are many more options (like running using slurm, configuring the amount of cores to run on, ...). For more information you can also always use the help command (`./MetaScreener/extra_metascreener/results/ESSENCE-Dock.sh`) or feel free to open a GitHub issue.   
 ### extra_metascreener
 It is a directory that contains multiple scripts used or related to metascreener. 
 
 It is recommended to use these python scripts with the metascreener singularity image "metascreener/singularity/metascreener.simg". 
 For instance:
 
-singularity exec singularity/metasreener.simg python MetaScreener/extra_metascreener/convert/conv_to.py
+singularity exec singularity/metascreener.simg python MetaScreener/extra_metascreener/convert/conv_to.py
 
 #### convert
 - **conv_to.py***: Convert molecule folders between sdf, pdb, pdbqt and mol2 formats. *Requires ChemAxom for mol2 conversions 

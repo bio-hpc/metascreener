@@ -12,8 +12,28 @@ PURPLE='\033[00;35m'
 CYAN='\033[00;36m'
 
 ms_path=${PWD/metascreener*/}/metascreener
-simg="singularity exec --bind=${PWD} $ms_path/singularity/metascreener.simg"
+simg="singularity exec --bind=${PWD} $ms_path/singularity/ESSENCE-Dock.simg"
 extra_metascreener="$ms_path/MetaScreener/extra_metascreener"
+
+if [ ! -f "$ms_path/singularity/ESSENCE-Dock.simg" ]; then
+	echo "The required ESSENCE-Dock Singularity image doesn't seem to be present. Would you like to download it automatically? "
+	echo "(Y/y) Download Singularity image automatically"
+	echo "(N/n) Exit"
+	read -r answer
+	while [ "${answer,,}" != "y" ] && [ "${answer,,}" != "yes" ] && [ "${answer,,}" != "n" ] && [ "${answer,,}" != "no" ]; do
+		echo "Would you like to download the Singularity image automatically?"
+		echo "(Y/y) Download Singularity image automatically"
+		echo "(N/n) Exit" 
+		read -r answer 
+	done
+	if [ "${answer,,}" = "y" ] || [ "${answer,,}" = "yes" ]; then 
+		wget --no-check-certificate -r "https://drive.usercontent.google.com/download?id=1yN63r8sl26VMZJtdrAG4e_JQFFlb1eE8&confirm=t" -O ${ms_path}/singularity/ESSENCE-Dock.simg
+		echo "The Singularity image has been downloaded"
+	else 
+		echo "Exiting.. Please install the Singularity image and try again"
+		exit
+	fi	
+fi
 
 printHelp(){
 	printf "${GREEN} %6s ${CYAN}%5s ${NONE}%-s \n" "-$1 )" "[ $2 ]" "$3"
@@ -32,6 +52,8 @@ function help()
 	printHelp "np | no-postprocessing | raw" "O" "Skip post-processing of the best results, so no PSE or PLIP interactions are generated. Post-processing is performed by default"
 	printHelp "n | nc" "O" "Amount of compounds to include in the final PyMol Session. Default is 50"
 	printHelp "cl | cluster" "O" "String with options to launch in the cluster. Important: Always accompany this flag with an argument! For example: \"-p standard --time 12:00:00 ...\""
+	printHelp "c | cpus" "O" "Number of CPUs to use"
+	printHelp "t | timeout" "O" "Max time spent processing per compound"
 	printHelp "s | silent" "O" "Silent Mode: Don't show the progression of the ESSENCE-Dock consensus calculations. Only works without the -cl flag: silent mode disabled by default"
 	printHelp "ns | nosilent" "O" "No Silent Mode: Show the progression of the ESSENCE-Dock consensus calculations. Only works with the -cl flag: silent mode enabled by default"
 	printHelp "sc | skip-cleanup" "O" "Skip the cleanup: intermediate files will not be removed"
@@ -53,7 +75,8 @@ skipcleanup=false
 cluster_opt=sequential
 input_dirs=0
 debug=false
-
+CPUS=1
+timeoutLimit=3
 # Parameters
 while (( $# ))
 	do
@@ -86,7 +109,9 @@ while (( $# ))
 					--SKIP-CLEANUP | -SKIP-CLEANUP | -SC)  skipcleanup=true;;
 					--NOSILENT | -NOSILENT | -NS)  CLsilent=false;;
 					--NO-POSTPROCESSING | -NO-POSTPROCESSING | -RAW | -NP)  noPostProcessing=true;;
-					--CLUSTER | -CLUSTER| -CL)  cluster_opt=$2;;
+					--CLUSTER | -CLUSTER | -CL)  cluster_opt=$2;;
+					--CPUS | -CPU | -C)  CPUS=$2;;
+					--TIMEOUT | -TIMEOUT | -T)  timeoutLimit=$2;;
 					--HELP | -HELP | -H) help
 			esac
 		fi
@@ -122,16 +147,16 @@ else
 fi
 
 if [ -d $out ];then
-	while [ "$input" != "Y" ] && [ "$input" != "y" ] && [ "$input" != "N" ] && [ "$input" != "n" ] ; do
-		echo "CreateFile: The directory ${folder_experiment} already exists. To continue you must delete this directory. Do you want to delete it? "
+	while [ "${input,,}" != "y" ] && [ "${input,,}" != "yes" ] && [ "${input,,}" != "n" ] && [ "${input,,}" != "no" ]; do
+		echo "The output directory ${out} already exists. To continue you must delete this directory. Do you want to delete it? "
 		echo "(Y/y) Delete folder"
 		echo "(N/n) Exit"
 		read  input
 	done
-	if [ "$input" == "Y" ] || [ "$input" == "y" ];then
+	if [ "${input,,}" == "y" ] || [ "${input,,}" == "yes" ];then
 		rm -r ${out}
 		mkdir ${out}
-	elif [ "$input" == "n" ] || [ "$input" == "N" ];then
+	elif [ "${input,,}" == "n" ] || [ "${input,,}" == "no" ];then
 		exit
 	fi
 	else
@@ -143,7 +168,7 @@ cross="${simg} python ${extra_metascreener}/results/cross/ESSENCE-Dock_cross.py 
 
 # Execute the commands
 if [[ "$cluster_opt" == "sequential" ]];then
-	join="${simg} python3 ${extra_metascreener}/results/join/ESSENCE-Dock_Consensus.py -o ${out} -r ${receptor} -dd ${DiffDockPath} -f ${lst} -s ${silent} -n ${numberOfCompounds} -raw ${noPostProcessing}"
+	join="${simg} python ${extra_metascreener}/results/join/ESSENCE-Dock_Consensus.py -o ${out} -r ${receptor} -dd ${DiffDockPath} -f ${lst} -s ${silent} -n ${numberOfCompounds} -raw ${noPostProcessing} -c ${CPUS} -t ${timeoutLimit}"
 	echo "Preparing docking runs for ESSENCE-Dock Consensus.."
 	if $debug; then
 		echo -e "\e[0;34m[DEBUG]  Full Command:\n${cross}\e[0m"
@@ -176,7 +201,7 @@ if [[ "$cluster_opt" == "sequential" ]];then
 	fi
 
 else
-	join="${simg} python3 ${extra_metascreener}/results/join/ESSENCE-Dock_Consensus.py -o ${out} -r ${receptor} -dd ${DiffDockPath} -f ${lst} -s ${CLsilent} -n ${numberOfCompounds} -raw ${noPostProcessing}"
+	join="${simg} python ${extra_metascreener}/results/join/ESSENCE-Dock_Consensus.py -o ${out} -r ${receptor} -dd ${DiffDockPath} -f ${lst} -s ${CLsilent} -n ${numberOfCompounds} -raw ${noPostProcessing} -c ${CPUS} -t ${timeoutLimit}"
 	receptorName="${receptor##*/}" 
 	mkdir "$out/job_data/"
 	name_job="${out}/job_data/ESSENCE-Dock_Consensus_${receptorName%.*}.sh"
