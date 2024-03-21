@@ -92,7 +92,7 @@ if "SLURM_CPUS_ON_NODE" in os.environ:
 else:
     max_workers = args.cpus
 
-print(f"using {max_workers} CPUs, timeoutlimit: {timeoutLimit}")
+print(f"using {max_workers} CPUs, timeoutlimit: {timeoutLimit}s")
 if args.silent == "true":
     silentMode = True
 
@@ -340,7 +340,7 @@ with ProcessPool(max_workers=int(max_workers)) as pool:
     future = pool.map(calcESSENCEDockScore, lines[1:], timeout=timeoutLimit)
 
     iterator = future.result()
-    pbar = tqdm(total=len(lines[1:]), disable=False, ascii=True)
+    pbar = tqdm(total=len(lines[1:]), disable=silentMode, ascii=True)
     idx = 1
     while True:
         try:
