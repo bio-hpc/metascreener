@@ -1,0 +1,31 @@
+Bootstrap: docker
+From: ubuntu:22.04
+MirrorURL: http://us.archive.ubuntu.com/ubuntu/
+
+%files
+	./edit_sessions.py /opt/edit_sessions.py
+	./prepare_complex.py /opt/prepare_complex.py
+	
+%post
+    apt-get update
+    export DEBIAN_FRONTEND=noninteractive
+    cd /opt/
+    apt-get -y install openbabel wget git build-essential libgl1-mesa-glx
+    wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh
+    bash ~/miniconda.sh -b -p /opt/miniconda
+    eval "$(/opt/miniconda/bin/conda shell.bash hook)"
+    conda init
+    conda install python=3.11 tqdm
+    conda install -c conda-forge graph-tool rdkit openbabel spyrmsd pymol-open-source plip openpyxl
+    pip install pebble
+    conda clean -a -y
+    apt-get clean
+
+%environment
+    export PATH=/opt/miniconda/bin/:$PATH
+    export BABEL_LIBDIR="/opt/miniconda/lib/openbabel/3.1.0/"
+    export BABEL_DATADIR="/opt/miniconda/share/openbabel/3.1.0/"
+   
+%labels
+    AUTHOR Jochem Nelen
+    Version v1
