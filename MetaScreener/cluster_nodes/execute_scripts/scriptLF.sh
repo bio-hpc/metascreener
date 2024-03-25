@@ -48,13 +48,17 @@ execute_script()
 	esac
 	if [ ${numPoses} -gt 1 ];then
 	  babel ${out_molec}.mol2 ${out_molec}_.mol2 -m 2> /dev/null
-	  rm ${out_molec}.mol2
-       for i in `seq 0 $numPoses`;do
+	  n=$(ls -1 "${out_molec}_"*.mol2 | wc -l)
+	  for ((i=1; i<=n; i++)); do
+            mv "${out_molec}_$i.mol2" "${out_molec}_$(($i-1)).mol2"
+	  done
+          
+	  for i in `seq 0 $numPoses`;do
 	    create_out "${i}"
 	  done
-     else
-       create_out
-     fi
+        else
+          create_out
+        fi
 }
 
 function create_out()
