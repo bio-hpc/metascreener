@@ -18,9 +18,9 @@ fecha=$(date +"%Y-%m-%d")
 pathSL="MetaScreener/login_node/"
 path_metascreener="${PWD}/MetaScreener/"
 
-if [ ! -f "singularity/metascreener.simg" ]; then
-  echo -e "${RED}WARNING: singularity/metascreener.simg does not exist"
-  echo "Downloading singularity/metascreener.simg..."
+if [ ! -f "singularity/metascreener.simg" ] || [ ! -f "singularity/metascreener_22.04.simg" ]; then
+  echo -e "${RED}WARNING: You need singularity images to use MetaScreener"
+  echo "Downloading singularity images..."
   wget --no-check-certificate -r "https://drive.usercontent.google.com/download?id=1L3HZ2l1XARqzEKaV14jToUtUOCmo4OjV&export=download&authuser=1&confirm=t&uuid=0c83343d-17fe-4282-bf07-9a2321537a9a&at=APZUnTW_78yhd6klINcZBOjxIU6g:1706872870521" -O singularity/singularity.zip > /dev/null 2>&1
   unzip singularity/singularity.zip -d singularity/ > /dev/null 2>&1
   rm singularity/singularity.zip

@@ -11,13 +11,20 @@ else
   bind=$bind1,$bind2
 fi
 
+path_singularity=$(dirname ${path_metascreener})"/singularity/"
+
+singularity_image="${path_singularity}metascreener.simg"
+if [[ "${software}" == "EO" ]]; then
+  singularity_image="${path_singularity}metascreener_22.04.simg"
+fi
+
 singularity_prefix=""
 if [[ "${software}" == "GN" && "${GPU}" != "N/A" ]]; then
   singularity_prefix="--nv"
 fi
 
 echo $modules_metascreener >>$name_template_job
-echo "singularity exec ${singularity_prefix} --bind $bind ${PWD}/singularity/metascreener.simg ${path_cluster_nodes}techniques/baseTechniques.sh -c ${CWD} \
+echo "singularity exec ${singularity_prefix} --bind $bind ${singularity_image} ${path_cluster_nodes}techniques/baseTechniques.sh -c ${CWD} \
 -d ${folder_experiment} -s ${software} -t ${target} -q ${query} -x ${x} -y ${y} -z ${z} \
 -nt ${name_target} -o ${option} -in ${contIni} -fn ${contFin} \
 -nc ${numPoses} -fl ${flexFile} -nj ${NombreJob} -fx ${flex} -na ${num_amino_acid} -ch ${chain} \

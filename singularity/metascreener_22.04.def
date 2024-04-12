@@ -1,0 +1,49 @@
+Bootstrap: docker
+From: ubuntu:22.04
+
+%runscript
+    echo "Singularity image for Ubuntu 22.04 in MetaScreener"
+
+%post
+    # Install build dependencies
+    apt-get update && apt-get install -y build-essential libssl-dev uuid-dev git libgpgme-dev squashfs-tools libseccomp-dev pkg-config curl libpciaccess0 libglib2.0-dev libfuse3-dev autoconf libtool
+
+    # Check if all dependencies are installed
+    apt-get install -y --no-install-recommends checkinstall
+
+    # Download and install Go 1.20
+    curl -L -o /usr/local/go1.20.linux-amd64.tar.gz https://golang.org/dl/go1.20.linux-amd64.tar.gz
+    tar -C /usr/local -xzf /usr/local/go1.20.linux-amd64.tar.gz
+    rm /usr/local/go1.20.linux-amd64.tar.gz
+    export PATH=$PATH:/usr/local/go/bin
+
+    # Set the Go environment variables
+    export GOPATH=/go
+    export PATH=$PATH:$GOPATH/bin
+
+    # Clone Singularity repository with submodules
+    cd /opt
+    git clone --recurse-submodules https://github.com/sylabs/singularity.git
+
+    # Update submodules
+    cd singularity
+    git submodule update --init --recursive
+
+    # Clean and rebuild Singularity
+    ./mconfig
+    make -C builddir
+    make -C builddir install
+
+    # Verify build logs
+    make -C builddir > build_log.txt 2>&1
+
+    apt-get clean
+
+%environment
+    export PATH=/usr/games:$PATH
+    export LC_ALL=C
+
+%labels
+    AUTHOR Carlos Martinez Cortes (cmartinez1@ucam.edu)
+    Version v1
+
