@@ -1,0 +1,1 @@
+Necessary license and software. OMEGA 5.0.0.3: OpenEye, Cadence Molecular Sciences, Santa Fe, NM.
