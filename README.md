@@ -34,7 +34,9 @@ rm singularity/singularity.zip
 5. **LS LigandScout** V4.4.7:
    Commercial software. License and software required (copy to "metascreener/MetaScreener/external_sw/ligandScout/").    
 6. **DC Dragon** v.6.0.38:
-   Commercial software. License and software required (copy to "metascreener//MetaScreener/external_sw/dragon/").
+   Commercial software. License and software required (copy to "metascreener/MetaScreener/external_sw/dragon/").
+7. **EO EON**
+   Commercial software. License and software required (copy to "metascreener/MetaScreener/external_sw/openeye/eon/").
    
 ### Aditional Commercial software
 1. **Poseview [Required ChemAxon]**:  generates publication-quality 2D structure-diagrams of protein-ligand complexes.
