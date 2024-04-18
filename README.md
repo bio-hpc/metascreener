@@ -35,7 +35,7 @@ rm singularity/singularity.zip
    Commercial software. License and software required (copy to "metascreener/MetaScreener/external_sw/ligandScout/").    
 6. **DC Dragon** v.6.0.38:
    Commercial software. License and software required (copy to "metascreener/MetaScreener/external_sw/dragon/").
-7. **EO EON**
+7. **EO EON** v2.4.2.3:
    Commercial software. License and software required (copy to "metascreener/MetaScreener/external_sw/openeye/eon/").
    
 ### Aditional Commercial software
