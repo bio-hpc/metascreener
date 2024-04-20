@@ -409,7 +409,7 @@ PLIP_SCRIPT = (
         "MetaScreener",
         "extra_metascreener",
         "used_by_metascreener",
-        "create_ligand_plip_ESSENCE-Dock.py {} {} {}",
+        "create_ligand_plip_ESSENCE-Dock.py {} {} {} {}",
     )
 )
 PYMOL_SCRIPT = (
@@ -441,7 +441,6 @@ def add_receptor(receptor, folder_molecules):
     receptor = "Molecules/" + basename(receptor)
     cmd = PML_HEAD_PYMOL.format(receptor)
     return subprocess.check_output(cmd, shell=True).decode("UTF-8")
-
 
 ## Start generating PLIPS for the top compounds
 with open(postprocess_path + ".csv", "w") as outputFileTop:
@@ -479,7 +478,7 @@ with open(postprocess_path + ".csv", "w") as outputFileTop:
                     compoundScore = round(float(compoundScore), 2)
 
                 ## Calculate PLIP interaction
-                execute_command(PLIP_SCRIPT.format(proteinPath, cpPath, prefix))
+                execute_command(PLIP_SCRIPT.format(proteinPath, cpPath, prefix, str(max_workers)))
 
                 ## Handle cases where something goes wrong
                 try:

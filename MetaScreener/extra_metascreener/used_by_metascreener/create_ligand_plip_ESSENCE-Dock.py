@@ -19,7 +19,6 @@ PYTHON_RUN = "python "
 F_PREPARE_COMPLEX = 'python /opt/prepare_complex.py {} {} {}'
 F_EDIT_SESSION = 'python /opt/edit_sessions.py {}'
 F_PLIP_CMD = "python /opt/miniconda/bin/plipcmd.py -f {} -o {} -y -q -t --maxthreads {} --nofix"
-CORES = 1
 
 ob_log_handler = pybel.ob.OBMessageHandler()
 pybel.ob.obErrorLog.SetOutputLevel(0)
@@ -29,7 +28,9 @@ def help():
     print("1. [ Receptor | Complex ] ")
     print("2. [ Ligand  | None ]")
     print("3. Output prefix")
-    print("4. Receptor in pdb format")
+    print("4. Number of cores to use")
+    print("5. Receptor in pdb format")
+
     exit()
 
 
@@ -37,7 +38,7 @@ def execute_cmd(cmd):
     return subprocess.check_output(cmd, shell=True)
 
 
-def run_plip(out_prefix, num_plip):
+def run_plip(out_prefix):
     cmd = 'sed -i -e "s/\*\*\*/LIG/g" ' + out_prefix + '_interactions_complex.pdb'
     
     subprocess.check_output(cmd, shell=True)
@@ -56,8 +57,6 @@ def run_plip(out_prefix, num_plip):
         CORES
     )
 
-    if (num_plip > 1):
-        cmd += " --inter d"
     try:
         execute_cmd(cmd)
         pattern = glob.glob(out_prefix + '_complex/*.pse')
@@ -72,6 +71,7 @@ def run_plip(out_prefix, num_plip):
     except Exception as e:
         print("ERROR: Plip", out_prefix + '_complex')
         print(e)
+
 
 def convert_name_plip(name_plip):
     return name_plip.replace("**", "").replace(" ", "").replace("-", "")
@@ -115,12 +115,19 @@ def read_file_plip_txt(prefix_interactions_plip):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 4 and len(sys.argv) != 5:
+    if len(sys.argv) < 4 and len(sys.argv) > 6:
         help()
 
     rec = sys.argv[1]
     lig = sys.argv[2]
     out_prefix = sys.argv[3]
+
+    try:
+        CORES = sys.argv[4]
+        print("using", CORES, "cores")
+    except:
+        CORES = 1
+
     if lig == "None":
         lig = None
 
@@ -130,12 +137,13 @@ if __name__ == "__main__":
 
     rec_name, rec_ext = os.path.splitext(rec)
 
-    if len(sys.argv) == 5:
-        shutil.copy(sys.argv[4], rec_name + ".pdb")
+    if len(sys.argv) == 6:
+        shutil.copy(sys.argv[5], rec_name + ".pdb")
     elif not os.path.isfile(rec_name + ".pdb"):
         mol = next(pybel.readfile(rec.split(".")[-1],rec))
         mol.write("pdb", f"{rec_name}.pdb")
     rec = rec_name + ".pdb"
+
 
     if lig == None:
         shutil.copy(rec, out_prefix + "_interactions_complex.pdb")
@@ -153,7 +161,9 @@ if __name__ == "__main__":
     pymol.cmd.reinitialize()
     pymol.cmd.load('{}'.format(rec), object='rec')
 
-    run_plip(out_prefix, len(pymol.cmd.get_chains('rec')))
+    run_plip(out_prefix)
+
+
 
     pymol.cmd.delete('all')
 
