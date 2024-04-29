@@ -14,7 +14,7 @@ fi
 path_singularity=$(dirname ${path_metascreener})"/singularity/"
 
 singularity_image="${path_singularity}metascreener.simg"
-if [[ "${software}" == "EO" ]]; then
+if [[ "${software}" == "EO" ]] ||[[ "${software}" == "RC" ]] || [[ "${software}" == "OM" ]] ; then
   singularity_image="${path_singularity}metascreener_22.04.simg"
 fi
 

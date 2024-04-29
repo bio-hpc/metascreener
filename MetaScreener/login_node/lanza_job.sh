@@ -160,8 +160,8 @@ function get_histogram()
   # For LS only needs a summary in .csv
   elif [ $software == "LS" ];then
     echo "singularity exec --bind $bind ${PWD}/singularity/metascreener.simg python ${path_extra_metascreener}results/join/join_ls_sessions.py ${folder_experiment} -q $query -s " >>${folder_templates_jobs}template_get_hystogram.sh
-  elif [ $software == "EO" ];then
-    echo "singularity exec --bind $bind ${PWD}/singularity/metascreener.simg python3 ${path_extra_metascreener}used_by_metascreener/get_EON_csv.py ${folder_experiment} " >>${folder_templates_jobs}template_get_hystogram.sh
+  elif [ $software == "EO" ] || [ $software == "RC" ] ;then
+    echo "singularity exec --bind $bind ${PWD}/singularity/metascreener.simg python3 ${path_extra_metascreener}used_by_metascreener/get_openeye_csv.py ${folder_experiment} $software " >>${folder_templates_jobs}template_get_hystogram.sh
   else
     rm ${folder_templates_jobs}template_get_hystogram.sh
     exit
