@@ -1,5 +1,5 @@
 target="targets/test/1le0.mol2"
-query="queries/test/openeye/"
+query="queries/test/"
 histograms="y"
 option="VS"
 software="EO"
