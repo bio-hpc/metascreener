@@ -84,7 +84,11 @@ while (( $# ))
 			case `printf "%s" "$1" | tr '[:lower:]' '[:upper:]'`  in
 				-F | -D)
 						if [[ "$2" == *"VS_DD_"* ]]; then
-							DiffDockPath=$2
+							if [[ $DiffDockPath == "N/A" ]]; then
+                                       DiffDockPath="$2"
+                                   else
+                                       DiffDockPath="${DiffDockPath} $2"
+                                   fi
 							folders=""
 						else
 							folders=$2
@@ -95,7 +99,11 @@ while (( $# ))
 						do
 							input_dirs=$((input_dirs + 1))
 							if [[ "$2" == *"VS_DD_"* ]]; then
-								DiffDockPath=$2   
+								if [[ $DiffDockPath == "N/A" ]]; then
+                                            DiffDockPath="$2"
+                                        else
+                                            DiffDockPath="${DiffDockPath} $2"
+                                        fi   
 							else
 								folders="${folders} $2"                     
 							fi                                                                  

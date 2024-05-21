@@ -73,7 +73,9 @@ parser.add_argument(
     default=False,
     help="Don't perform post-processing (PLIPS and PSE) for the best results",
 )
-parser.add_argument("-dd", required=False, help="Path to the DiffDock docking run")
+parser.add_argument(
+    "-dd", nargs="+", required=False, help="Path to the DiffDock docking run(s)"
+)
 
 warnings.filterwarnings("ignore", category=UserWarning)
 
@@ -81,7 +83,7 @@ args = parser.parse_args()
 
 silentMode = False
 skipPostProcessing = False
-diffDockPath = args.dd
+diffDockPaths = args.dd
 processDiffDock = False
 max_results = args.max_results
 
@@ -292,9 +294,13 @@ def calcESSENCEDockScore(line, calcRmsd=True):
     return compoundDict
 
 
+DDpaths = []
+
 ## Check if a DiffDock Run is included, if so make DiffDockDict
-if not diffDockPath == "N/A":
-    DDpaths = glob.glob(f"{diffDockPath}/molecules/*{FILE_EXT['DD']}")
+if not diffDockPaths == ["N/A"]:
+    for diffDockPath in diffDockPaths:
+        DDpaths += glob.glob(f"{diffDockPath}/molecules/*{FILE_EXT['DD']}")
+
     for DDpath in DDpaths:
         DDname = basename(DDpath).split("VS_DD_")[-1].split("_rank1")[0]
         DiffDockDict[DDname] = DDpath
@@ -442,6 +448,7 @@ def add_receptor(receptor, folder_molecules):
     cmd = PML_HEAD_PYMOL.format(receptor)
     return subprocess.check_output(cmd, shell=True).decode("UTF-8")
 
+
 ## Start generating PLIPS for the top compounds
 with open(postprocess_path + ".csv", "w") as outputFileTop:
     outputFileTop.write(headerLine)
@@ -478,7 +485,9 @@ with open(postprocess_path + ".csv", "w") as outputFileTop:
                     compoundScore = round(float(compoundScore), 2)
 
                 ## Calculate PLIP interaction
-                execute_command(PLIP_SCRIPT.format(proteinPath, cpPath, prefix, str(max_workers)))
+                execute_command(
+                    PLIP_SCRIPT.format(proteinPath, cpPath, prefix, str(max_workers))
+                )
 
                 ## Handle cases where something goes wrong
                 try:
