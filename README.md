@@ -37,6 +37,8 @@ rm singularity/singularity.zip
    Commercial software. License and software required (copy to "metascreener/MetaScreener/external_sw/dragon/").
 7. **EO EON** v2.4.2.3:
    Commercial software. License and software required (copy to "metascreener/MetaScreener/external_sw/openeye/eon/").
+8. **RC ROCS** v3.6.1.3:
+   Commercial software. License and software required (copy to "metascreener/MetaScreener/external_sw/openeye/rocs/").
    
 ### Aditional Commercial software
 1. **Poseview [Required ChemAxon]**:  generates publication-quality 2D structure-diagrams of protein-ligand complexes.
