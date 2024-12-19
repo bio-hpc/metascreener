@@ -273,7 +273,12 @@ ligand_out.pdbqt -A 'hydrogens' -U \'\'${NONE}"
 		printOp
 		printHelpAux "-pdb"  "[ .pdb ]"  "Receptor or target's file in pdb format (Usesful if plip interactions show any problems)."
 		printExample "Example: ${name_metascreener} -t targets/test/1le0.pdbqt -s LF -q queries/test/GLA.pdbqt -o BD -j 5";;
-
+        EO)
+                printOp
+                printExample "${name_metascreener} -t targets/test/1le0.mol2 -s EO -q queries/test/ -o VS -j 1";;
+        RC)
+                printOp
+                printExample "${name_metascreener} -t targets/test/1le0.mol2 -s RC -q queries/test/ -o VS -j 1";;
 	PDBQT)
 		printOp
 		printExample "Example: ${name_metascreener} -q queries/natural_products_mol2/ -o VS -s PDBQT -j 100"
