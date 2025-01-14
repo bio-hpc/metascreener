@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 #
-#   Author: Jorge de la PeÃ±a GarcÃ­a
-#   Author: Carlos MartÃ­nez CortÃ©s
+#   Author: Carlos Martinez Cortes
 #   Email:  cmartinez1@ucam.edu
 #   Description: Parameters of metascreener
 # ______________________________________________________________________________________________________________________
