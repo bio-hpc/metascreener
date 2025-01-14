@@ -1,8 +1,6 @@
 # !/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-   Author: Jorge de la Peña García
-   Email:  jpena@ucam.edu
    Description: Generates a csv with the euclidian distance between the ligand and each ligand in the database
 """
 import argparse
