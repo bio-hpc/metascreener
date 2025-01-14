@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-    Author: Jorge de la Peña garcía
     Author: Carlos Martínez Cortés
     Email: cmartinez1@ucam.edu
     Description: Join experiments conducted with LS by metascreener in a single file to visualize them with ligandscout and excel. Also works with multiple runs of the same target protein with different ligands.
