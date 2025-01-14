@@ -2,7 +2,6 @@
 #_______________________________________________________________________________________________________________________
 #   Author: Jochem Nelen
 #   Author: Carlos Martinez Cortes
-#   Author: Jorge de la Pena Garcia
 #   Email:  cmartinez1@ucam.edu
 #   Description: Docking with Vina
 # ______________________________________________________________________________________________________________________
