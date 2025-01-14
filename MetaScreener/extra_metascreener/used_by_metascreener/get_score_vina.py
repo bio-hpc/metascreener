@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-#
-#       Author:   Jorge De La Peña Garcia
 #       Author:   Carlos Martínez Cortés
 #       Usage:  Generate score with Vina from a protein and a ligand
 #       dependencies:
