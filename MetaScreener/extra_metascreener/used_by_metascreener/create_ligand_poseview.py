@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-#
-#       Autor:   Jorge De La Peña Garcia (jpena@ucam.edu)
 #       Fecha:   3/3/2017
 #       version: 1
 #
