@@ -1,8 +1,6 @@
 # !/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-   Author: Jorge de la Peña García
-   Email:  jpena@ucam.edu
    Description: Adds the protein to the pml, the indicated queries and returns the default parameters that are used
                 in the pymol sessions.
 """
