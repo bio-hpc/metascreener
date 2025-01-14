@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# 	Author: Jorge de la Pe������a Garc������a
-#	Author: Carlos Mart������nez Cort������s
+#	Author: Carlos Martinez Cortes
 #	Email:  cmartinez1@ucam.edu
 #	Description: Generates a json with Metascreener output
 #
