@@ -1,9 +1,7 @@
 #!/bin/bash
 # 
-#	Authors:	 Jorge De La Peña García
-#                        Carlos Martínez Cortés           (  cmartinez1@ucam.edu  )
+#	Authors:	 Carlos Martínez Cortés           (  cmartinez1@ucam.edu  )
 #                        Antonio Jesús Banegas Luna       (  ajbanegas@ucam.edu   )
-#			 Ricardo Rodriguez Schmidt
 #			 Alfonso Pérez Garrido.   	  (  aperez@ucam.edu      )
 #			 Miguel Carmena Bargueño	  (  mcarmena@ucam.edu    )
 #			 Horacio Pérez Sánchez   	  (  hperez@ucam.edu      )
