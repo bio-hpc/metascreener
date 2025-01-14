@@ -1,8 +1,6 @@
 # !/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-   Author: Jorge de la Peña García
-   Email:  jpena@ucam.edu
    Description: Convert molecule folders between sdf, pdb, pdbqt and mol2 formats
 
 """
