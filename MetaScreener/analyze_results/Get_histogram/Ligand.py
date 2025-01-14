@@ -9,8 +9,6 @@ import pybel
 from .Tools import *
 
 
-#
-#   Author: Jorge de la Peña García
 #   Author: Carlos Martínez Cortés
 #   Email:  cmartinez1@ucam.edu
 #   Description: Holds all ligand data
