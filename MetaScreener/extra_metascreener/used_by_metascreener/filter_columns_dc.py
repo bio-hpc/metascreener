@@ -1,8 +1,6 @@
 # !/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-   Author: Jorge de la Peña Garcia
-   Email:  jorge.dlpg@gmail.com
    Description: generates a csv with the euclidean distance between the ligand and each ligand in the database
    
 """
