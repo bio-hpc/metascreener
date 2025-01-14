@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 #
-# Author: Jorge de la Pe��a Garc��a
-# Author: Carlos Mart��nez Cort��s
+# Author: Carlos Martinez Cortes
 #	Email: 	cmartinez1@ucam.edu
 #	Description: 	Create the folder of experiment
 #_________________________________________________________________________________________________________________________________________
