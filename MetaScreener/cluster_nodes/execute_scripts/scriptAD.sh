@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 #_______________________________________________________________________________________________________________________
-#   Author: Jorge de la Peña Garcia
 #   Author: Carlos Martinez Cortes
 #   Email:  cmartinez1@ucam.edu
 #   Description: Docking with Vina
