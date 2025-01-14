@@ -1,8 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-#
-#
-#   Author: Jorge de la Peña García
 #   Author: Carlos Martínez Cortés
 #
 import sys
