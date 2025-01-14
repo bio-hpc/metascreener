@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
-#
-# Author: Jorge de la Peña García
 # Author: Carlos Martínez Cortés
 #	Email:  cmartinez1@ucam.edu
 #	Description: Creates the template for the job, and launches it. It is called as many times as the lanzaJob tells it to.
