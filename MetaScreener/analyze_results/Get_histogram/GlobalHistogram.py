@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#   Author: Jorge de la Peña García
 #   Author: Carlos Martínez Cortés
 #   Email:  cmartinez@ucam.edu
 #   Description: Generates a global histogram with all test data
