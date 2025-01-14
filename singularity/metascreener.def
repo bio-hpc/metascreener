@@ -30,6 +30,5 @@ MirrorURL: http://us.archive.ubuntu.com/ubuntu/
     export LC_ALL=C
 
 %labels
-    AUTHOR Jorge de la Pena
-    Maintainer Carlos Martinez Cortes
+    AUTHOR Carlos Martinez Cortes
     Version v1
