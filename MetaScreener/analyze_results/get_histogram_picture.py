@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#   Author: Jorge de la Peña García
 #   Author: Carlos Martínez Cortés
 #   Email:  cmartinez1@ucam.edu
 #   Description: Script that automates the filtering process to find the best results in the tests performed with MetaScreener
