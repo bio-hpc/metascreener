@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-#
-#   Author: Jorge de la Peña García
 #   Author: Carlos Martínez Cortés
 #   Email:  cmartinez1@ucam.edu
 #   Description: Generate all graphics of get_histogram
