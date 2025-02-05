@@ -23,9 +23,9 @@ def get_com():
 	else:
 		if contadorDeModelo==1 and ('ATOM ' in linea or 'HETATM ' in linea ) :
 			nAtom+=1;
-			x=linea.split()[5]
-			y=linea.split()[6]
-			z=linea.split()[7]
+			x=linea.split()[6]
+			y=linea.split()[7]
+			z=linea.split()[8]
 			valoresCoordenadas[0]+=float(x);
 			valoresCoordenadas[1]+=float(y);
 			valoresCoordenadas[2]+=float(z);
