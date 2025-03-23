@@ -1,20 +1,20 @@
 Bootstrap: docker
-From: ubuntu:22.04
+From: nvidia/cuda:12.0.0-devel-ubuntu22.04
 
 %runscript
     echo "Singularity image for Ubuntu 22.04 in MetaScreener"
 
 %post
     # Install build dependencies
-    apt-get update && apt-get install -y build-essential libssl-dev uuid-dev git libgpgme-dev squashfs-tools libseccomp-dev pkg-config curl libpciaccess0 libglib2.0-dev libfuse3-dev autoconf libtool
+    apt-get update && apt-get install -y build-essential libssl-dev uuid-dev git libgpgme-dev squashfs-tools libseccomp-dev pkg-config curl libpciaccess0 libglib2.0-dev libfuse3-dev autoconf libtool python3 time
 
     # Check if all dependencies are installed
     apt-get install -y --no-install-recommends checkinstall
 
-    # Download and install Go 1.20
-    curl -L -o /usr/local/go1.20.linux-amd64.tar.gz https://golang.org/dl/go1.20.linux-amd64.tar.gz
-    tar -C /usr/local -xzf /usr/local/go1.20.linux-amd64.tar.gz
-    rm /usr/local/go1.20.linux-amd64.tar.gz
+    # Download and install Go 1.24.1
+    curl -L -o /usr/local/go1.24.1.linux-amd64.tar.gz https://go.dev/dl/go1.24.1.linux-amd64.tar.gz
+    tar -C /usr/local -xzf /usr/local/go1.24.1.linux-amd64.tar.gz
+    rm /usr/local/go1.24.1.linux-amd64.tar.gz
     export PATH=$PATH:/usr/local/go/bin
 
     # Set the Go environment variables
@@ -30,13 +30,14 @@ From: ubuntu:22.04
     git submodule update --init --recursive
 
     # Clean and rebuild Singularity
-    ./mconfig
+    ./mconfig --without-libsubid
     make -C builddir
     make -C builddir install
 
     # Verify build logs
     make -C builddir > build_log.txt 2>&1
 
+    ln -s /usr/bin/python3 /usr/bin/python
     apt-get clean
 
 %environment
@@ -46,4 +47,3 @@ From: ubuntu:22.04
 %labels
     AUTHOR Carlos Martinez Cortes (cmartinez1@ucam.edu)
     Version v1
-

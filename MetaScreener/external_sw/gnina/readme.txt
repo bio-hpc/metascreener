@@ -1,0 +1,1 @@
+Download Gnina v1.3 here: https://github.com/gnina/gnina/releases/download/v1.3/gnina

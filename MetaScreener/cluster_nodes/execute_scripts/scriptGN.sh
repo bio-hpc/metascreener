@@ -3,7 +3,7 @@
 #   Author: Jochem Nelen
 #   Author: Carlos Martinez Cortes
 #   Email:  cmartinez1@ucam.edu
-#   Description: Docking with Vina
+#   Description: Docking with Gnina
 # ______________________________________________________________________________________________________________________
 
 vGauss1=-0.035579
@@ -71,8 +71,8 @@ function create_out()
 	
 	### ADD CNN scoring
 	minimizedAffinity=$(grep '    1 ' ${out_aux}.ucm | awk '{print $2}')
-	CNNscore=$(grep '    1 ' ${out_aux}.ucm | awk '{print $3}')
-	CNNaffinity=$(grep '    1 ' ${out_aux}.ucm | awk '{print $4}')
+	CNNscore=$(grep '    1 ' ${out_aux}.ucm | awk '{print $4}')
+	CNNaffinity=$(grep '    1 ' ${out_aux}.ucm | awk '{print $5}')
 	global_score=${minimizedAffinity}
 
 	CNNscores=${minimizedAffinity}:${CNNscore}:${CNNaffinity}

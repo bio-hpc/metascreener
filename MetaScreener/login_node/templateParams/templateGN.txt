@@ -7,7 +7,7 @@
 #LanzCoordY:
 #LanzCoordZ:
 #LanzGrid:N
-#LanzCores:auto ## Without a GPU, "auto" will default to 1 core per job, with a GPU this will be 4 cores
+#LanzCores:4
 #LanzTimeExecution:900
 #LanzMem:2G
 #lanzSizeGridX:30
