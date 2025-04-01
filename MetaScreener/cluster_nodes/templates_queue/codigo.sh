@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
+if [[ "${software}" == "GN" ]]; then
+  echo "export OMP_NUM_THREADS=1 "																			>>$name_template_job
+  echo "export MKL_NUM_THREADS=1 "																			>>$name_template_job
+  echo "export OPENBLAS_NUM_THREADS=1 "																			>>$name_template_job
+fi
+
 echo "echo \"start job\" 1>&2" 																			>>$name_template_job
 echo "date +\"%s   %c\" 1>&2"																			>>$name_template_job
 
@@ -14,13 +20,14 @@ fi
 path_singularity=$(dirname ${path_metascreener})"/singularity/"
 
 singularity_image="${path_singularity}metascreener.simg"
-if [[ "${software}" == "EO" ]] ||[[ "${software}" == "RC" ]] || [[ "${software}" == "OM" ]] ; then
+if [[ "${software}" == "EO" ]] ||[[ "${software}" == "RC" ]] || [[ "${software}" == "OM" ]] || [[ "${software}" == "GN" ]] ; then
   singularity_image="${path_singularity}metascreener_22.04.simg"
 fi
 
 singularity_prefix=""
+
 if [[ "${software}" == "GN" && "${GPU}" != "N/A" ]]; then
-  singularity_prefix="--nv"
+  singularity_prefix+="--nv "
 fi
 
 echo $modules_metascreener >>$name_template_job
@@ -35,7 +42,4 @@ echo "singularity exec ${singularity_prefix} --bind $bind ${singularity_image} $
 echo "mv $name_template_job ${folder_jobs_done}"                                                        >>$name_template_job
 
 echo "echo \"end job\" 1>&2" 																			>>$name_template_job
-echo "date +\"%s   %c\" 1>&2"																			>>$name_template_job
-
-
-
+echo "date +\"%s   %c\" 1>&2" 																			>>$name_template_job	

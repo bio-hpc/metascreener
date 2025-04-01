@@ -76,6 +76,7 @@ if data_json["software"] == "GN":
 	
 	data_json["CNNscore"] = CNNscore
 	data_json["CNNAffinity"] = CNNaffinity
+	data_json["CNN_VS"] = str(round(float(CNNscore) * float(CNNaffinity), 3))
 
 	data_json["global_score"] = minimizedAffinity
 

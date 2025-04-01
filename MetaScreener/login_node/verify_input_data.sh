@@ -377,14 +377,6 @@ if [[ ${software} == "GN" ]]; then
     echo -e "${RED} Error: ${ext_sw}gnina/gnina doesn't exist. Download the executable to this directory, give it execution permissions and try again.${NONE}"
     exit 1
   fi
-  
-  if [[ ! "${cores%% *}" =~ ^[0-9]+$ ]]; then
-    if [[ "${GPU}" != "N/A" ]]; then
-      cores=4
-    else
-      cores=1
-    fi
-  fi
 fi
 
 if [[ ${software} == "LS" ]] ;then
