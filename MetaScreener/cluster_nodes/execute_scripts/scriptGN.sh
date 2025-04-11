@@ -70,9 +70,15 @@ function create_out()
 	graph_atoms_type=`echo $graph_atoms_type |sed 's/\ //g'`
 	
 	### ADD CNN scoring
-	minimizedAffinity=$(grep '    1 ' ${out_aux}.ucm | awk '{print $2}')
-	CNNscore=$(grep '    1 ' ${out_aux}.ucm | awk '{print $4}')
-	CNNaffinity=$(grep '    1 ' ${out_aux}.ucm | awk '{print $5}')
+    conf=${1}
+    if [ -n "${conf}" ]; then
+        i="${conf:1}"
+    else
+        i=1
+    fi
+	minimizedAffinity=$(grep -E "^\s+${i}\s+" ${out_aux}.ucm | awk '{print $2}')
+     CNNscore=$(grep -E "^\s+${i}\s+" ${out_aux}.ucm | awk '{print $4}') 
+     CNNaffinity=$(grep -E "^\s+${i}\s+" ${out_aux}.ucm | awk '{print $5}')
 	global_score=${minimizedAffinity}
 
 	CNNscores=${minimizedAffinity}:${CNNscore}:${CNNaffinity}
@@ -139,15 +145,17 @@ funcionAdScore()
 	if [ "${flex}" == "N/A" ] && [ "${flexFile}" == "N/A" ];then
 
 		debugY "$TAG: Rigido numPoses: $numPoses"
-		if [ "$numPoses" -eq "1" ];then
-			sed -i '1d' $out_molec.pdbqt
-			sed -i  '$d' $out_molec.pdbqt
-			execute "${path_external_sw}autodock/vina --score_only --ligand $out_molec.pdbqt --receptor  ${CWD}${target} --cpu ${cores} > ${out_energies}.en"
+		if [ "$numPoses" -eq "1" ]; then
+			sed -i '1d' "$out_molec.pdbqt"
+			sed -i '$d' "$out_molec.pdbqt"
+			execute "${path_external_sw}autodock/vina --score_only --ligand $out_molec.pdbqt --receptor ${CWD}${target} --cpu ${cores} > ${out_energies}.en"
 		else
-			${path_external_sw}autodock/vina_split --input ${out_molec}.pdbqt > /dev/null
-			for i in `seq 1 $numPoses` ;do
-				${path_external_sw}autodock/vina --score_only --ligand ${out_molec}_ligand_${i}.pdbqt --receptor  ${CWD}${target} --cpu ${cores}> ${out_energies}_${i}.en
-				mv ${out_molec}_ligand_${i}.pdbqt ${out_molec}_${i}.pdbqt
+			${path_external_sw}autodock/vina_split --input "${out_molec}.pdbqt" > /dev/null
+			num_digits=${#numPoses}
+			for i in $(seq 1 $numPoses); do
+				i_padded=$(printf "%0${num_digits}d" "$i")
+				${path_external_sw}autodock/vina --score_only --ligand "${out_molec}_ligand_${i_padded}.pdbqt" --receptor "${CWD}${target}" --cpu "${cores}" > "${out_energies}_${i}.en"
+				mv "${out_molec}_ligand_${i_padded}.pdbqt" "${out_molec}_${i_padded}.pdbqt"
 			done
 		fi
 
