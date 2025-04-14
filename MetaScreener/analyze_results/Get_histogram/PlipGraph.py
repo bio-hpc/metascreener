@@ -29,7 +29,7 @@ class PlipGraph(object):
                     self.cfg.python_exe,
                     self.cfg.ligand_plip,
                     pose.file_ori_target,
-                    pose.file_result,
+                    prefix_out+".pdbqt",
                     prefix_out,
                     self.cfg.file_target_pdb
                 )
@@ -38,7 +38,7 @@ class PlipGraph(object):
                     self.cfg.python_exe,
                     self.cfg.ligand_plip,
                     pose.file_ori_target,
-                    pose.file_result,
+                    prefix_out+".pdbqt",
                     prefix_out,       
                 )
             print(cmd)
