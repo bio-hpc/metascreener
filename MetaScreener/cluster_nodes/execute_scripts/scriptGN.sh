@@ -145,17 +145,17 @@ funcionAdScore()
 	if [ "${flex}" == "N/A" ] && [ "${flexFile}" == "N/A" ];then
 
 		debugY "$TAG: Rigido numPoses: $numPoses"
-		if [ "$numPoses" -eq "1" ]; then
-			sed -i '1d' "$out_molec.pdbqt"
-			sed -i '$d' "$out_molec.pdbqt"
-			execute "${path_external_sw}autodock/vina --score_only --ligand $out_molec.pdbqt --receptor ${CWD}${target} --cpu ${cores} > ${out_energies}.en"
+		if [ "$numPoses" -eq "1" ];then
+			sed -i '1d' $out_molec.pdbqt
+			sed -i '$d' $out_molec.pdbqt
+			execute "${path_external_sw}autodock/vina --score_only --ligand $out_molec.pdbqt --receptor  ${CWD}${target} --cpu ${cores} > ${out_energies}.en"
 		else
-			${path_external_sw}autodock/vina_split --input "${out_molec}.pdbqt" > /dev/null
+			${path_external_sw}autodock/vina_split --input ${out_molec}.pdbqt > /dev/null
 			num_digits=${#numPoses}
-			for i in $(seq 1 $numPoses); do
+			for i in `seq 1 $numPoses`;do
 				i_padded=$(printf "%0${num_digits}d" "$i")
-				${path_external_sw}autodock/vina --score_only --ligand "${out_molec}_ligand_${i_padded}.pdbqt" --receptor "${CWD}${target}" --cpu "${cores}" > "${out_energies}_${i}.en"
-				mv "${out_molec}_ligand_${i_padded}.pdbqt" "${out_molec}_${i_padded}.pdbqt"
+				${path_external_sw}autodock/vina --score_only --ligand ${out_molec}_ligand_${i_padded}.pdbqt --receptor  ${CWD}${target} --cpu ${cores}> ${out_energies}_${i}.en
+				mv ${out_molec}_ligand_${i_padded}.pdbqt ${out_molec}_${i}.pdbqt
 			done
 		fi
 
@@ -172,7 +172,7 @@ funcionAdScore()
 			    cp ${dirFL}/${name_target}_flex.pdbqt ${out_molec}-flex.pdbqt
 			else
                 n=`expr $numLinBorrar - 1`
-                execute "sed '1,$n'd ${out_molec}.pdbqt >  ${out_molec}-flex.pdbqt"
+                execute "sed '1,$n'd ${out_molec}.pdbqt > ${out_molec}-flex.pdbqt"
 
                 numFinLinea=`wc -l ${out_molec}.pdbqt | awk '{print $1}'`
                 execute "sed -i '$numLinBorrar,$numFinLinea'd ${out_molec}.pdbqt"
