@@ -21,7 +21,7 @@ function ayuda()
         printHelp "qu" "N" "Partition for the resource allocation."
         printHelp "AS" "O" "Lower stop of -a parameter."
         printHelp "AE" "O" "Upper stop of -a parameter."
-        printHelp "TT" "O" "Time for LigandScout."
+        printHelp "TD" "O" "Time for LigandScout."
         printHelp "j" "O" "Number of job per execution."
         echo ""
         exit
@@ -46,7 +46,7 @@ while (( $# ))
                         -AE )  fin=$2;;
                         -AS )  ini=$2;;
                         -J )  JOBS_PER_EXECUTION=$2;;
-                        -TT ) time=$2;;
+                        -TD ) time=$2;;
                         -H )  ayuda
             esac
         fi
