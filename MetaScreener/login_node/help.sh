@@ -130,6 +130,15 @@ printOp()
 
 }
 
+printOpOM()
+{
+        printTitle
+        printHelpAux "-t"  "[ number ]"  "Number of conformations (optional)."
+        printHelpAux "-q"  "`getOptions "\#LanzExtensionligB"`"  "Ligand's file or query's directory."
+        printHelpAux "-s" "[ $option ]"   "Software."
+        printHelpAux "-o" "`getOptions "\#lanzOptions"`"   "Options available."
+}
+
 printHelpSwexclusivo()
 {
 
@@ -279,6 +288,9 @@ ligand_out.pdbqt -A 'hydrogens' -U \'\'${NONE}"
         RC)
                 printOp
                 printExample "${name_metascreener} -t targets/test/1le0.mol2 -s RC -q queries/test/ -o VS -j 1";;
+        OM)
+                printOpOM
+                printExample "${name_metascreener} -t 200 -s OM -q queries/test/ -o VS -j 1";;                
 	PDBQT)
 		printOp
 		printExample "Example: ${name_metascreener} -q queries/natural_products_mol2/ -o VS -s PDBQT -j 100"

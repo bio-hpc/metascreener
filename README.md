@@ -1,5 +1,5 @@
 ## MetaScreener [(manual)](https://github.com/bio-hpc/metascreener/wiki)
-MetaScreener is a collection of scripts developed in different languages (Shell script, Python, Java and C) that integrates, among others, docking, similarity and molecular modeling programs, through which jobs are sent to slurm on supercomputers and the data is processed automatically by sorting it into tables and graphs. It has been developed by the Structural Bioinformatics and High Performance Computing (BIO-HPC, https://bio-hpc.eu) at UCAM Universidad Católica de Murcia.
+MetaScreener is a collection of scripts developed in different languages (Shell script, Python, Java and C) that integrates, among others, docking, similarity and molecular modeling programs, through which jobs are sent to slurm on supercomputers and the data is processed automatically by sorting it into tables and graphs. It has been developed by the Structural Bioinformatics and High Performance Computing (BIO-HPC, https://bio-hpc.eu) at UCAM Universidad Cat��lica de Murcia.
 
 ### Installation (choose one)
 1. git clone https://github.com/bio-hpc/metascreener.git
@@ -39,6 +39,8 @@ rm singularity/singularity.zip
    Commercial software. License and software required (copy to "metascreener/MetaScreener/external_sw/openeye/eon/").
 8. **RC ROCS** v3.6.1.3:
    Commercial software. License and software required (copy to "metascreener/MetaScreener/external_sw/openeye/rocs/").
+9. **OM OMEGA** v5.0.0.3:
+   Commercial software. License and software required (copy to "metascreener/MetaScreener/external_sw/openeye/omega/"). 
    
 ### Aditional Commercial software
 1. **Poseview [Required ChemAxon]**:  generates publication-quality 2D structure-diagrams of protein-ligand complexes.

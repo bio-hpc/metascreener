@@ -1,0 +1,16 @@
+#LanzNombre:OM - OMEGA
+#LanzExtensionProtQ:
+#LanzExtensionligB:.sdf,.mol2,.smi,.pdb
+#lanzOptions:VS
+#LanzCoordX:0
+#LanzCoordY:0
+#LanzCoordZ:0
+#LanzGrid:N
+#LanzCores:4
+#LanzTimeExecution:3600
+#LanzMem:4G
+#lanzSizeGridX:30
+#lanzSizeGridY:30
+#lanzSizeGridZ:30
+#lanzTimeOut:Y
+#lanzCreateResumen:Y

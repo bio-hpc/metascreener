@@ -1,0 +1,10 @@
+target="200"
+query="queries/test/"
+histograms="y"
+option="VS"
+software="OM"
+num_per_job="1"
+profile="STANDARD_VS"
+x=0
+y=0
+z=0
