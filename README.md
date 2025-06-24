@@ -1,13 +1,13 @@
 ## MetaScreener [(manual)](https://github.com/bio-hpc/metascreener/wiki)
-MetaScreener is a collection of scripts developed in different languages (Shell script, Python, Java and C) that integrates, among others, docking, similarity and molecular modeling programs, through which jobs are sent to slurm on supercomputers and the data is processed automatically by sorting it into tables and graphs. It has been developed by the Structural Bioinformatics and High Performance Computing (BIO-HPC, https://bio-hpc.eu) at UCAM Universidad Cat��lica de Murcia.
+MetaScreener is a collection of scripts developed in various languages (Shell script, Python, Java, and C) that integrates, among others, docking, similarity, and molecular modelling programs. Through this integration, jobs are sent to Slurm on supercomputers, and the data is processed automatically by sorting it into tables and graphs. It has been developed by the Structural Bioinformatics and High-Performance Computing (BIO-HPC, https://bio-hpc.eu) group at UCAM, Universidad Católica de Murcia.
 
 ### Installation (choose one)
 1. git clone https://github.com/bio-hpc/metascreener.git
 2. git clone git@github.com:bio-hpc/metascreener.git
 3. gh repo clone bio-hpc/metascreener
-4. Download the .zip and unzip it in the supercomputing centers you are going to use 
+4. Download the .zip and unzip it in the supercomputing centres you are going to use 
 
-### Download singularity image 
+### Download the singularity image 
 Needed to secure compatibility with the HPC cluster.
 
 cd metascreener/
@@ -42,7 +42,7 @@ rm singularity/singularity.zip
 9. **OM OMEGA** v5.0.0.3:
    Commercial software. License and software required (copy to "metascreener/MetaScreener/external_sw/openeye/omega/"). 
    
-### Aditional Commercial software
+### Additional Commercial software
 1. **Poseview [Required ChemAxon]**:  generates publication-quality 2D structure-diagrams of protein-ligand complexes.
    Copy the software in "metascreener/MetaScreener/external_sw/poseview/" (Settings.pxx is provided).
    You can get an academic license at https://www.biosolveit.de/free-to-academics/.
@@ -50,7 +50,7 @@ rm singularity/singularity.zip
    Copy the software in "metascreener/MetaScreener/external_sw/"
    You can get an academic license at https://chemaxon.com/academic-license.
 ### ESSENCE-Dock
-ESSENCE-Dock can take in docking runs from different algorithms, and uses all of the information to rescore the compounds using a consensus-based approach.
+ESSENCE-Dock can take in docking runs from different algorithms and uses all of the information to rescore the compounds using a consensus-based approach.
 For more information about ESSENCE-Dock, you check out the manuscript [here](https://pubs.acs.org/doi/10.1021/acs.jcim.3c01982).
 To use ESSENCE-Dock, you need to make sure the individual docking calculations used `metascreener`, finished correctly and contain a `Results_scoring.csv`. If this is not present, or if you moved the directory you can regenerate the file using:  
  ```
@@ -60,9 +60,9 @@ After that, you can use ESSENCE-Dock:
  ```
 ./MetaScreener/extra_metascreener/results/ESSENCE-Dock.sh -f <docking_dir1> <docking_dir2> ... -p <proteinFile> -out <output_dir>
  ```
-There are many more options (like running using slurm, configuring the amount of cores to run on, ...). For more information you can also always use the help command (`./MetaScreener/extra_metascreener/results/ESSENCE-Dock.sh`) or feel free to open a GitHub issue.   
+There are many more options (like running using slurm, configuring the amount of cores to run on, ...). For more information, you can also always use the help command (`./MetaScreener/extra_metascreener/results/ESSENCE-Dock.sh`) or feel free to open a GitHub issue.   
 ### extra_metascreener
-It is a directory that contains multiple scripts used or related to metascreener. 
+It is a directory that contains multiple scripts used or related to Metascreener. 
 
 It is recommended to use these python scripts with the metascreener singularity image "metascreener/singularity/metascreener.simg". 
 For instance:
@@ -72,19 +72,19 @@ singularity exec singularity/metascreener.simg python MetaScreener/extra_metascr
 #### convert
 - **conv_to.py***: Convert molecule folders between sdf, pdb, pdbqt and mol2 formats. *Requires ChemAxom for mol2 conversions 
 - **saltRemover.py [Required ChemAxon]**: Remove fragments from mol2 file and prints smi without given elements.
-- **frament_mol2.sh**: Use **saltRemover.py** with the indicated salt remover by adding molecules to Cl,Br.
+- **frament_mol2.sh**: Use **saltRemover.py** with the indicated salt remover by adding molecules to Cl, Br.
 #### launchers
 - **launcher_bd.sh**: Launch Blind Dockings with AutoDock Vina or Lead Finder from a protein directory and a ligand directory. 
 - **launcher_ls.sh**: Launch virtual screening with LigandScout for 0 to a given number of omitted features (default 0 to 5).
 #### results
-- **analyse_residues_plip.py**: Script to analyze a set of Blind Docking results by residues.
+- **analyse_residues_plip.py**: Script to analyse a set of Blind Docking results by residues.
 - **cross_list_bd.py**: Cluster binding of Blind Docking with different ligands or the same.
 - **cross_list_vs.py**: Cross virtual screening lists with different docking programs.
 - **join_cl_json_bd_session.py**: It makes a PyMol session with the results obtained by cross_list_bd.py.
-- **join_cl_json_vs_session.py**:It makes a PyMol session with the results obtained by cross_list_vs.py
+- **join_cl_json_vs_session. py **: It makes a PyMol session with the results obtained by cross_list_vs.py
 - **join_ls_sessions.py**: It joins experiments carried out with LigandScout in MetaScreener into a single file to view it in LigandScout and excel.
  Excel files are generated in .csv and .xlsx.
 #### used_by_metascreener
-Scripts used internally by metascreener to process the results. 
+Scripts used internally by Metascreener to process the results. 
 #### utils
 - **distance_ligand_point-py**: Calculate the distance between a ligand and a point.
