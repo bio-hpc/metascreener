@@ -13,6 +13,7 @@ execute_script()
                  confs=""
              fi
              execute "./omega2 -in ${CWD}${query} -out ${prefix}.mol2 ${confs} &> ${out_aux}.ucm"
+             execute "./omega2 -in ${CWD}${query} -out ${prefix}.sdf ${confs} &> ${out_aux}.ucm"
              mkdir -p ${folder_experiment}/molecules/${prefix}
              mv ${prefix}* ${folder_experiment}/molecules/${prefix}
              cd $path
