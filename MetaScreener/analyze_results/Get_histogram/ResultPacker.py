@@ -29,7 +29,6 @@ class ResultPacker(object):
 
         with tarfile.open(self.pack_file, 'w:gz') as tgz:
             for item in glob.glob(os.path.join(self.cfg.OUTPUT_DIRS['workdir'], '*')):
-
                 if item != self.pack_file and item not in {
                     self.cfg.SHUTTLEMOL_DIRS['folderErrorJob'],
                     self.cfg.SHUTTLEMOL_DIRS['folderOutJob'],
@@ -42,6 +41,10 @@ class ResultPacker(object):
                         pass
                     else:
                         tgz.add(os.path.relpath(item, '.'))
+
+            results_csv = os.path.join(self.cfg.file_input, 'Results_scoring.csv')
+            if os.path.isfile(results_csv):
+                tgz.add(os.path.relpath(results_csv, '.'))
 
         tgt_file = os.path.realpath(os.path.basename(self.pack_file))
         if os.path.isfile(tgt_file):
