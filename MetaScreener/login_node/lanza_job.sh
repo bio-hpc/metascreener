@@ -155,6 +155,7 @@ function get_histogram()
     fi
     echo "find ${folder_experiment} -name \${pml} -execdir singularity exec --bind $bind \$PWD/singularity/metascreener.simg pymol -c -q -k -Q "{}" \; > /dev/null 2>&1">>${folder_templates_jobs}template_get_hystogram.sh
     echo "find ${folder_experiment} -name \`basename ${folder_experiment}\`.pse -exec cp "{}" ${folder_experiment} \;">>${folder_templates_jobs}template_get_hystogram.sh
+    echo "if [ -f \`basename ${folder_experiment}\`.pse ]; then tar -rf \`basename ${folder_experiment}\`.tar.gz \`basename ${folder_experiment}\`.pse; fi">>${folder_templates_jobs}template_get_hystogram.sh
     echo "python ${path_extra_metascreener}used_by_metascreener/get_csv.py ${folder_experiment}" >>${folder_templates_jobs}template_get_hystogram.sh
 
   # For LS only needs a summary in .csv
