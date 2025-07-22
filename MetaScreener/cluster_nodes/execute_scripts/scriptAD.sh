@@ -45,9 +45,13 @@ execute_script()
 	checkAminChainFlex
 	debugY "$TAG option: ${option} flexibilidad: ${flexFile} chain: ${chain} "
 	tokken='\-----+------------+----------+----------'
+ 	path_vina_exec="${folder_experiment}/output/$(basename "${query}" .pdbqt)"
+        mkdir -p ${path_vina_exec}
+        cd ${path_vina_exec}
 	execute "${path_external_sw}autodock/vina --out ${out_molec}.pdbqt --receptor ${CWD}${target} --ligand ${CWD}${query} ${b} ${fileFlexi} \
 	--center_x ${x} --center_y ${y} --center_z ${z} --size_x ${gridSizeX} --size_y ${gridSizeY} --size_z ${gridSizeZ} --num_modes ${numPoses} --cpu ${cores} ${opt_aux} &> ${out_aux}.ucm"
-	if [[ "${error}" == "0" ]];then
+	cd ${path_metascreener}
+ 	if [[ "${error}" == "0" ]];then
 		case ${option} in
 			VS*)
 				if [[ "$error" == "0" ]];then
