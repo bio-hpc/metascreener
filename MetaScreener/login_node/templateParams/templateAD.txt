@@ -28,7 +28,7 @@
 -::Y::--weight_rot:: arg (=0.058459999999999998) N_rot weight
 2015::Y::--seed:: arg explicit random seed
 4::Y::--energy_range:: arg (=3) maximum energy difference between the best binding 
-0::Y::--film:: arg (=0) Output generates a trajectory conformations when 
+0::Y::--film:: arg (=0) Output generates a trajectory conformations when improves score
 8::Y::--exhaustiveness:: arg (=8) exhaustiveness of the global search (roughly proportional to time)
 AD::Y::-refined_energy:: [ AD | GR  ] (Vina, Gromacs )
 
