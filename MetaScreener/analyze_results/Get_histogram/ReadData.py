@@ -29,9 +29,19 @@ class ReadData(object):
         score_type = None
         data = []
         id_lig = []
+        
+        # Get custom scoring parameters if available
+        score_field = getattr(self.cfg, 'score_field', None)
+        score_ascending = getattr(self.cfg, 'score_ascending', True)
+        
         for file_eng in files_json:
             if os.stat(file_eng).st_size != 0:
-                pose_lig = Ligand(file_eng, self.cfg)
+                # Use custom scoring parameters if score_field is specified
+                if score_field:
+                    pose_lig = Ligand(file_eng, self.cfg, score_field=score_field, score_ascending=score_ascending)
+                else:
+                    pose_lig = Ligand(file_eng, self.cfg)
+                    
                 if pose_lig != None and pose_lig.get_score() != None:
                     id_lig.append(pose_lig.id_str)
                     data.append(pose_lig.graph_global_score)

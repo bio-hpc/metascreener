@@ -188,6 +188,8 @@ if [  -z "$option" ];then
 	printGlobalHelp "test" "O" "" "Launch a quick test with default parameters. You can select option (-o) and software (-s) (By default BD AD in sequential with debug)."
 	printGlobalHelp "rb" "O" "" "Number of files saved as bestScore in VS. Default (50)."
 	printGlobalHelp "rf" "O" "" "Number of files saved in VS. Default (500)."
+	printGlobalHelp "sf" "O" "" "Custom score field for ranking. Overrides default scoring hierarchy. Available fields depend on software."
+	printGlobalHelp "sao" "O" " [ true | false ]" "Score order: true for lower is better (default), false for higher is better."
 	
 	echo ""
 	echo -e "${PURPLE}Queue Manager Options${NONE}"

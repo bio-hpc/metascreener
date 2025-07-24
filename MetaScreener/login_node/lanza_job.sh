@@ -142,11 +142,27 @@ function get_histogram()
 
   if [ $software == "AD" ] || [ $software == "LF" ] || [ $software == "GN" ] ;then
 
-    if [[ $target_pdb == "no_target" ]];then
-      echo "singularity exec --bind $bind ${PWD}/singularity/metascreener.simg python ${path_analize_results}get_histogram_picture.py --prog=$software --opt=$option -i ${folder_experiment} -p $target -l $query --rf $rf --rb $rb --profile ${profile} -d $debug">>${folder_templates_jobs}template_get_hystogram.sh
-    else
-      echo "singularity exec --bind $bind ${PWD}/singularity/metascreener.simg python ${path_analize_results}get_histogram_picture.py --prog=$software --opt=$option -i ${folder_experiment} -p $target --pdb=${target_pdb} -l $query --rf $rf --rb $rb --profile ${profile} -d $debug">>${folder_templates_jobs}template_get_hystogram.sh
+    # Build the base command
+    base_cmd="singularity exec --bind $bind \${PWD}/singularity/metascreener.simg python \${path_analize_results}get_histogram_picture.py --prog=$software --opt=$option -i \${folder_experiment} -p $target"
+    
+    # Add PDB option if available
+    if [[ $target_pdb != "no_target" ]];then
+      base_cmd="$base_cmd --pdb=\${target_pdb}"
     fi
+    
+    # Add standard parameters
+    base_cmd="$base_cmd -l $query --rf $rf --rb $rb --profile \${profile} -d $debug"
+    
+    # Add custom scoring parameters if defined
+    if [[ -n "$score_field" && "$score_field" != "N/A" ]]; then
+      base_cmd="$base_cmd --score-field $score_field"
+    fi
+    
+    if [[ -n "$score_ascending" && "$score_ascending" != "N/A" ]]; then
+      base_cmd="$base_cmd --score-ascending $score_ascending"
+    fi
+    
+    echo "$base_cmd">>${folder_templates_jobs}template_get_hystogram.sh
 
     if [ $option = "VS" ];then
       echo "pml=\`basename ${folder_experiment}\`.pml">>${folder_templates_jobs}template_get_hystogram.sh

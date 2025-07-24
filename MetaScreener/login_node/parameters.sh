@@ -127,6 +127,8 @@ check_mol2=`empty_variable $check_mol2`         # Don't check mol2 protein resid
 project=`empty_variable $project`
 rf=`empty_variable $rf 500`
 rb=`empty_variable $rb 50`
+score_field=`empty_variable $score_field`       # Custom score field for scoring
+score_ascending=`empty_variable $score_ascending true` # Score order (true=lower is better, false=higher is better)
 
 #
 #	Set parameters
@@ -164,6 +166,9 @@ while (( $# ))
 			-EM ) email=$2;;
 	    -RF ) rf=$2;;
       -RB ) rb=$2;;
+      -SF ) score_field=$2;;    # Custom score field
+      -SAO ) score_ascending=$2;; # Score ascending order
+      
 			## Internal use
 			-RE) resName=$2;;
 			-NT) name_target=$2;;

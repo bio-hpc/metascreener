@@ -42,29 +42,22 @@ class InputParams(object):
             self.cfg.print_format_help("-a", "Generate pymol sessions with plip;"
                                              "Deafult: n")
             self.cfg.print_format_help("--rb", "Number of files saved as bestScore in VS. Default(50)")
-            self.cfg.print_format_help("--rf", "Number of files saved in VS. Default (500)")
-            self.cfg.print_format_help("-b", "Chain of residues split by ':', type cad_res_num, "
-                                             " For example A_TYR_385:A_VAL_434:A_VAL_5")
-            self.cfg.print_format_help("-e", "ONLY BD; calcula la distancia entre el centro del ligando original y el"
-                                             " centro del ligando "
-                                             "de docking; Deafult: n")
-
-            self.cfg.print_format_help("-d", "Debug level; Deafult: 0 (off)")
-
-            print("\nUsage: %s -i input Docking -p proteinFile -l ligFile -c min Score -s poseview y -z clusterizado y"
-                  % sys.argv[0] + "\n")
+            self.cfg.print_format_help("--rf", "Number of files saved as result and energy in VS. Default(500)")
+            print("")
+            self.cfg.print_format_help("Custom scoring options:", "")
+            self.cfg.print_format_help("--score-field", "Custom score field name (e.g., CNNscore, CNNAffinity, Gauss1)")
+            self.cfg.print_format_help("--score-ascending", "Score order: true (lower is better) or false (higher is better); Default: true")
+            print("")
             exit()
-        print("Using {} core{} for procesing results.".format(self.cfg.cores, 's' if self.cfg.cores > 1 else ''))
-        # Read command line args
-        myopts, args = getopt.getopt(self.argv[1:], "i:p:l:c:s:z:t:d:k:f:a:b:r:e:",
-                                     ["cores=", "prog=", "opt=", "profile=", "flex", "rb=", "rf=", "pdb="])
 
-        for o, a in myopts:
-            if o == '--profile':
-                self.cfg.use_profile = a.upper()
+        try:
+            myopts, args = getopt.getopt(self.argv[1:], "i:p:c:l:s:z:d:a:f:e:b:",
+                                         ["cores=", "profile=", "prog=", "opt=", "rb=", "rf=", "flex", "pdb=", "score-field=", "score-ascending="])
 
-        if self.cfg.use_profile:
-            self.cfg.set_profile_cfg(self.cfg.use_profile)
+        except getopt.GetoptError as e:
+            print("Usage: %s -i input Docking -p proteinFile -l ligFile -c min Score -s poseview y "
+                  "-z clusterizado y -t inteacciones y -d debug [0-10]" % sys.argv[0] + "\n")
+            exit()
 
         for o, a in myopts:
             if o == '-i':
@@ -113,6 +106,17 @@ class InputParams(object):
                 self.cfg.resultados_best_score = int(a)
             elif o == '--rf':
                 self.cfg.resultados_ficheros = int(a)
+            elif o == '--score-field':
+                self.cfg.score_field = a
+            elif o == '--score-ascending':
+                # Convert string to boolean
+                if a.lower() in ['true', '1', 'yes', 'y', 'on']:
+                    self.cfg.score_ascending = True
+                elif a.lower() in ['false', '0', 'no', 'n', 'off']:
+                    self.cfg.score_ascending = False
+                else:
+                    print("ERROR: Invalid value for --score-ascending. Use true/false.")
+                    exit()
             else:
                 print("\nUsage: %s -i input Docking -p proteinFile -l ligFile -c min Score -s poseview y "
                       "-z clusterizado y -t inteacciones y -d debug [0-10]" % sys.argv[0] + "\n")
@@ -179,6 +183,13 @@ class InputParams(object):
         self.cfg.print_format("\nTest data:", "", "")
         self.cfg.print_format("", "Software: ", self.cfg.programa)
         self.cfg.print_format("", "Technique: ", self.cfg.opcion)
+        
+        # Display custom scoring parameters if set
+        if hasattr(self.cfg, 'score_field') and self.cfg.score_field:
+            self.cfg.print_format("", "Custom Score Field: ", self.cfg.score_field)
+        if hasattr(self.cfg, 'score_ascending'):
+            self.cfg.print_format("", "Score Ascending: ", str(self.cfg.score_ascending))
+            
         self.cfg.print_format("", "Molecules:", str(len(aux)) + "\n")
 
 
