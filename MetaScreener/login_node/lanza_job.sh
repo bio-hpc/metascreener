@@ -172,7 +172,19 @@ function get_histogram()
     echo "find ${folder_experiment} -name \${pml} -execdir singularity exec --bind $bind \$PWD/singularity/metascreener.simg pymol -c -q -k -Q "{}" \; > /dev/null 2>&1">>${folder_templates_jobs}template_get_hystogram.sh
     echo "find ${folder_experiment} -name \`basename ${folder_experiment}\`.pse -exec cp "{}" ${folder_experiment} \;">>${folder_templates_jobs}template_get_hystogram.sh
     echo "if [ -f \`basename ${folder_experiment}\`.pse ]; then tar -rf \`basename ${folder_experiment}\`.tar.gz \`basename ${folder_experiment}\`.pse; fi">>${folder_templates_jobs}template_get_hystogram.sh
-    echo "python ${path_extra_metascreener}used_by_metascreener/get_csv.py ${folder_experiment}" >>${folder_templates_jobs}template_get_hystogram.sh
+    # Build the get_csv.py command with custom scoring parameters if defined
+    csv_cmd="python ${path_extra_metascreener}used_by_metascreener/get_csv.py ${folder_experiment}"
+    
+    # Add custom scoring parameters if defined
+    if [[ -n "$score_field" && "$score_field" != "N/A" ]]; then
+      csv_cmd="$csv_cmd --score-field $score_field"
+    fi
+    
+    if [[ -n "$score_ascending" && "$score_ascending" != "N/A" ]]; then
+      csv_cmd="$csv_cmd --score-ascending $score_ascending"
+    fi
+    
+    echo "$csv_cmd" >>${folder_templates_jobs}template_get_hystogram.sh
 
   # For LS only needs a summary in .csv
   elif [ $software == "LS" ];then
