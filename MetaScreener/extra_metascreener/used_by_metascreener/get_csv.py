@@ -65,7 +65,7 @@ def main():
         json_pattern = "*[0-9].json"
 
     json_files_pattern = os.path.join(json_dir, json_pattern)
-    print(f"📂 Searching for JSON files in: {json_files_pattern}")
+    print(f"Searching for JSON files in: {json_files_pattern}")
 
     data = {}
     cnt_json = 0
@@ -90,7 +90,7 @@ def main():
                 cnt_json += 1
 
         except (KeyError, ValueError, TypeError, FileNotFoundError, json.JSONDecodeError) as e:
-            print(f"⚠️  Skipping file {f_json}: {e}")
+            print(f"⚠Skipping file {f_json}: {e}")
             continue
 
     # Sort results
@@ -106,14 +106,14 @@ def main():
             for _, row in data.items():
                 file.write(";".join(str(x) for x in row) + "\n")
 
-        print(f"\n✅ CSV generated: {output_file}")
-        print(f"📊 Ligands processed: {len(data)}")
+        print(f"\nCSV generated: {output_file}")
+        print(f"Ligands processed: {len(data)}")
         if score_field:
             print(f"🔧 Custom scoring field: {score_field}")
-        print(f"⬆️ Score order: {'Lower is better' if score_ascending else 'Higher is better'}")
+        print(f"Score order: {'Lower is better' if score_ascending else 'Higher is better'}")
 
     except IOError as e:
-        print(f"❌ Error writing CSV file: {e}")
+        print(f"Error writing CSV file: {e}")
         sys.exit(1)
 
 if __name__ == "__main__":
