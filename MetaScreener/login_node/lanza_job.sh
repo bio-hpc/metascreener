@@ -143,7 +143,7 @@ function get_histogram()
   if [ $software == "AD" ] || [ $software == "LF" ] || [ $software == "GN" ] ;then
 
     # Build the base command
-    base_cmd="singularity exec --bind $bind \${PWD}/singularity/metascreener.simg python \${path_analize_results}get_histogram_picture.py --prog=$software --opt=$option -i \${folder_experiment} -p $target"
+    base_cmd="singularity exec --bind $bind \${PWD}/singularity/metascreener.simg python ${path_analize_results}get_histogram_picture.py --prog=$software --opt=$option -i \${folder_experiment} -p $target"
     
     # Add PDB option if available
     if [[ $target_pdb != "no_target" ]];then
