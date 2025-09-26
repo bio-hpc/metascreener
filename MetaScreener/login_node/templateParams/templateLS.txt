@@ -24,7 +24,7 @@
 relative::Y::-sf::-S{function} the scoring function to use. Either    
 -::Y::-b:: {expr} boolean expression to use on the query 
 -::Y::-R::{file} roc curve file(*.png,*.svg,*.pdf,...)  
-5::Y::-TD::{time} execution time-out on compound level
+5::Y::-T::{time} execution time-out on compound level
 -::Y::-x::{mode} the execution mode (default: multi)    
 -::Y::-H::{file} host list file (default:               
 -::Y::-c::{list} comma separated host list              
