@@ -46,6 +46,8 @@ class ReadData(object):
                             score_type = "negativo"
                             if self.cfg.opcion in ("VS", "BD", "BDVS", "VSR"):
                                 bisect.insort(self.cfg.best_poses, pose_lig)
+                    else:
+                        print ("Error score equals to threshold " + str(self.cfg.engCorte))
 
                 else:
                     print ("Error global_score in file: remove " + file_eng)
