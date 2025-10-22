@@ -9,7 +9,7 @@
 #LanzGrid:N
 #LanzCores:4
 #LanzTimeExecution:2700
-#LanzMem:4Gb
+#LanzMem:8G
 #lanzSizeGridX:0
 #lanzSizeGridY:0
 #lanzSizeGridZ:0
