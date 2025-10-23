@@ -6,66 +6,66 @@
 # ______________________________________________________________________________________________________________________
 
 #
-#	Read template of parameters
+#  Read template of parameters
 #
 readParam()
 {
 
-	if [ "$1" == "N/A" ] || [  -z "$1" ] ;then
-		echo `cat ${path_login_node}templateParams/template${software}.txt |grep "#${2}" | cut -d : -f 2`
-	else
-		echo "$1"
-	fi
+    if [ "$1" == "N/A" ] || [  -z "$1" ] ;then
+        echo `cat ${path_login_node}templateParams/template${software}.txt |grep "#${2}" | cut -d : -f 2`
+    else
+        echo "$1"
+    fi
 }
 readParams()
 {
 
-	if [ -f "${path_login_node}/templateParams/template${software}.txt" ];then
-		extensionesProt=`readParam "$extensionesProt" "LanzExtensionProtQ"`
-		extensionesLig=`readParam "$extensionesLig" "LanzExtensionligB"`
-		cores=`readParam "$cores" "LanzCores"`
-		time_experiment=`readParam "$time_experiment" "LanzTimeExecution"`
-		x=`readParam "$x" "LanzCoordX"`
-		y=`readParam "$y" "LanzCoordY"`
-		z=`readParam "$z" "LanzCoordZ"`
-		grid=`readParam "$grid" "LanzGrid"`
-		mem=`readParam "$mem" "LanzMem"`
-		optionsLanz=`readParam "$optionsLanz" "lanzOptions"`
-		gridSizeX=`readParam "$gridSizeX" "lanzSizeGridX"`
-		gridSizeY=`readParam "$gridSizeY" "lanzSizeGridY"`
-		gridSizeZ=`readParam "$gridSizeZ" "lanzSizeGridZ"`
-		lanzTimeOut=`readParam "$lanzTimeOut" "lanzTimeOut"`
-		lanzCreateResume=`readParam "$lanzCreateResumen" "lanzCreateResumen"`
-	else
-		txtError="-s .Not Available Software, see the help"
-		f_help
-	fi
+    if [ -f "${path_login_node}/templateParams/template${software}.txt" ];then
+        extensionesProt=`readParam "$extensionesProt" "LanzExtensionProtQ"`
+        extensionesLig=`readParam "$extensionesLig" "LanzExtensionligB"`
+        cores=`readParam "$cores" "LanzCores"`
+        time_experiment=`readParam "$time_experiment" "LanzTimeExecution"`
+        x=`readParam "$x" "LanzCoordX"`
+        y=`readParam "$y" "LanzCoordY"`
+        z=`readParam "$z" "LanzCoordZ"`
+        grid=`readParam "$grid" "LanzGrid"`
+        mem=`readParam "$mem" "LanzMem"`
+        optionsLanz=`readParam "$optionsLanz" "lanzOptions"`
+        gridSizeX=`readParam "$gridSizeX" "lanzSizeGridX"`
+        gridSizeY=`readParam "$gridSizeY" "lanzSizeGridY"`
+        gridSizeZ=`readParam "$gridSizeZ" "lanzSizeGridZ"`
+        lanzTimeOut=`readParam "$lanzTimeOut" "lanzTimeOut"`
+        lanzCreateResume=`readParam "$lanzCreateResumen" "lanzCreateResumen"`
+    else
+        txtError="-s .Not Available Software, see the help"
+        f_help
+    fi
 }
 
 #
-#	Show verion and rev
+#   Show verion and rev
 #
 showVersion()
 {
-	codVersion=`git rev-list --reverse HEAD |tail -1`
-	numVersion=`git rev-list --reverse HEAD |wc -l`
-	rama=`git branch -avv |grep "\*" |awk '{print $2}'`
-	version="${GREEN}Version: ${BLUE}${numVersion} ${GREEN}Rev( ${BLUE}${codVersion}${GREEN} ) ${NONE}"
-	echo ""
-	echo -e "${GREEN}${version}${GREEN} Branch: ${BLUE}$rama${NONE}"
-	echo ""
-	exit
+    codVersion=`git rev-list --reverse HEAD |tail -1`
+    numVersion=`git rev-list --reverse HEAD |wc -l`
+    rama=`git branch -avv |grep "\*" |awk '{print $2}'`
+    version="${GREEN}Version: ${BLUE}${numVersion} ${GREEN}Rev( ${BLUE}${codVersion}${GREEN} ) ${NONE}"
+    echo ""
+    echo -e "${GREEN}${version}${GREEN} Branch: ${BLUE}$rama${NONE}"
+    echo ""
+    exit
 }
 
 #
-#	Check if option is empty
+#   Check if option is empty
 #
 isEmpty()
 {
-	if [ "$1" == "N/A" ] || [  -z "$1" ] ;then
-		txtError="$2"
-	 	f_help
-	fi
+    if [ "$1" == "N/A" ] || [  -z "$1" ] ;then
+        txtError="$2"
+        f_help
+    fi
 }
 
 check_technique()
@@ -179,72 +179,72 @@ check_histograms()
 }
 
 #
-#	Search in a array ($1) if a word is found ($2)
+#   Search in a array ($1) if a word is found ($2)
 #
 existInLst()
 {
 
 
-	auxIFS=$IFS
+    auxIFS=$IFS
 
-	IFS=',' read -ra extx <<< "$1"
-	aux=""
+    IFS=',' read -ra extx <<< "$1"
+    aux=""
 
-	for i in "${extx[@]}"; do
-    	if [ "${2}" == "${i}" ];then
-	   		aux=$i
-	   	fi
-	done
-	IFS=$auxIFS
-	echo "$aux"
+    for i in "${extx[@]}"; do
+        if [ "${2}" == "${i}" ];then
+            aux=$i
+        fi
+    done
+    IFS=$auxIFS
+    echo "$aux"
 }
 
 #
-#	Verify that the x y z or numJobs are not empty
+#   Verify that the x y z or numJobs are not empty
 #
 verifyXYZ()
 {
-	if [[ ${option} == "BD" ]] || [[ ${software} == "LS" ]] ;then
-		x=0;y=0;z=0;
+    if [[ ${option} == "BD" ]] || [[ ${software} == "LS" ]] ;then
+        x=0;y=0;z=0;
         fi
-	if [ -z $x ] || [ -z $y ] || [ -z $z ];then
-	  echo "Enter the x-coordinate for docking."
-	  read x
-	  echo "Enter the y-coordinate for docking."
-	  read y
-	  echo "Enter the z-coordinate for docking."
-	  read z
-	  allComand="${allComand} -x $x -y $y -z $z"
-	fi
+    if [ -z $x ] || [ -z $y ] || [ -z $z ];then
+      echo "Enter the x-coordinate for docking."
+      read x
+      echo "Enter the y-coordinate for docking."
+      read y
+      echo "Enter the z-coordinate for docking."
+      read z
+      allComand="${allComand} -x $x -y $y -z $z"
+    fi
 }
 
 #
-#	Validates if target's extension is valid for SW
+#   Validates if target's extension is valid for SW
 #
 validateExtProt()
 {
-	if [ -f ${target} ];then
+    if [ -f ${target} ];then
 
-		extensionProtAux="."${target##*.}
-		ext_target=`existInLst "$extensionesProt" "$extensionProtAux"`
-		if [ "$ext_target" == "" ];then
-			txtError="-s Software does not support that extension "
-			f_help
-		fi
-	else
-		txtError="-t Target file does not exist"
-		f_help
-	fi
+        extensionProtAux="."${target##*.}
+        ext_target=`existInLst "$extensionesProt" "$extensionProtAux"`
+        if [ "$ext_target" == "" ];then
+            txtError="-s Software does not support that extension "
+            f_help
+        fi
+    else
+        txtError="-t Target file does not exist"
+        f_help
+    fi
 }
 
 #
-#	Validate query's extension
+#   Validate query's extension
 #
 validate_ext_query()
 {
-	ext_query=""
-	if [[ "$option" == *"VS"* ]];then
-	    if [ "$extensionesLig" != "" ];then
+    ext_query=""
+    if [[ "$option" == *"VS"* ]];then
+        if [ "$extensionesLig" != "" ];then
             auxIFS=$IFS
             IFS=',' read -ra extx <<< "$extensionesLig"
             for i in "${extx[@]}"; do
@@ -261,37 +261,37 @@ validate_ext_query()
                 f_help
             fi
         fi
-	else
-		if [ -f "$query" ];then
-			extensionLigAux="."${query##*.}
-			ext_query=`existInLst "$extensionesLig" "$extensionLigAux"`
-			if [ "$ext_query" == "" ];then
-				txtError="-s The Software does not support ligand's extension"
-				f_help
-			fi
-		else
-			txtError="Querie does not exist"
-			f_help
-		fi
-	fi
-	name_query=$(basename "$query")
+    else
+        if [ -f "$query" ];then
+            extensionLigAux="."${query##*.}
+            ext_query=`existInLst "$extensionesLig" "$extensionLigAux"`
+            if [ "$ext_query" == "" ];then
+                txtError="-s The Software does not support ligand's extension"
+                f_help
+            fi
+        else
+            txtError="Querie does not exist"
+            f_help
+        fi
+    fi
+    name_query=$(basename "$query")
 
-	name_query="${name_query%.*}"
+    name_query="${name_query%.*}"
 
 }
 
 OpcionesExtras()
 {
 
-	if [ $software == "S3" ] || [ $software == "s3" ];then
-		sed -i -r "s|Java Path=.+|Java Path=${path_external_sw}jre/|" ${path_external_sw}ChemAxon/JChem/bin/java.ini
-	elif [ $option == "SD" ];then
-				extension=".pdb"
-	fi
+    if [ $software == "S3" ] || [ $software == "s3" ];then
+        sed -i -r "s|Java Path=.+|Java Path=${path_external_sw}jre/|" ${path_external_sw}ChemAxon/JChem/bin/java.ini
+    elif [ $option == "SD" ];then
+                extension=".pdb"
+    fi
 }
 
 #
-#	Find a name for the job
+#   Find a name for the job
 #
 find_name_job()
 {
@@ -314,19 +314,46 @@ find_name_job()
 }
 
 #
-#	MAIN
+# Normalize memory to GB (overwrites $mem with an integer GB value)
+#
+normalize_mem_to_gb() {
+  mem_raw="$mem"
+
+  if [[ "$mem" =~ ^[0-9]+[Gg]$ ]]; then
+    # e.g., 32G
+    mem=${mem::-1}
+  elif [[ "$mem" =~ ^[0-9]+[Mm]$ ]]; then
+    # e.g., 8192M → 8 GB
+    mem_mb=${mem::-1}
+    mem=$((mem_mb / 1024))
+    # Ensure a minimum of 1 GB if there was a nonzero MB value < 1024
+    if (( mem == 0 )) && (( mem_mb > 0 )); then
+      mem=1
+    fi
+  elif [[ "$mem" =~ ^[0-9]+$ ]]; then
+    # No unit → assume GB
+    :
+  else
+    txtError="-s Error: unrecognized memory format ($mem). Use a number optionally followed by G or M (e.g., 32G, 8192M)."
+    f_help
+  fi
+}
+
+#
+#   MAIN
 #
 if [ "$check" != "N/A" ];then
-	source ${path_login_node}preDebug.sh
-	exit
+    source ${path_login_node}preDebug.sh
+    exit
 fi
 if [ "${versionHelp}" != "N/A" ];then
-	showVersion
+    showVersion
 fi
 
 check_technique "$option"
 check_sw "$software"
 readParams
+normalize_mem_to_gb
 
 if [ "$extensionesLig"  != "" ];then
     check_querie "$query"
@@ -336,10 +363,10 @@ fi
 
 
 if [ "$extensionesProt" != "" ];then
-	check_target "$target"
-	validateExtProt
-	name_target=$(basename $target)
-	name_target="${name_target%.*}"
+    check_target "$target"
+    validateExtProt
+    name_target=$(basename $target)
+    name_target="${name_target%.*}"
 fi
 echo ${software}
 if [ "${extensionesProt}" == ".mol2" ];then
@@ -353,8 +380,8 @@ if [ "${extensionesProt}" == ".mol2" ];then
 fi
 
 if [ ! -f "${path_login_node}techniques/SLTechnique${option}.sh" ];then
-	txtError="-o ${option} option does not exist"
-	f_help
+    txtError="-o ${option} option does not exist"
+    f_help
 fi
 
 valid_option=false
@@ -383,8 +410,8 @@ check_jobs_or_items_per_job "$num_per_job" "$items_per_job"
 if [[ "${profile}" == "" ]];then
   if [[ ${software} == "LS" ]];then
     profile="STANDARD_VS_LS"
-	else
-	  profile="STANDARD_${option}"
+    else
+      profile="STANDARD_${option}"
   fi
 fi
 
@@ -422,7 +449,7 @@ fi
 
 debugB "_________________________________________Input Data________________________________________"
 debugB ""
-debugB "verifiInputData.sh: Mem: $mem"
+debugB "verifiInputData.sh: Mem (GB): $mem"
 debugB "verifiInputData.sh: cores: $cores"
 debugB "verifiInputData.sh: time_experiment: $time_experiment"
 debugB "verifiInputData.sh: x: $x"
@@ -436,5 +463,3 @@ debugB "verifiInputData.sh: ext_query: $ext_query"
 debugB "verifiInputData.sh: Nomjob: $name_job"
 debugB "verifiInputData.sh: Error: $error"
 debugB ""
-
-
