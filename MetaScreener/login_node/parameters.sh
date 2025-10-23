@@ -158,6 +158,7 @@ while (( $# ))
 			-S )  software=`echo $2 | awk '{print toupper($0)}'`;;
 			-PN) proteinName=$2;;
 			-J )  num_per_job=$2;;
+			-IJ )  items_per_job=$2;;
 			-DE ) debug=$2;; 		# Debug mode
 			-V  ) versionHelp="ve";;
       -NN )  nodos=$2;;

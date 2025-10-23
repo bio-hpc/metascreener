@@ -43,15 +43,27 @@ send_jobs()
 		echo -e ${REDB}"There was a problem reading ligand. Check your license of ${software}."${NONE}
 		exit
 	fi
-	if [ $numFicheros -lt $num_per_job ];then
-		echo -e ${REDB}"ERROR You can not launch more jobs than ligands (VS) or Alpha Carbons (BD) "${NONE}
-		exit
-
-	fi
-	resto=`expr $numFicheros \% $num_per_job`
-	nRuns=`expr $numFicheros \/ $num_per_job`
-	contFin=`expr $contIni \+ $nRuns`
-	balance_jobs
+    # Check if items_per_job is specified, if so use it instead of num_per_job
+    if [ ! -z "$items_per_job" ] && [ "$items_per_job" != "N/A" ];then
+       # Calculate number of jobs based on items per job
+       num_per_job=`expr $numFicheros \/ $items_per_job`
+       resto=`expr $numFicheros \% $items_per_job`
+       nRuns=$items_per_job
+       contFin=`expr $contIni \+ $nRuns`
+       if [ $resto -gt 0 ];then
+          num_per_job=`expr $num_per_job + 1`
+       fi
+    else
+       # Original logic: num_per_job is the number of jobs
+       if [ $numFicheros -lt $num_per_job ];then
+          echo -e ${REDB}"ERROR You can not launch more jobs than ligands (VS) or Alpha Carbons (BD) "${NONE}
+          exit
+       fi
+       resto=`expr $numFicheros \% $num_per_job`
+       nRuns=`expr $numFicheros \/ $num_per_job`
+       contFin=`expr $contIni \+ $nRuns`
+       balance_jobs
+    fi
 
 	if [ "${time_job}" == "N/A" ];then
 		if [ $resto -gt $nRuns ];then

@@ -198,6 +198,7 @@ if [  -z "$option" ];then
 	printGlobalHelp "tj" "O" "" "Time allocated to the job. Default multiply -td by runs in a job. Format 00:05:00."
 	printGlobalHelp "mm" "O" "" "Memory reserved for a job, in GB."
 	printGlobalHelp "j" "O" "" "Number of jobs that will be sent to the supercomputer."
+	printGlobalHelp "ij" "O" "" "Number of items (ligands/alpha carbons) per job. Alternative to -j parameter."
 	printGlobalHelp "ni" "O" "" "Priority of the job managers, Sbatch [0-10000] being 10000 the lowest. Qsub [-1024- + 1023] default or higher priority, the higher the number."
 	printGlobalHelp "co" "O" "" "Number of cores for execution. Important: can't reserve more cores than those contained in the node."
 	printGlobalHelp "nn" "O" "" "Number of nodes for execution."
