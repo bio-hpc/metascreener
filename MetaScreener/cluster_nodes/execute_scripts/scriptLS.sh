@@ -8,7 +8,7 @@ execute_script()
 	if [ ${option} == "VS" ];then
 		opt_aux=${opt_aux/-TT/-T}
 		opt_aux=${opt_aux/-sf/-S}
-		execute "${path_external_sw}ligandScout/iscreen -q ${CWD}${target} -d ${CWD}${query} -M ${mem} -C ${cores} -F ${ini} -L ${fin} -P -o ${out_molec}.sdf ${opt_aux} &>${out_aux}.ucm"
+		execute "${path_external_sw}ligandScout/iscreen -q ${CWD}${target} -d ${CWD}${query} -M${mem//[^0-9]/} -C ${cores} -F ${ini} -L ${fin} -P -o ${out_molec}.sdf ${opt_aux} &>${out_aux}.ucm"
 
 		if [ -f "${out_molec}.sdf" ] && [ -s "${out_molec}.sdf" ]; then
 
