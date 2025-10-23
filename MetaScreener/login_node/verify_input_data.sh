@@ -148,6 +148,24 @@ check_jobs()
   fi
 }
 
+check_jobs_or_items_per_job(){
+  if [ "$1" == "N/A" ] || [  -z "$1" ] ;then
+    if [ "$2" == "N/A" ] || [  -z "$2" ] ;then
+    # If neither is set, ask for the number of jobs
+    echo "How many jobs do you want? (blank input = set items per job)"
+    read num_per_job
+    if [ ! -z "$num_per_job" ] ;then
+      allComand="${allComand} -j ${num_per_job}"
+      return
+    fi
+    # If not given, ask for the number of items per job
+    echo "How many items per job do you want?"
+    read items_per_job
+    allComand="${allComand} -ij ${items_per_job}"
+    fi
+  fi
+}
+
 check_histograms()
 {
   if [ "$histograms" == "N/A" ] || [  -z "$histograms" ] ;then
@@ -359,7 +377,8 @@ verifyXYZ
 find_name_job
 check_histograms
 check_squeue "$queue"
-check_jobs "$num_per_job"
+# check_jobs "$num_per_job"
+check_jobs_or_items_per_job "$num_per_job" "$items_per_job"
 
 if [[ "${profile}" == "" ]];then
   if [[ ${software} == "LS" ]];then
