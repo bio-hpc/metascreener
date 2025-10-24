@@ -2,14 +2,15 @@
 MetaScreener is a collection of scripts developed in various languages (Shell script, Python, Java, and C) that integrates, among others, docking, similarity, and molecular modelling programs. Through this integration, jobs are sent to Slurm on supercomputers, and the data is processed automatically by sorting it into tables and graphs. It has been developed by the Structural Bioinformatics and High-Performance Computing (BIO-HPC, https://bio-hpc.eu) group at UCAM, Universidad Católica de Murcia.
 
 ### Installation (choose one)
-1. git clone https://github.com/bio-hpc/metascreener.git
-2. git clone git@github.com:bio-hpc/metascreener.git
-3. gh repo clone bio-hpc/metascreener
-4. Download the .zip and unzip it in the supercomputing centres you are going to use 
+1. `git clone https://github.com/bio-hpc/metascreener.git`
+2. `git clone git@github.com:bio-hpc/metascreener.git`
+3. `gh repo clone bio-hpc/metascreener`
+4. Download the `.zip` and unzip it in the supercomputing centres you are going to use 
 
 ### Download the singularity image 
 Needed to secure compatibility with the HPC cluster.
 
+```bash
 cd metascreener/
 
 wget --no-check-certificate -r "https://drive.usercontent.google.com/download?id=1L3HZ2l1XARqzEKaV14jToUtUOCmo4OjV&export=download&authuser=1&confirm=t&uuid=0c83343d-17fe-4282-bf07-9a2321537a9a&at=APZUnTW_78yhd6klINcZBOjxIU6g:1706872870521" -O singularity/singularity.zip
@@ -17,6 +18,7 @@ wget --no-check-certificate -r "https://drive.usercontent.google.com/download?id
 unzip singularity/singularity.zip -d singularity/
 
 rm singularity/singularity.zip
+```
 
 ### Available Techniques
 1. **Virtual Screening**
@@ -81,7 +83,7 @@ singularity exec singularity/metascreener.simg python MetaScreener/extra_metascr
 - **cross_list_bd.py**: Cluster binding of Blind Docking with different ligands or the same.
 - **cross_list_vs.py**: Cross virtual screening lists with different docking programs.
 - **join_cl_json_bd_session.py**: It makes a PyMol session with the results obtained by cross_list_bd.py.
-- **join_cl_json_vs_session. py **: It makes a PyMol session with the results obtained by cross_list_vs.py
+- **join_cl_json_vs_session.py**: It makes a PyMol session with the results obtained by cross_list_vs.py
 - **join_ls_sessions.py**: It joins experiments carried out with LigandScout in MetaScreener into a single file to view it in LigandScout and excel.
  Excel files are generated in .csv and .xlsx.
 #### used_by_metascreener
