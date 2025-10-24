@@ -21,29 +21,22 @@ rm singularity/singularity.zip
 ```
 
 ### Available Techniques
-1. **Virtual Screening**
-2. **Blind Docking**
+1. **Virtual Screening** (VS)
+2. **Blind Docking** (BD)
 
 ### Available Software
-1. **AD AutoDock Vina** 1.1.2 (May 11, 2011):
-   Open source. https://github.com/ccsb-scripps/AutoDock-Vina.
-2. **GN Gnina** v1.3 (Oct 4, 2024):  
-   Open source. https://github.com/gnina/gnina.  
-   Download the [executable](https://github.com/gnina/gnina/releases/tag/v1.3) to metascreener/MetaScreener/external_sw/gnina/ and give execution permissions.                               
-4. **LF Lead Finder** version 2104 build 1, 18 April 2021: 
-   Commercial software. License and software required (copy to "metascreener/MetaScreener/external_sw/leadFinder/").
-   You can get an Academic license at http://www.moltech.ru/leadfinder/versions.html.
-5. **LS LigandScout** V4.4.7:
-   Commercial software. License and software required (copy to "metascreener/MetaScreener/external_sw/ligandScout/").    
-6. **DC Dragon** v.6.0.38:
-   Commercial software. License and software required (copy to "metascreener/MetaScreener/external_sw/dragon/").
-7. **EO EON** v2.4.2.3:
-   Commercial software. License and software required (copy to "metascreener/MetaScreener/external_sw/openeye/eon/").
-8. **RC ROCS** v3.6.1.3:
-   Commercial software. License and software required (copy to "metascreener/MetaScreener/external_sw/openeye/rocs/").
-9. **OM OMEGA** v5.0.0.3:
-   Commercial software. License and software required (copy to "metascreener/MetaScreener/external_sw/openeye/omega/"). 
-   
+| **Code** | **Software / Version / Date**              | **Type / Link**                                                                | **Notes / Installation Path**                                                                                                                                |
+| -------- | ------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **`AD`** | AutoDock Vina  1.1.2 (May 11, 2011)        | Open source [GitHub](https://github.com/ccsb-scripps/AutoDock-Vina)            | —                                                                                                                                                            |
+| **`GN`** | Gnina          v1.3 (Oct 4, 2024)          | Open source [GitHub](https://github.com/gnina/gnina)                           | Download the [executable](https://github.com/gnina/gnina/releases/tag/v1.3) to `metascreener/MetaScreener/external_sw/gnina/` and give execution permissions |
+| **`LF`** | Lead Finder    2104 build 1 (Apr 18, 2021) | Commercial  [Academic license](http://www.moltech.ru/leadfinder/versions.html) | License and software required; copy to `metascreener/MetaScreener/external_sw/leadFinder/`                                                                   |
+| **`LS`** | LigandScout    V4.4.7                      | Commercial                                                                     | License and software required; copy to `metascreener/MetaScreener/external_sw/ligandScout/`                                                                  |
+| **`DC`** | Dragon         v6.0.38                     | Commercial                                                                     | License and software required; copy to `metascreener/MetaScreener/external_sw/dragon/`                                                                       |
+| **`EO`** | EON            v2.4.2.3                    | Commercial                                                                     | License and software required; copy to `metascreener/MetaScreener/external_sw/openeye/eon/`                                                                  |
+| **`RC`** | ROCS           v3.6.1.3                    | Commercial                                                                     | License and software required; copy to `metascreener/MetaScreener/external_sw/openeye/rocs/`                                                                 |
+| **`OM`** | OMEGA          v5.0.0.3                    | Commercial                                                                     | License and software required; copy to `metascreener/MetaScreener/external_sw/openeye/omega/`                                                                |
+
+
 ### Additional Commercial software
 1. **Poseview [Required ChemAxon]**:  generates publication-quality 2D structure-diagrams of protein-ligand complexes.
    Copy the software in "metascreener/MetaScreener/external_sw/poseview/" (Settings.pxx is provided).
@@ -55,13 +48,13 @@ rm singularity/singularity.zip
 ESSENCE-Dock can take in docking runs from different algorithms and uses all of the information to rescore the compounds using a consensus-based approach.
 For more information about ESSENCE-Dock, you check out the manuscript [here](https://pubs.acs.org/doi/10.1021/acs.jcim.3c01982).
 To use ESSENCE-Dock, you need to make sure the individual docking calculations used `metascreener`, finished correctly and contain a `Results_scoring.csv`. If this is not present, or if you moved the directory you can regenerate the file using:  
- ```
+```bash
 python MetaScreener/extra_metascreener/used_by_metascreener/get_csv.py <docking directory>
- ```
+```
 After that, you can use ESSENCE-Dock:
- ```
+```bash
 ./MetaScreener/extra_metascreener/results/ESSENCE-Dock.sh -f <docking_dir1> <docking_dir2> ... -p <proteinFile> -out <output_dir>
- ```
+```
 There are many more options (like running using slurm, configuring the amount of cores to run on, ...). For more information, you can also always use the help command (`./MetaScreener/extra_metascreener/results/ESSENCE-Dock.sh`) or feel free to open a GitHub issue.   
 ### extra_metascreener
 It is a directory that contains multiple scripts used or related to Metascreener. 
@@ -69,10 +62,12 @@ It is a directory that contains multiple scripts used or related to Metascreener
 It is recommended to use these python scripts with the metascreener singularity image "metascreener/singularity/metascreener.simg". 
 For instance:
 
+```bash
 singularity exec singularity/metascreener.simg python MetaScreener/extra_metascreener/convert/conv_to.py
+```
 
 #### convert
-- **conv_to.py***: Convert molecule folders between sdf, pdb, pdbqt and mol2 formats. *Requires ChemAxom for mol2 conversions 
+- **conv_to.py**\*: Convert molecule folders between sdf, pdb, pdbqt and mol2 formats. \*Requires ChemAxom for mol2 conversions 
 - **saltRemover.py [Required ChemAxon]**: Remove fragments from mol2 file and prints smi without given elements.
 - **frament_mol2.sh**: Use **saltRemover.py** with the indicated salt remover by adding molecules to Cl, Br.
 #### launchers
