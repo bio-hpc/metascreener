@@ -38,6 +38,19 @@ read_params()
 	fi	
 	opt_aux=`echo "${opt_aux/-refined_energy $refined_energy/}"`	
 }
+
+check_vina_output_exists()
+{
+	# Check if main output file exists and is not empty
+	if [ ! -f "${out_molec}.pdbqt" ] || [ ! -s "${out_molec}.pdbqt" ]; then return 1; fi
+	# Check if log file exists
+	if [ ! -f "${out_aux}.ucm" ]; then return 1; fi
+	# Check if log file contains successful completion
+	if ! grep -q "Writing output ... done." "${out_aux}.ucm" 2>/dev/null; then return 1; fi
+	debugY "$TAG: All output files exist and appear valid"
+	return 0
+}
+
 execute_script()
 {
 	read_params 
@@ -48,8 +61,15 @@ execute_script()
  	path_vina_exec="${folder_experiment}/output/$(basename "${query}" .pdbqt)"
         mkdir -p ${path_vina_exec}
         cd ${path_vina_exec}
-	execute "${path_external_sw}autodock/vina --out ${out_molec}.pdbqt --receptor ${CWD}${target} --ligand ${CWD}${query} ${b} ${fileFlexi} \
-	--center_x ${x} --center_y ${y} --center_z ${z} --size_x ${gridSizeX} --size_y ${gridSizeY} --size_z ${gridSizeZ} --num_modes ${numPoses} --cpu ${cores} ${opt_aux} &> ${out_aux}.ucm"
+	if check_vina_output_exists; then
+		debugY "$TAG: Vina output already exists, skipping docking"
+		echo skipped ${out_molec}.pdbqt > ./skipped.txt
+		error=0
+	else
+		execute "${path_external_sw}autodock/vina --out ${out_molec}.pdbqt --receptor ${CWD}${target} --ligand ${CWD}${query} ${b} ${fileFlexi} \
+		--center_x ${x} --center_y ${y} --center_z ${z} --size_x ${gridSizeX} --size_y ${gridSizeY} --size_z ${gridSizeZ} \
+		--num_modes ${numPoses} --cpu ${cores} ${opt_aux} &> ${out_aux}.ucm"
+	fi
 	cd ${path_metascreener}
  	if [[ "${error}" == "0" ]];then
 		case ${option} in

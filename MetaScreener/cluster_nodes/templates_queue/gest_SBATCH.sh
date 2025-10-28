@@ -6,8 +6,13 @@ fi
 if [ "${GPU}" != "N/A" ];then
 	echo "#SBATCH --gres=gpu:${GPU}" 					>>$name_template_job 
 fi
-if [ "${mem}" != "0" ];then
-	echo "#SBATCH --mem=${mem}" 						>>$name_template_job
+if [ "${mem}" != "N/A" ];then
+	# If user passed a plain number, interpret it as GB for Slurm
+	if [[ "${mem}" =~ ^[0-9]+$ ]]; then
+		echo "#SBATCH --mem=${mem}G" 						>>$name_template_job
+	else
+		echo "#SBATCH --mem=${mem}" 						>>$name_template_job
+	fi
 fi
 if [ "$project" != "N/A" ];then
 	echo ${queue_direc_project}${project}				>>$name_template_job
