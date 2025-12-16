@@ -23,14 +23,19 @@ class PlipGraph(object):
 
     def generate_plip(self):
         for pose in self.best_poses:
-            prefix_out = os.path.join(self.cfg.OUTPUT_DIRS['interacciones'], pose.file_name)
-            prefix_poses = prefix_out.replace("clustered_interactions/", "clustered_poses/")
-            if bool(self.cfg.file_target_pdb and not self.cfg.file_target_pdb.isspace()) :
+            prefix_out = os.path.join(
+                self.cfg.OUTPUT_DIRS['interacciones'],
+                pose.file_name
+            )
+    
+            _, ligand_ext = os.path.splitext(pose.file_ori_target)
+    
+            if bool(self.cfg.file_target_pdb and not self.cfg.file_target_pdb.isspace()):
                 cmd = '{} {} {} {} {} {}'.format(
                     self.cfg.python_exe,
                     self.cfg.ligand_plip,
                     pose.file_ori_target,
-                    prefix_poses+".pdbqt",
+                    prefix_out + ligand_ext,
                     prefix_out,
                     self.cfg.file_target_pdb
                 )
@@ -39,8 +44,9 @@ class PlipGraph(object):
                     self.cfg.python_exe,
                     self.cfg.ligand_plip,
                     pose.file_ori_target,
-                    prefix_poses+".pdbqt",
-                    prefix_out,       
+                    prefix_out + ligand_ext,
+                    prefix_out,
                 )
-            print(cmd)
+    
+            #print(cmd)
             self.cfg.execute("Plip Interactions", cmd)
