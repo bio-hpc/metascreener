@@ -6,24 +6,16 @@ execute_script()
 	TAG=`echo $(basename $BASH_SOURCE)`
 	lib=`echo $(basename $query)`
 	if [ ${option} == "VS" ];then
-		# If global timeout (-TD) and items per job (-IJ) are set, derive LigandScout
-		# per-compound timeout (-T) in minutes: TD(sec) / 60 / items_per_job.
-		if [ "${time_experiment}" != "N/A" ] && [ -n "${time_experiment}" ] && \
-		   [ "${items_per_job}" != "N/A" ] && [ -n "${items_per_job}" ]; then
-			# Ensure items_per_job is a positive integer
-			if [ "${items_per_job}" -gt 0 ] 2>/dev/null; then
-				td_min=$(( time_experiment / 60 ))
-				if [ "${td_min}" -lt 1 ]; then
-					td_min=1
-				fi
-				T_per_compound=$(( td_min / items_per_job ))
-				if [ "${T_per_compound}" -lt 1 ]; then
-					T_per_compound=1
-				fi
-				# Remove any previous -T value and append the computed one
-				opt_aux=$(echo "${opt_aux}" | sed -E 's/-T[[:space:]]*[0-9]+//g;s/-T[0-9]+//g')
-				opt_aux="${opt_aux} -T${T_per_compound}"
+		# If global timeout (-TD) is set, derive LigandScout per-compound
+		# timeout (-T) in minutes: TD(sec) / 60.
+		if [ "${time_experiment}" != "N/A" ] && [ -n "${time_experiment}" ]; then
+			td_min=$(( time_experiment / 60 ))
+			if [ "${td_min}" -lt 1 ]; then
+				td_min=1
 			fi
+			# Remove any previous -T value and append the computed one
+			opt_aux=$(echo "${opt_aux}" | sed -E 's/-T[[:space:]]*[0-9]+//g;s/-T[0-9]+//g')
+			opt_aux="${opt_aux} -T${td_min}"
 		fi
 
 		opt_aux=${opt_aux/-TT/-T}
