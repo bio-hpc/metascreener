@@ -1,6 +1,6 @@
 #LanzNombre:EO - EON
-#LanzExtensionProtQ:.mol2
-#LanzExtensionligB:.mol2
+#LanzExtensionProtQ:.mol2,.gz
+#LanzExtensionligB:.mol2,.gz
 #lanzOptions:VS
 #LanzCoordX:0
 #LanzCoordY:0
