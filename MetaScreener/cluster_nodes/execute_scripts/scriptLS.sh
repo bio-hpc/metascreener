@@ -6,6 +6,18 @@ execute_script()
 	TAG=`echo $(basename $BASH_SOURCE)`
 	lib=`echo $(basename $query)`
 	if [ ${option} == "VS" ];then
+		# If global timeout (-TD) is set, derive LigandScout per-compound
+		# timeout (-T) in minutes: TD(sec) / 60.
+		if [ "${time_experiment}" != "N/A" ] && [ -n "${time_experiment}" ]; then
+			td_min=$(( time_experiment / 60 ))
+			if [ "${td_min}" -lt 1 ]; then
+				td_min=1
+			fi
+			# Remove any previous -T value and append the computed one
+			opt_aux=$(echo "${opt_aux}" | sed -E 's/-T[[:space:]]*[0-9]+//g;s/-T[0-9]+//g')
+			opt_aux="${opt_aux} -T${td_min}"
+		fi
+
 		opt_aux=${opt_aux/-TT/-T}
 		opt_aux=${opt_aux/-sf/-S}
 		execute "${path_external_sw}ligandScout/iscreen -q ${CWD}${target} -d ${CWD}${query} -M${mem//[^0-9]/} -C ${cores} -F ${ini} -L ${fin} -P -o ${out_molec}.sdf ${opt_aux} &>${out_aux}.ucm"
