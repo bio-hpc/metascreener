@@ -73,7 +73,7 @@ def check_molecule(molecule):
     """
 
     for cnt_line in range(len(molecule)):
-        if TAG_SCORE in molecule[cnt_line]:            
+        if TAG_SCORE in molecule[cnt_line] and cnt_line + 1 < len(molecule):
             if args.c <= float(molecule[cnt_line+1]):
                 return True
     return False
@@ -96,7 +96,7 @@ def get_name_molecule(molecule):
     """
     for cnt_line in range(0, len(molecule)):        
         for tag_name in TAGS_NAME:
-            if tag_name in molecule[cnt_line]:
+            if tag_name in molecule[cnt_line] and cnt_line + 1 < len(molecule):
                 return (molecule[cnt_line+1])
                 
     if molecule[0] != '':
@@ -112,7 +112,7 @@ def get_score_molecule(molecule):
         :param molecule:
     """
     for cnt_line in range(len(molecule)):
-        if TAG_SCORE in molecule[cnt_line]:
+        if TAG_SCORE in molecule[cnt_line] and cnt_line + 1 < len(molecule):
             return float(molecule[cnt_line+1])
     return 0
 
@@ -263,7 +263,7 @@ for i in dict_experiments:
 		cnt += 1
 		print ('{:>10}º{:>20}{:>20}'.format(cnt, mol[0],round(mol[1],4)))
 	print ("\n")
-	prefix_out = '{}all'.format(i) if args.prefix.endswith('\_') else '{}_all'.format(i)
+	prefix_out = '{}_all'.format(i)
 	if not args.summary:
 	    write_file(lst_molecules, prefix_out)
 
@@ -284,18 +284,25 @@ for i in dict_experiments_all:
 	if code in dct_names:
 		if str(args.query).strip() == "":
 			query = dct_names[code].strip()
-
-			cmd = F_SEARCH_MATCHES.format(query)
 		else:
 			query = (dct_names[code]+" AND "+str(args.query)).strip()
-			cmd = F_SEARCH_MATCHES.format(query)
 		if os.path.isfile(SEARCH_MATCHES):
-		    output = subprocess.check_output(
-        	    cmd,
-        	    shell=True,
-        	    stderr=subprocess.STDOUT,
-    	    )
-		matches = output.decode('utf-8') 
+			try:
+				output = subprocess.check_output(
+					[PYTHON_RUN, SEARCH_MATCHES, query],
+					stderr=subprocess.STDOUT,
+				)
+				matches = output.decode('utf-8')
+			except Exception as e:
+				print ("Error searching matches for query '{}'".format(query))
+				print (e)
 	lst_excel.append('{};{};{};{};{};{}'.format(cnt ,name, code, i[1], matches.strip(), query.strip()))
 	print ('{:>5}º{:>40}{:>20}{:>20}{:>10}{:>60}'.format(cnt ,name, code, i[1], matches.strip(), query.strip()))
-write_excel(lst_excel, args.prefix)
+
+# When the prefix points to a single run directory (e.g. called from lanza_job.sh with -s),
+# write the summary inside that directory instead of next to it in the launch dir.
+if isdir(args.prefix):
+    out_summary = join(args.prefix, os.path.basename(args.prefix))
+else:
+    out_summary = args.prefix
+write_excel(lst_excel, out_summary)
