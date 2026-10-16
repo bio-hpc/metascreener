@@ -54,6 +54,33 @@ function empty_variable()
         echo $1
     fi
 }
+#
+#	Print the values that follow an option, stopping at the next option
+#
+function collect_values()
+{
+	values=""
+	for arg in "$@";do
+		if [[ "$arg" == \-* ]];then
+			break
+		fi
+		values="$values $arg"
+	done
+	echo $values
+}
+#
+#	Leadfinder accepts one -metal option per metal atom
+#
+function add_lf_metal()
+{
+	opt=$1
+	shift
+	if [ -z "$*" ];then
+		lf_error="$opt requires a value"
+	else
+		lf_metal="$lf_metal -metal $*"
+	fi
+}
 
 
 if [ -z $CWD ];then
@@ -128,13 +155,20 @@ project=`empty_variable $project`
 rf=`empty_variable $rf 500`
 rb=`empty_variable $rb 50`
 
+# Leadfinder options (only used with -s LF)
+lf_extra_precision=""
+lf_metal=""
+lf_error=""
+unset lf_poolsize lf_popsize
+
 #
 #	Set parameters
 #
 while (( $# ))
  do
 
-    if [[ "$1" == \-[a-z]* ]] || [[ "$1" == \-[A-Z]* ]] || [[ "$1" == \-\-[a-a]* ]] || [[ "$1" == \--[A-Z]* ]];then
+    if [[ "$1" == \-[a-z]* ]] || [[ "$1" == \-[A-Z]* ]] || [[ "$1" == \-\-[a-a]* ]] || [[ "$1" == \--[A-Z]* ]] \
+       || [[ "$1" =~ ^--(metal-coord|extra-precision|extra-precission|poolsize|popsize)(=|$) ]];then
 	   case `printf "%s" "$1" | tr '[:lower:]' '[:upper:]'`  in
 			-X )  x=$2;;			# Center position x
 			-Y )  y=$2;;			# Center position y
@@ -205,6 +239,14 @@ while (( $# ))
 			-TEST) mode_test="Y";;
 			-h|-H ) f_help $2;;
 	    -CHK ) check_mol2="N";;
+			## Leadfinder
+			-XP|--EXTRA-PRECISION|--EXTRA-PRECISSION ) lf_extra_precision="Y";;
+			-POOLSIZE|--POOLSIZE ) lf_poolsize=$2;;
+			--POOLSIZE=* ) lf_poolsize=${1#*=};;
+			-POPSIZE|--POPSIZE ) lf_popsize=$2;;
+			--POPSIZE=* ) lf_popsize=${1#*=};;
+			-METAL|--METAL-COORD ) add_lf_metal "$1" `collect_values "${@:2}"`;;
+			--METAL-COORD=* ) add_lf_metal "$1" "${1#*=}" `collect_values "${@:2}"`;;
 
 			*)
         path_login_node=${pathSL}

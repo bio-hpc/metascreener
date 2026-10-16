@@ -23,8 +23,8 @@ for i in `seq 1 $contadorFile`;do
 		fi
 	fi
 done
-echo "$optAdicionals" > ${folder_templates_jobs}parameter_aux.txt
+echo "$optAdicionals$lf_opts" > ${folder_templates_jobs}parameter_aux.txt
 debugB "_________________________________________Extra Params________________________________________"
 debugB ""
-debugB "createParams.sh  $optAdicionals"
+debugB "createParams.sh  $optAdicionals$lf_opts"
 debugB ""

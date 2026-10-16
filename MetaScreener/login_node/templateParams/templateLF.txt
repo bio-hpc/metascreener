@@ -21,7 +21,7 @@
 #--score-only::
 #--model-build-only[=TEMPLATE]
 #--virtual-screening::
--::Y::--extra-precision::
+-::N::-xp | --extra-precision::Use extra precision mode
 -::Y::--default-filenames
 -::Y::--output-tabular::=FILENAME.[csv|txt]
 -::Y::-text-report::=FILENAME
@@ -36,11 +36,11 @@
 -::N::--no-grid-reorientation
 -::Y::--types::=<comma-separated list>|all
 -::Y::--min-cavity-vol::=V
--::Y::--poolsize::=X
--::Y::--popsize::=X
+-::Y::-poolsize X | --poolsize=X::Alter size of the initial pool of individuals
+-::Y::-popsize X | --popsize=X::Alter size of the genetic algorithm population
 -::N::-retain-water
 -::Y::--environment::=solution|membrane
--::Y::--metal-coord::=A,B
+-::Y::-metal | --metal-coord::[reference none|join|only] [A,B]
 -::Y::--covalent-bond::=A,B[,X]
 -::N::--rotate-amide
 -::N::--rotate-conjugated-bond

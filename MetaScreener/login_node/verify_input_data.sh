@@ -439,6 +439,33 @@ if [[ ${software} == "LF" ]] ;then
   fi
 fi
 
+# Leadfinder options
+lf_opts=""
+if [ -n "$lf_extra_precision" ] || [ -n "$lf_metal" ] || [ -n "$lf_error" ] || [ -n "${lf_poolsize+set}" ] || [ -n "${lf_popsize+set}" ];then
+  if [[ ${software} != "LF" ]];then
+    txtError="-xp, -metal, -poolsize and -popsize options are only available for Leadfinder (-s LF)"
+    f_help
+  fi
+  if [ -n "$lf_error" ];then
+    txtError="$lf_error"
+    f_help
+  fi
+  for lf_param in poolsize popsize; do
+    lf_var="lf_${lf_param}"
+    if [ -n "${!lf_var+set}" ];then
+      if ! [[ "${!lf_var}" =~ ^([0-9]+([.][0-9]*)?|[.][0-9]+)$ ]] || ! awk "BEGIN{exit !(${!lf_var} > 0)}";then
+        txtError="-${lf_param} requires a positive number (${!lf_var})"
+        f_help
+      fi
+      lf_opts="$lf_opts -${lf_param} ${!lf_var}"
+    fi
+  done
+  if [ -n "$lf_extra_precision" ];then
+    lf_opts="$lf_opts -xp"
+  fi
+  lf_opts="$lf_opts $lf_metal"
+fi
+
 if [[ ${software} == "DC" ]] ;then
   if [[ ! -f "${ext_sw}dragon/dragon6shell" ]]; then
     echo -e "${RED} Error: ${ext_sw}dragon/dragon6shell doesn't exist${NONE}"
