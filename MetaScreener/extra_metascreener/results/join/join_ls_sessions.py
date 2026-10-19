@@ -13,6 +13,10 @@ from os.path import isdir, join
 from os import stat
 import os
 import subprocess
+import sys
+
+sys.path.insert(0, join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'used_by_metascreener'))
+from pack_experiment import pack_experiment
 
 
 FOLDER_MOLECULES = 'molecules'
@@ -172,6 +176,7 @@ parser.add_argument('-q', '--query', type=str, help=argparse.SUPPRESS)
 parser.add_argument('-f', '--file_name', type=argparse.FileType('r'), help='file with names of molecules (CODE|NAME)')
 parser.add_argument('-s', '--summary',  help='Returns only a csv summary with all hits from a Metascreener run with Ligand scout.', action='store_true')
 parser.add_argument('-d', '--debug',  help='debug', action='store_true')
+parser.add_argument('--pack',  help='Pack the run directory into <run>.tar.gz in the current directory (prefix must be a run directory).', action='store_true')
 args = parser.parse_args()
 dct_names = {}
 if args.file_name:
@@ -306,3 +311,6 @@ if isdir(args.prefix):
 else:
     out_summary = args.prefix
 write_excel(lst_excel, out_summary)
+
+if args.pack and isdir(args.prefix):
+    pack_experiment(args.prefix)

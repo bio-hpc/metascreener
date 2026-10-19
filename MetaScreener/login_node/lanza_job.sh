@@ -227,42 +227,54 @@ function get_histogram()
     fi
     echo "find ${folder_experiment} -name \${pml} -execdir singularity exec --bind $bind \$PWD/singularity/metascreener.simg pymol -c -q -k -Q "{}" \; > /dev/null 2>&1">>${folder_templates_jobs}template_get_hystogram.sh
     echo "find ${folder_experiment} -name \`basename ${folder_experiment}\`.pse ! -path ${folder_experiment}\`basename ${folder_experiment}\`.pse -exec cp "{}" ${folder_experiment} \;">>${folder_templates_jobs}template_get_hystogram.sh
-    pse_base=$(basename "${folder_experiment}")
-    echo "pse_file=${folder_experiment%/}/${pse_base}.pse" >>${folder_templates_jobs}template_get_hystogram.sh
-    echo "tgz=${pse_base}.tar.gz" >>${folder_templates_jobs}template_get_hystogram.sh
-    cat >>${folder_templates_jobs}template_get_hystogram.sh << 'EOF'
-if [ -f "$pse_file" ] && [ -f "$tgz" ]; then
-  tmp_tar=$(mktemp)
-  tmp_tgz=$(mktemp)
-  pse_rel=$(realpath --relative-to=. "$pse_file" 2>/dev/null || basename "$pse_file")
-  if gzip -dc "$tgz" > "$tmp_tar" && tar -rf "$tmp_tar" "$pse_rel" && gzip -c "$tmp_tar" > "$tmp_tgz"; then
-    mv "$tmp_tgz" "$tgz"
-  else
-    echo "ERROR: could not add $pse_file to $tgz" 1>&2
-    rm -f "$tmp_tgz"
-  fi
-  rm -f "$tmp_tar"
-fi
-EOF
     echo "python ${path_extra_metascreener}used_by_metascreener/get_csv.py ${folder_experiment}" >>${folder_templates_jobs}template_get_hystogram.sh
 
   # For LS only needs a summary in .csv
   elif [ $software == "LS" ];then
-    echo "singularity exec --bind $bind ${PWD}/singularity/metascreener.simg python ${path_extra_metascreener}results/join/join_ls_sessions.py ${folder_experiment} -q $query -s " >>${folder_templates_jobs}template_get_hystogram.sh
+    echo "singularity exec --bind $bind ${PWD}/singularity/metascreener.simg python ${path_extra_metascreener}results/join/join_ls_sessions.py ${folder_experiment} -q $query -s --pack" >>${folder_templates_jobs}template_get_hystogram.sh
   elif [ $software == "EO" ] || [ $software == "RC" ] ;then
     echo "singularity exec --bind $bind ${PWD}/singularity/metascreener.simg python3 ${path_extra_metascreener}used_by_metascreener/get_openeye_csv.py ${folder_experiment} $software " >>${folder_templates_jobs}template_get_hystogram.sh
   elif [ $software == "DC" ];then
     # Collect per-molecule Dragon ranking CSVs into the experiment root (summary product).
     echo "find ${folder_experiment}molecules -name '*.csv' -exec cp -t ${folder_experiment} {} + 2>/dev/null || true" >>${folder_templates_jobs}template_get_hystogram.sh
+    echo "singularity exec --bind $bind ${PWD}/singularity/metascreener.simg python3 ${path_extra_metascreener}used_by_metascreener/pack_experiment.py ${folder_experiment}" >>${folder_templates_jobs}template_get_hystogram.sh
   elif [ $software == "OM" ];then
     # OM is a preparation step: no special summary product beyond time.txt / archive.
-    :
+    echo "singularity exec --bind $bind ${PWD}/singularity/metascreener.simg python3 ${path_extra_metascreener}used_by_metascreener/pack_experiment.py ${folder_experiment}" >>${folder_templates_jobs}template_get_hystogram.sh
   else
     rm ${folder_templates_jobs}template_get_hystogram.sh
     exit
   fi
 
      echo "bash ${path_extra_metascreener}used_by_metascreener/get_time_resume.sh ${folder_out_jobs} >> ${folder_experiment}time.txt">>${folder_templates_jobs}template_get_hystogram.sh
+    # Files produced after packing are added to (or replaced in) the archive at the very end.
+    exp_base=$(basename "${folder_experiment}")
+    echo "exp_dir=${folder_experiment%/}" >>${folder_templates_jobs}template_get_hystogram.sh
+    echo "tgz=${exp_base}.tar.gz" >>${folder_templates_jobs}template_get_hystogram.sh
+    echo "late_files=\"\${exp_dir}/${exp_base}.pse \${exp_dir}/Results_scoring.csv \${exp_dir}/time.txt\"" >>${folder_templates_jobs}template_get_hystogram.sh
+    cat >>${folder_templates_jobs}template_get_hystogram.sh << 'EOF'
+if [ -f "$tgz" ]; then
+  tmp_tar=$(mktemp)
+  tmp_tgz=$(mktemp)
+  ok=1
+  gzip -dc "$tgz" > "$tmp_tar" || ok=0
+  for f in $late_files; do
+    [ $ok -eq 1 ] && [ -f "$f" ] || continue
+    rel=$(realpath --relative-to=. "$f" 2>/dev/null || basename "$f")
+    if tar -tf "$tmp_tar" | grep -qxF "$rel"; then
+      tar --delete -f "$tmp_tar" "$rel" || ok=0
+    fi
+    tar -rf "$tmp_tar" "$rel" || ok=0
+  done
+  if [ $ok -eq 1 ] && gzip -c "$tmp_tar" > "$tmp_tgz"; then
+    mv "$tmp_tgz" "$tgz"
+  else
+    echo "ERROR: could not add late files to $tgz" 1>&2
+    rm -f "$tmp_tgz"
+  fi
+  rm -f "$tmp_tar"
+fi
+EOF
 	# Archive the job-array script(s) once the array has finished (no-op for the classic per-chunk flow).
 	echo "mv ${folder_templates_jobs}job-*-array-*.sh ${folder_jobs_done} 2>/dev/null">>${folder_templates_jobs}template_get_hystogram.sh
 	echo "mv ${folder_templates_jobs}template_get_hystogram.sh ${folder_jobs_done}">>${folder_templates_jobs}template_get_hystogram.sh

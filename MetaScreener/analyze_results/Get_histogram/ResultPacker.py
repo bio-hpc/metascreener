@@ -42,9 +42,10 @@ class ResultPacker(object):
                     else:
                         tgz.add(os.path.relpath(item, '.'))
 
-            results_csv = os.path.join(self.cfg.file_input, 'Results_scoring.csv')
-            if os.path.isfile(results_csv):
-                tgz.add(os.path.relpath(results_csv, '.'))
+            if self.cfg.opcion.startswith("VS"):
+                for folder in (self.cfg.SHUTTLEMOL_DIRS['folderEnergy'], self.cfg.SHUTTLEMOL_DIRS['folderMolec']):
+                    if os.path.isdir(folder):
+                        tgz.add(os.path.relpath(folder, '.'))
 
         tgt_file = os.path.realpath(os.path.basename(self.pack_file))
         if os.path.isfile(tgt_file):

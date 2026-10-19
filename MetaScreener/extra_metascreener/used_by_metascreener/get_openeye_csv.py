@@ -1,6 +1,7 @@
 import os
 import csv
 from collections import defaultdict
+from pack_experiment import pack_experiment
 
 def calculate_rank(data, column):
     return float(data[column].strip())
@@ -89,3 +90,4 @@ if __name__ == "__main__":
     if len(sys.argv) > 3:
         ranking_column = sys.argv[3]
     process_directory(directory_path, rank, ranking_column=ranking_column)
+    pack_experiment(directory_path)
