@@ -291,6 +291,29 @@ OpcionesExtras()
 }
 
 #
+#   Leadfinder reorders the receptor atoms and expects in -metal the index of the atom
+#   in its own model, not the mol2 ID: translate the IDs given by the user
+#
+translate_lf_metal()
+{
+    lf_metal_dir=`mktemp -d ${PWD}/.lf_metal_XXXXXX`
+    echo "Translating -metal atom IDs into Leadfinder indexes..."
+    lf_metal_aux=`singularity exec --bind ${PWD} --bind $(dirname $(readlink -f ${target})) ${PWD}/singularity/metascreener.simg \
+        python3 ${path_extra_metascreener}used_by_metascreener/lf_metal_index.py --leadfinder=${ext_sw}leadFinder/leadfinder \
+        --target=${target} --workdir=${lf_metal_dir} --metal="${lf_metal}" 2>${lf_metal_dir}/messages.txt`
+    lf_metal_status=$?
+    lf_metal_msg=`grep "^-metal" ${lf_metal_dir}/messages.txt`
+    rm -rf ${lf_metal_dir}
+    if [ ${lf_metal_status} -ne 0 ] || [ -z "${lf_metal_aux}" ];then
+        txtError="${lf_metal_msg:-Could not translate -metal atom IDs into Leadfinder indexes}"
+        f_help
+    fi
+    echo "${lf_metal_msg}"
+    debugB "verifiInputData.sh: -metal translated from '${lf_metal}' to '${lf_metal_aux}'"
+    lf_metal=" ${lf_metal_aux}"
+}
+
+#
 #   Find a name for the job
 #
 find_name_job()
@@ -462,6 +485,9 @@ if [ -n "$lf_extra_precision" ] || [ -n "$lf_metal" ] || [ -n "$lf_error" ] || [
   done
   if [ -n "$lf_extra_precision" ];then
     lf_opts="$lf_opts -xp"
+  fi
+  if [ -n "$lf_metal" ];then
+    translate_lf_metal
   fi
   lf_opts="$lf_opts $lf_metal"
 fi
