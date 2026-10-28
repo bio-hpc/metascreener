@@ -39,6 +39,10 @@ if [[ "${software}" == "GN" && "${GPU}" != "N/A" ]]; then
 fi
 
 echo $modules_metascreener >>$name_template_job
+if [ "$query_is_tar" = "1" ]; then
+  source ${path_cluster_nodes}templates_queue/tar_job.sh
+  emit_tar_job runtime
+else
 echo "singularity exec ${singularity_prefix} --bind $bind ${singularity_image} ${path_cluster_nodes}techniques/baseTechniques.sh -c ${CWD} \
 -d ${folder_experiment} -s ${software} -t ${target} -q ${query} -x ${x} -y ${y} -z ${z} \
 -nt ${name_target} -o ${option} -in \${contIni} -fn \${contFin} \
@@ -47,6 +51,7 @@ echo "singularity exec ${singularity_prefix} --bind $bind ${singularity_image} $
 -sc ${scoreCorte} -grid ${grid} -EXP ${ext_target} -EXL ${ext_query} \
 -GX ${gridSizeX} -GY ${gridSizeY} -GZ ${gridSizeZ} -nn  ${nodos} -lto ${lanzTimeOut} \
 -nj ${name_job} -BE ${bd_exhaustiveness} -BDA ${bd_atom_default}"                                        >>$name_template_job
+fi
 
 echo "echo \"end job\" 1>&2"                                                                             >>$name_template_job
 echo "date +\"%s   %c\" 1>&2"                                                                            >>$name_template_job

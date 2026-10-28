@@ -240,15 +240,54 @@ validateExtProt()
 #
 #   Validate query's extension
 #
+prepare_tar_query()
+{
+    query_is_tar=1
+    case "$software" in
+        AD|LF|GN) ;;
+        *)
+            txtError="-q a .tar ligand library is only supported for VS with AD, LF or GN"
+            f_help
+            ;;
+    esac
+    if [ "$option" != "VS" ];then
+        txtError="-q a .tar ligand library is only supported for virtual screening (-o VS)"
+        f_help
+    fi
+    case "$query" in
+        /*) query_tar=$(readlink -f "$query") ;;
+        *) query_tar=$(readlink -f "${CWD}${query}") ;;
+    esac
+    if [ ! -f "$query_tar" ];then
+        txtError="-q tar library does not exist (${query})"
+        f_help
+    fi
+    ms_tar_list=$(mktemp "${TMPDIR:-/tmp}/ms_tar_list.XXXXXX")
+    if ! tar -tf "$query_tar" > "$ms_tar_list";then
+        txtError="-q could not read tar library ${query_tar}"
+        f_help
+    fi
+}
+
 validate_ext_query()
 {
     ext_query=""
+    query_is_tar=0
+    ms_tar_list=""
     if [[ "$option" == *"VS"* ]];then
         if [ "$extensionesLig" != "" ];then
             auxIFS=$IFS
             IFS=',' read -ra extx <<< "$extensionesLig"
+            case "$query" in
+                *.tar|*.tar.gz|*.tgz) prepare_tar_query ;;
+            esac
             for i in "${extx[@]}"; do
-                aux=`find ${query}/ -name "*${i}" -maxdepth 1 2> /dev/null|wc -l`
+                if [ "$query_is_tar" = "1" ];then
+                    ext_re=$(printf '%s' "$i" | sed 's/\./\\./g')
+                    aux=$(grep -E -c "${ext_re}$" "$ms_tar_list" || true)
+                else
+                    aux=`find ${query}/ -name "*${i}" -maxdepth 1 2> /dev/null|wc -l`
+                fi
 
                 if [ $aux != 0 ] ;then
                     ext_query=$i
@@ -275,7 +314,9 @@ validate_ext_query()
         fi
     fi
     name_query=$(basename "$query")
-
+    name_query="${name_query%.tar.gz}"
+    name_query="${name_query%.tgz}"
+    name_query="${name_query%.tar}"
     name_query="${name_query%.*}"
 
 }

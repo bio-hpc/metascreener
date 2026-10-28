@@ -18,6 +18,19 @@ create_dirs()
 			mkdir ${dir_name}
 		fi
 	done
+	# Bind mount points for a tar ligand library. They stay empty on GPFS:
+	# each job mounts its own scratch on top of them. The ligand directory is
+	# named like the library so the VS grid (VS_<sw>_<target>_<name_query>_...)
+	# is the same file the docking command looks up.
+	if [ "$query_is_tar" = "1" ]; then
+		case "$name_query" in
+			molecules|energies|soft_out|output|grids|jobs|jobs_out|jobs_done|packed|results)
+				echo "ERROR: the tar name '${name_query}' clashes with an experiment folder. Rename the archive." >&2
+				exit 1
+				;;
+		esac
+		mkdir -p "${folder_experiment}${name_query}" "${folder_experiment}packed" "${folder_experiment}output"
+	fi
 }
 #__________________________________________________________________________________________________________________________________________
 #

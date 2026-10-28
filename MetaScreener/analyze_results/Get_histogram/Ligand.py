@@ -92,6 +92,45 @@ class Ligand(object):
         ret = subprocess.check_output(cmd, shell=True, preexec_fn=init_worker)
         return float(ret)
 
+    def _is_library_tar(self, path):
+        if not path or not os.path.isfile(path):
+            return False
+        lower = path.lower()
+        return lower.endswith('.tar') or lower.endswith('.tar.gz') or lower.endswith('.tgz')
+
+    def _query_entries(self):
+        query = self.cfg.file_query
+        if self._is_library_tar(query):
+            if getattr(self.cfg, '_library_tar_members', None) is None:
+                import tarfile
+                archive = tarfile.open(query, 'r:*')
+                try:
+                    self.cfg._library_tar_members = [
+                        member.name for member in archive.getmembers() if member.isfile()]
+                finally:
+                    archive.close()
+            return self.cfg._library_tar_members, True
+        return os.listdir(query), False
+
+    def _extract_library_member(self, member):
+        import shutil
+        import tarfile
+        import tempfile
+        archive = tarfile.open(self.cfg.file_query, 'r:*')
+        try:
+            source = archive.extractfile(member)
+            _stem, suffix = os.path.splitext(member)
+            handle, tmp_path = tempfile.mkstemp(suffix=suffix)
+            os.close(handle)
+            destination = open(tmp_path, 'wb')
+            try:
+                shutil.copyfileobj(source, destination)
+            finally:
+                destination.close()
+            return tmp_path
+        finally:
+            archive.close()
+
     def copy_files(self, target_dir):
         reasign_charges = "python " + self.cfg.extra_metascreener + "/reasign_charges.py {} {}"
         if self.num_execution != -1:
@@ -106,16 +145,32 @@ class Ligand(object):
 
         if self.cfg.programa.startswith("LF"):
             if self.cfg.opcion.startswith("VS"):
-                for filename in os.listdir(self.cfg.file_query):
-                    if self.ligand_ext in filename and "_"+os.path.splitext(filename)[0]+"_" in self.file_name:
+                names, from_tar = self._query_entries()
+                for filename in names:
+                    base = os.path.basename(filename)
+                    if not isinstance(base, type(u'')):
+                        base = base.decode('utf-8', 'replace')
+                    stem = os.path.splitext(base)[0]
+                    if self.ligand_ext in base and "_" + stem + "_" in self.file_name:
+                        tmp_path = None
+                        if from_tar:
+                            tmp_path = self._extract_library_member(filename)
+                            source_path = tmp_path
+                        else:
+                            source_path = os.path.join(self.cfg.file_query, filename)
                         cmd = reasign_charges.format(
-                            self.cfg.file_query + "/" + filename,
+                            source_path,
                             target_dir + self.file_name + self.ligand_ext
                         )
+                        try:
+                            subprocess.check_output(cmd, shell=True)
+                        finally:
+                            if tmp_path and os.path.isfile(tmp_path):
+                                os.remove(tmp_path)
             else:
                 cmd = reasign_charges.format(
                     self.cfg.file_query,
                     target_dir + self.file_name + self.ligand_ext
-                )  
-            subprocess.check_output(cmd, shell=True)
+                )
+                subprocess.check_output(cmd, shell=True)
 

@@ -23,6 +23,19 @@ class ReadData(object):
         self.get_data()
 
     def get_data(self):
+        scores_file = os.path.join(self.cfg.file_input, 'packed', 'all_scores.txt')
+        packed = os.path.isfile(scores_file)
+        if packed:
+            score_handle = open(scores_file)
+            try:
+                for line in score_handle:
+                    line = line.strip()
+                    if line:
+                        self.cfg.plot_data.append(float(line))
+            finally:
+                score_handle.close()
+            print("Packed VS: histogram uses %d scores from %s" % (
+                len(self.cfg.plot_data), scores_file))
         files_json = os.path.join(self.cfg.SHUTTLEMOL_DIRS['folderEnergy'], '*.json')
         files_json = glob.glob(files_json)
         assert files_json
@@ -35,7 +48,8 @@ class ReadData(object):
                 if pose_lig != None and pose_lig.get_score() != None:
                     id_lig.append(pose_lig.id_str)
                     data.append(pose_lig.graph_global_score)
-                    self.cfg.plot_data.append(pose_lig.get_score())
+                    if not packed:
+                        self.cfg.plot_data.append(pose_lig.get_score())
                     if pose_lig.get_score() > self.cfg.engCorte:
                         if score_type == None or score_type=="positivo":
                             score_type = "positivo"

@@ -47,6 +47,13 @@ class ResultPacker(object):
                     if os.path.isdir(folder):
                         tgz.add(os.path.relpath(folder, '.'))
 
+            packed = os.path.join(self.cfg.file_input, 'packed')
+            if os.path.isdir(packed):
+                tgz.add(os.path.relpath(packed, '.'))
+            manifest = os.path.join(self.cfg.file_input, 'ligands.list')
+            if os.path.isfile(manifest):
+                tgz.add(os.path.relpath(manifest, '.'))
+
         tgt_file = os.path.realpath(os.path.basename(self.pack_file))
         if os.path.isfile(tgt_file):
             os.unlink(tgt_file)

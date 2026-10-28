@@ -78,6 +78,7 @@ send_jobs()
 
 
 	source ${pathSL}resume.sh
+	write_packed_expected
 
 	# Use a single SLURM job array (one task per chunk) when submitting to Slurm.
 	# For sequential runs or other queue managers, keep the classic one-job-per-chunk loop.
@@ -214,6 +215,10 @@ function get_histogram()
 
   if [ $software == "AD" ] || [ $software == "LF" ] || [ $software == "GN" ] ;then
 
+    if [ "$query_is_tar" = "1" ]; then
+      echo "singularity exec --bind $bind ${PWD}/singularity/metascreener.simg python ${CWD}MetaScreener/analyze_results/Get_histogram/PackedStore.py materialize --experiment ${folder_experiment} --rf ${rf} --rb ${rb} --corte 0 || exit 1" >>${folder_templates_jobs}template_get_hystogram.sh
+    fi
+
     if [[ $target_pdb == "no_target" ]];then
       echo "singularity exec --bind $bind ${PWD}/singularity/metascreener.simg python ${path_analize_results}get_histogram_picture.py --prog=$software --opt=$option -i ${folder_experiment} -p $target -l $query --rf $rf --rb $rb --profile ${profile} -d $debug">>${folder_templates_jobs}template_get_hystogram.sh
     else
@@ -287,6 +292,22 @@ EOF
 #	Balance the jobs.
 #	With this loop we try to balance jobs to optimize the time
 #
+# How many task tars a tar-library run must leave behind. The histogram
+# refuses to start when the count does not match, so a failed task is visible.
+function write_packed_expected()
+{
+	if [ "$query_is_tar" != "1" ];then
+		return
+	fi
+	mkdir -p "${folder_experiment}packed"
+	_resto=`expr $numFicheros % $nRuns`
+	_count=`expr $numFicheros / $nRuns`
+	if [ $_resto -gt 0 ];then
+		_count=`expr $_count + 1`
+	fi
+	echo $_count > "${folder_experiment}packed/expected_tasks"
+}
+
 function balance_jobs()
 {
 	while [ $resto -gt $nRuns ]

@@ -119,7 +119,7 @@ printOp()
 {
 	printTitle
 	printHelpAux "-t"  "`getOptions "\#LanzExtensionProtQ"`"  "Receptor or target's file."
-	printHelpAux "-q"  "`getOptions "\#LanzExtensionligB"`"  "Ligand's file or query's directory."
+	printHelpAux "-q"  "`getOptions "\#LanzExtensionligB"`"  "Ligand file, directory, or a .tar/.tar.gz/.tgz of ligand files (VS with AD, LF or GN)."
 	printHelpAux "-s" "[ $option ]"   "Software."
 	printHelpAux "-o" "`getOptions "\#lanzOptions"`"   "Options available."
 	if [ -z `cat ${pathSL}templateParams/template${option}.txt |grep "\LanzCoordX" | cut -d : -f 2` ];then
@@ -134,7 +134,7 @@ printOpOM()
 {
         printTitle
         printHelpAux "-t"  "[ number ]"  "Number of conformations (optional)."
-        printHelpAux "-q"  "`getOptions "\#LanzExtensionligB"`"  "Ligand's file or query's directory."
+        printHelpAux "-q"  "`getOptions "\#LanzExtensionligB"`"  "Ligand file, directory, or a .tar/.tar.gz/.tgz of ligand files (VS with AD, LF or GN)."
         printHelpAux "-s" "[ $option ]"   "Software."
         printHelpAux "-o" "`getOptions "\#lanzOptions"`"   "Options available."
 }
@@ -170,7 +170,7 @@ if [  -z "$option" ];then
 	printGlobalHelp "d" "O" "" "Folder where test data will be saved."
 	printGlobalHelp "t" "D" "" "Receptor or protein target's file."
 	printGlobalHelp "pdb" "O" "" "Receptor or target's file in PDB format (Useful when PLIP interactions show any problems)."
-	printGlobalHelp "q" "N" "" "Ligand's file or query's directory."
+	printGlobalHelp "q" "N" "" "Ligand file, directory, or a .tar/.tar.gz/.tgz of ligand files (VS with AD, LF or GN)."
 	printGlobalHelp "o" "N" "" "Technique `readTechniquesSW ${pathSL}techniques/ SLTechnique`."
 	printGlobalHelp "s" "N" "" "Available Software `readTechniquesSW ${pathSL}templateParams/ template`*."
 	echo -e "            * All software requires a license (except AD and GN). You must also put the executables in their MetaScreener/external_software/ directories and give them execution permissions.${NONE}"

@@ -4,6 +4,7 @@ import sys
 import glob
 import json
 import os
+import subprocess
 from collections import OrderedDict
 
 if len(sys.argv) != 2:
@@ -17,6 +18,13 @@ data={}
 cnt_json=0
 json_files = "/energies/*.json"
 directory = sys.argv[1]
+packed = glob.glob(os.path.join(directory, 'packed', 'task_*.tar'))
+if packed:
+    script = os.path.normpath(os.path.join(
+        os.path.dirname(os.path.abspath(__file__)),
+        '..', '..', 'analyze_results', 'Get_histogram', 'PackedStore.py'))
+    raise SystemExit(subprocess.call(
+        [sys.executable, script, 'csv', '--experiment', directory]))
 if not os.path.isdir(directory+"/energies/"):
     json_files = "/results/*[0-9].json"
 for f_json in glob.glob(directory+json_files):

@@ -19,4 +19,5 @@ core.*
 *.xls
 *.json
 *.txt
+tests/vs_tar/work/
 *.tex

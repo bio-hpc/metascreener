@@ -7,6 +7,10 @@ generate_informe()
 	echo  "--">>${salidaResume}
 	echo  "--">>${salidaResume}
 	informe=${informe}"-- LigandIn:\t\t${query}\n"
+	if [ "$query_is_tar" = "1" ];then
+		informe=${informe}"-- LibraryTar:\t\t${query_tar}\n"
+		informe=${informe}"-- LigandList:\t\t${folder_experiment}ligands.list\n"
+	fi
 	informe=${informe}"-- ReceptorIn:\t\t${target}\n"
 	informe=${informe}"-- X:\t\t\t$x\n"
 	informe=${informe}"-- Y:\t\t\t$y\n"
