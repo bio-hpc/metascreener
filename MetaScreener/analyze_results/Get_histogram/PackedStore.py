@@ -94,25 +94,31 @@ def build_index(energies_dir, out_path, ligands_list=None):
                 if line:
                     expected.append(os.path.basename(line))
         missing = [name for name in expected if name not in found]
-        if missing:
-            sys.stderr.write('ERROR: no score for %d ligand(s): %s\n' % (
-                len(missing), ', '.join(missing[:20])))
-            return 1
+    else:
+        missing = []
 
-    if not records:
-        sys.stderr.write('ERROR: no energy json files in %s\n' % energies_dir)
-        return 1
-    unscored = [record['ligand'] for record in records if effective_score(record) is None]
-    if unscored:
-        sys.stderr.write('ERROR: docking produced no score for %d ligand(s): %s\n' % (
-            len(unscored), ', '.join(unscored[:20])))
-        return 1
+    scored = []
+    failed = list(missing)
+    for record in records:
+        if effective_score(record) is None:
+            if record['ligand'] not in failed:
+                failed.append(record['ligand'])
+        else:
+            scored.append(record)
 
     with open(out_path, 'w') as handle:
-        for record in records:
+        for record in scored:
             handle.write(json.dumps(record, sort_keys=True))
             handle.write('\n')
-    print('index: %d pose(s) -> %s' % (len(records), out_path))
+    failed_path = os.path.join(os.path.dirname(os.path.abspath(out_path)), 'failed.jsonl')
+    with open(failed_path, 'w') as handle:
+        for name in failed:
+            handle.write(json.dumps({'ligand': name, 'reason': 'no_score'}, sort_keys=True))
+            handle.write('\n')
+    if failed:
+        sys.stderr.write('WARNING: no score for %d ligand(s): %s\n' % (
+            len(failed), ', '.join(failed[:20])))
+    print('index: %d pose(s), %d without score -> %s' % (len(scored), len(failed), out_path))
     return 0
 
 
@@ -222,31 +228,89 @@ def extract_records(chosen, experiment):
             tar.close()
 
 
-def materialize(experiment, rf, rb, corte):
+# A finished task may lack a score for a few ligands. The histogram still runs
+# when those explicit failures stay within this percentage of ligands.list.
+# Ligands in no task tar at all are unfinished work, not tolerated failures.
+# MetaScreener -mf / --max-fail overrides the default (0 to 100).
+FAILURE_PERCENT = 5
+
+
+def failure_percent(value):
+    try:
+        percent = float(value)
+    except (TypeError, ValueError):
+        raise SystemExit('ERROR: --max-fail must be a percentage between 0 and 100')
+    if percent != percent or percent < 0 or percent > 100:
+        raise SystemExit('ERROR: --max-fail must be a percentage between 0 and 100')
+    return percent
+
+
+def iter_failures(experiment):
+    packed = os.path.join(experiment, 'packed')
+    for archive in sorted(glob.glob(os.path.join(packed, 'task_*.tar'))):
+        tar = tarfile.open(archive, 'r:')
+        try:
+            try:
+                raw = tar.extractfile('failed.jsonl')
+            except KeyError:
+                raw = None
+            if raw is None:
+                continue
+            for line in raw:
+                line = _text(line).strip()
+                if not line:
+                    continue
+                record = json.loads(line)
+                record['tar'] = archive
+                yield record
+        finally:
+            tar.close()
+
+
+def assess_coverage(experiment, max_fail=FAILURE_PERCENT):
+    """Return (status, detail). status is ok, unknown or too_many."""
+    max_fail = failure_percent(max_fail)
+    manifest = os.path.join(experiment, 'ligands.list')
+    if not os.path.isfile(manifest):
+        return 'unknown', ['ligands.list']
+    with open(manifest) as handle:
+        expected = [os.path.basename(line.strip()) for line in handle if line.strip()]
+    scored = set()
+    for record in iter_records(experiment):
+        if effective_score(record) is not None:
+            scored.add(ligand_basename(record))
+    failed = []
+    seen = set()
+    for record in iter_failures(experiment):
+        name = os.path.basename(record.get('ligand') or '')
+        if name and name not in scored and name not in seen:
+            seen.add(name)
+            failed.append(name)
+    unknown = [name for name in expected if name not in scored and name not in seen]
+    if unknown:
+        return 'unknown', unknown
+    if expected and len(failed) * 100 > len(expected) * max_fail:
+        return 'too_many', failed
+    return 'ok', failed
+
+
+def materialize(experiment, rf, rb, corte, max_fail=FAILURE_PERCENT):
     experiment = os.path.abspath(os.path.normpath(experiment))
-    expected_path = os.path.join(experiment, 'packed', 'expected_tasks')
-    if not os.path.isfile(expected_path):
-        sys.stderr.write('ERROR: missing %s\n' % expected_path)
+    max_fail = failure_percent(max_fail)
+    status, detail = assess_coverage(experiment, max_fail)
+    if status == 'unknown':
+        sys.stderr.write('ERROR: %d ligand(s) have no finished task (not a recorded failure): %s\n' % (
+            len(detail), ', '.join(detail[:20])))
         return 1
-    with open(expected_path) as handle:
-        expected_tasks = int(handle.read().strip())
-    archives = glob.glob(os.path.join(experiment, 'packed', 'task_*.tar'))
-    if len(archives) != expected_tasks:
-        sys.stderr.write('ERROR: expected %d task tar(s), found %d in %s\n' % (
-            expected_tasks, len(archives), os.path.join(experiment, 'packed')))
+    if status == 'too_many':
+        shown = int(max_fail) if max_fail == int(max_fail) else max_fail
+        sys.stderr.write('ERROR: %d ligand(s) failed, above the %s%% limit: %s\n' % (
+            len(detail), shown, ', '.join(detail[:20])))
         return 1
+    if detail:
+        print('tolerating %d ligand(s) without a score' % len(detail))
 
     records = list(iter_records(experiment))
-    manifest = os.path.join(experiment, 'ligands.list')
-    if os.path.isfile(manifest):
-        with open(manifest) as handle:
-            expected = [os.path.basename(line.strip()) for line in handle if line.strip()]
-        found = set(ligand_basename(rec) for rec in records)
-        missing = [name for name in expected if name not in found]
-        if missing:
-            sys.stderr.write('ERROR: %d ligand(s) have no packed score: %s\n' % (
-                len(missing), ', '.join(missing[:20])))
-            return 1
 
     scores_path = os.path.join(experiment, 'packed', 'all_scores.txt')
     written = 0
@@ -323,6 +387,8 @@ def main(argv):
     materialize_cmd.add_argument('--rf', type=int, required=True)
     materialize_cmd.add_argument('--rb', type=int, required=True)
     materialize_cmd.add_argument('--corte', type=float, default=0.0)
+    materialize_cmd.add_argument('--max-fail', type=float, default=FAILURE_PERCENT,
+                                 help='maximum percent of ligands.list allowed to lack a score')
 
     csv_cmd = sub.add_parser('csv', help='write Results_scoring.csv from every task index')
     csv_cmd.add_argument('--experiment', required=True)
@@ -331,7 +397,7 @@ def main(argv):
     if args.cmd == 'index':
         return build_index(args.energies, args.out, args.ligands or None)
     if args.cmd == 'materialize':
-        return materialize(args.experiment, args.rf, args.rb, args.corte)
+        return materialize(args.experiment, args.rf, args.rb, args.corte, args.max_fail)
     if args.cmd == 'csv':
         return write_scoring_csv(args.experiment)
     parser.print_help()

@@ -154,6 +154,7 @@ check_mol2=`empty_variable $check_mol2`         # Don't check mol2 protein resid
 project=`empty_variable $project`
 rf=`empty_variable $rf 500`
 rb=`empty_variable $rb 50`
+max_fail=`empty_variable $max_fail 5`
 
 # Leadfinder options (only used with -s LF)
 lf_extra_precision=""
@@ -168,7 +169,7 @@ while (( $# ))
  do
 
     if [[ "$1" == \-[a-z]* ]] || [[ "$1" == \-[A-Z]* ]] || [[ "$1" == \-\-[a-a]* ]] || [[ "$1" == \--[A-Z]* ]] \
-       || [[ "$1" =~ ^--(metal-coord|extra-precision|extra-precission|poolsize|popsize)(=|$) ]];then
+       || [[ "$1" =~ ^--(metal-coord|extra-precision|extra-precission|poolsize|popsize|max-fail)(=|$) ]];then
 	   case `printf "%s" "$1" | tr '[:lower:]' '[:upper:]'`  in
 			-X )  x=$2;;			# Center position x
 			-Y )  y=$2;;			# Center position y
@@ -199,6 +200,8 @@ while (( $# ))
 			-EM ) email=$2;;
 	    -RF ) rf=$2;;
       -RB ) rb=$2;;
+      -MF|--MAX-FAIL ) max_fail=$2;;
+      --MAX-FAIL=* ) max_fail=${1#*=};;
 			## Internal use
 			-RE) resName=$2;;
 			-NT) name_target=$2;;
@@ -257,4 +260,9 @@ while (( $# ))
 	fi
   shift
 done
+
+if ! awk -v v="$max_fail" 'BEGIN { exit !(v ~ /^[0-9]+([.][0-9]+)?$/ && v+0 >= 0 && v+0 <= 100) }'; then
+	echo "ERROR: -mf must be a percentage between 0 and 100 (got: ${max_fail})" >&2
+	exit 1
+fi
 

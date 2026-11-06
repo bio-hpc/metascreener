@@ -68,11 +68,16 @@ send_jobs()
 	if [ "${time_job}" == "N/A" ];then
 		if [ $resto -gt $nRuns ];then
 			time_job=`expr $resto \* $time_experiment`
-			time_job=`convertsecs $time_job`
 		else
 			time_job=`expr $nRuns \* $time_experiment`
-			time_job=`convertsecs $time_job`
 		fi
+		# Singularity startup and packing sit outside the per-ligand timeout.
+		# Without this margin a full chunk is cancelled at the exact wall time
+		# and never writes its tar.
+		if [ "$query_is_tar" = "1" ];then
+			time_job=`expr $time_job + 2700`
+		fi
+		time_job=`convertsecs $time_job`
 	fi
 	printParameters
 
@@ -216,7 +221,7 @@ function get_histogram()
   if [ $software == "AD" ] || [ $software == "LF" ] || [ $software == "GN" ] ;then
 
     if [ "$query_is_tar" = "1" ]; then
-      echo "singularity exec --bind $bind ${PWD}/singularity/metascreener.simg python ${CWD}MetaScreener/analyze_results/Get_histogram/PackedStore.py materialize --experiment ${folder_experiment} --rf ${rf} --rb ${rb} --corte 0 || exit 1" >>${folder_templates_jobs}template_get_hystogram.sh
+      echo "singularity exec --bind $bind ${PWD}/singularity/metascreener.simg python ${CWD}MetaScreener/analyze_results/Get_histogram/PackedStore.py materialize --experiment ${folder_experiment} --rf ${rf} --rb ${rb} --corte 0 --max-fail ${max_fail} || exit 1" >>${folder_templates_jobs}template_get_hystogram.sh
     fi
 
     if [[ $target_pdb == "no_target" ]];then

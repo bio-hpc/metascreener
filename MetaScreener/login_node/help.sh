@@ -188,6 +188,7 @@ if [  -z "$option" ];then
 	printGlobalHelp "test" "O" "" "Launch a quick test with default parameters. You can select option (-o) and software (-s) (By default BD AD in sequential with debug)."
 	printGlobalHelp "rb" "O" "" "Number of files saved as bestScore in VS. Default (50)."
 	printGlobalHelp "rf" "O" "" "Number of files saved in VS. Default (500)."
+	printGlobalHelp "mf" "O" "" "Maximum percentage of ligands without a score still accepted when the VS library is a tar. Default (5). A task that never finished does not count towards this percentage."
 	
 	echo ""
 	echo -e "${PURPLE}Queue Manager Options${NONE}"

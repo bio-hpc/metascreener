@@ -40,9 +40,17 @@ ms_tar_begin() {
 
 ms_tar_finish() {
   rc=$1
-  if [ "$rc" -ne 0 ]; then
-    echo "ERROR: docking failed (status ${rc}); ${MS_TASK_NAME} was not packed" >&2
+  njson=$(find "$MS_STAGE/energies" -name '*.json' 2>/dev/null | wc -l)
+  njson=$(echo "$njson" | tr -d ' ')
+  # A non-zero status with no poses means the task itself failed (the container
+  # never really ran). A few ligands inside a task that did run are recorded
+  # in failed.jsonl and the tar is still published.
+  if [ "$rc" -ne 0 ] && [ "$njson" = "0" ]; then
+    echo "ERROR: docking failed (status ${rc}) and produced no poses; ${MS_TASK_NAME} was not packed" >&2
     exit "$rc"
+  fi
+  if [ "$rc" -ne 0 ]; then
+    echo "tar library: docking status ${rc}; packing the poses that did score" >&2
   fi
   py=python3
   command -v python3 >/dev/null 2>&1 || py=python
@@ -54,7 +62,7 @@ ms_tar_finish() {
   tmp="${MS_PACKED_DIR}/.${MS_TASK_NAME}.tar"
   final="${MS_PACKED_DIR}/${MS_TASK_NAME}.tar"
   rm -f "$tmp"
-  tar -cf "$tmp" -C "$MS_STAGE" index.jsonl molecules energies soft_out output || {
+  tar -cf "$tmp" -C "$MS_STAGE" index.jsonl failed.jsonl molecules energies soft_out output || {
     rm -f "$tmp"
     exit 1
   }

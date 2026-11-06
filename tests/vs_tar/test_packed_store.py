@@ -49,8 +49,10 @@ def pack_task(stage, archive):
         os.makedirs(os.path.dirname(archive))
     tar = tarfile.open(archive, 'w')
     try:
-        for name in ('index.jsonl', 'molecules', 'energies', 'soft_out', 'output'):
-            tar.add(os.path.join(stage, name), arcname=name)
+        for name in ('index.jsonl', 'failed.jsonl', 'molecules', 'energies', 'soft_out', 'output'):
+            path = os.path.join(stage, name)
+            if os.path.exists(path):
+                tar.add(path, arcname=name)
     finally:
         tar.close()
 
@@ -87,7 +89,7 @@ def main():
         with open(os.path.join(experiment, 'packed', 'expected_tasks'), 'w') as handle:
             handle.write('2\n')
 
-        # A missing ligand must be reported instead of packing a short task.
+        # A ligand without a score is recorded; the task index still succeeds.
         bad = os.path.join(work, 'bad')
         os.makedirs(os.path.join(bad, 'energies'))
         write_pose(bad, 'ONLY', -4.0)
@@ -97,7 +99,39 @@ def main():
             os.path.join(bad, 'energies'),
             os.path.join(bad, 'index.jsonl'),
             os.path.join(bad, 'list'))
-        assert rc == 1, rc
+        assert rc == 0, rc
+        failed_names = [
+            json.loads(line)['ligand']
+            for line in open(os.path.join(bad, 'failed.jsonl')) if line.strip()]
+        assert failed_names == ['MISSING.pdbqt'], failed_names
+        # 1 of 4 is 25%, above the 5% limit.
+        assert PackedStore.assess_coverage(experiment)[0] == 'ok'
+        too_many = os.path.join(work, 'too_many')
+        os.makedirs(os.path.join(too_many, 'packed'))
+        with open(os.path.join(too_many, 'ligands.list'), 'w') as handle:
+            handle.write('A.pdbqt\nB.pdbqt\nC.pdbqt\nD.pdbqt\n')
+        stage = os.path.join(work, 'too_stage')
+        os.makedirs(os.path.join(stage, 'energies'))
+        write_pose(stage, 'A', -1.0)
+        write_pose(stage, 'B', -2.0)
+        write_pose(stage, 'C', -3.0)
+        with open(os.path.join(stage, 'list'), 'w') as handle:
+            handle.write('A.pdbqt\nB.pdbqt\nC.pdbqt\nD.pdbqt\n')
+        assert PackedStore.build_index(
+            os.path.join(stage, 'energies'),
+            os.path.join(stage, 'index.jsonl'),
+            os.path.join(stage, 'list')) == 0
+        pack_task(stage, os.path.join(too_many, 'packed', 'task_00000.tar'))
+        assert PackedStore.assess_coverage(too_many)[0] == 'too_many'
+        # 1 of 4 is exactly 25%, which -mf 25 accepts. 24 does not.
+        assert PackedStore.assess_coverage(too_many, 25)[0] == 'ok'
+        assert PackedStore.assess_coverage(too_many, 24)[0] == 'too_many'
+        try:
+            PackedStore.failure_percent(101)
+        except SystemExit:
+            pass
+        else:
+            raise AssertionError('101 must be rejected')
 
         assert PackedStore.materialize(experiment, 1, 1, 0.0) == 0
         scores = open(os.path.join(experiment, 'packed', 'all_scores.txt')).read().split()

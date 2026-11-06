@@ -10,6 +10,7 @@ generate_informe()
 	if [ "$query_is_tar" = "1" ];then
 		informe=${informe}"-- LibraryTar:\t\t${query_tar}\n"
 		informe=${informe}"-- LigandList:\t\t${folder_experiment}ligands.list\n"
+		informe=${informe}"-- MaxFailPct:\t${max_fail}\n"
 	fi
 	informe=${informe}"-- ReceptorIn:\t\t${target}\n"
 	informe=${informe}"-- X:\t\t\t$x\n"
