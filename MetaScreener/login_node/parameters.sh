@@ -155,6 +155,7 @@ project=`empty_variable $project`
 rf=`empty_variable $rf 500`
 rb=`empty_variable $rb 50`
 max_fail=`empty_variable $max_fail 5`
+stage_dir=`empty_variable $stage_dir`          # Where a tar-library task extracts its slice
 
 # Leadfinder options (only used with -s LF)
 lf_extra_precision=""
@@ -169,7 +170,7 @@ while (( $# ))
  do
 
     if [[ "$1" == \-[a-z]* ]] || [[ "$1" == \-[A-Z]* ]] || [[ "$1" == \-\-[a-a]* ]] || [[ "$1" == \--[A-Z]* ]] \
-       || [[ "$1" =~ ^--(metal-coord|extra-precision|extra-precission|poolsize|popsize|max-fail)(=|$) ]];then
+       || [[ "$1" =~ ^--(metal-coord|extra-precision|extra-precission|poolsize|popsize|max-fail|stage-dir)(=|$) ]];then
 	   case `printf "%s" "$1" | tr '[:lower:]' '[:upper:]'`  in
 			-X )  x=$2;;			# Center position x
 			-Y )  y=$2;;			# Center position y
@@ -202,6 +203,8 @@ while (( $# ))
       -RB ) rb=$2;;
       -MF|--MAX-FAIL ) max_fail=$2;;
       --MAX-FAIL=* ) max_fail=${1#*=};;
+      -SD|--STAGE-DIR ) stage_dir=$2;;
+      --STAGE-DIR=* ) stage_dir=${1#*=};;
 			## Internal use
 			-RE) resName=$2;;
 			-NT) name_target=$2;;
@@ -264,5 +267,20 @@ done
 if ! awk -v v="$max_fail" 'BEGIN { exit !(v ~ /^[0-9]+([.][0-9]+)?$/ && v+0 >= 0 && v+0 <= 100) }'; then
 	echo "ERROR: -mf must be a percentage between 0 and 100 (got: ${max_fail})" >&2
 	exit 1
+fi
+
+# -sd ram means the task stages its ligands on a tmpfs, so the extraction and the
+# docking output never touch a disk. The path is resolved on the compute node.
+if [ "$stage_dir" != "N/A" ];then
+	case `printf "%s" "$stage_dir" | tr '[:upper:]' '[:lower:]'` in
+		ram|shm|tmpfs ) stage_dir="/dev/shm";;
+	esac
+	case "$stage_dir" in
+		/*) ;;
+		*)
+			echo "ERROR: -sd must be 'ram' or an absolute path (got: ${stage_dir})" >&2
+			exit 1
+			;;
+	esac
 fi
 

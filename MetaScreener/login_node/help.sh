@@ -189,6 +189,7 @@ if [  -z "$option" ];then
 	printGlobalHelp "rb" "O" "" "Number of files saved as bestScore in VS. Default (50)."
 	printGlobalHelp "rf" "O" "" "Number of files saved in VS. Default (500)."
 	printGlobalHelp "mf" "O" "" "Maximum percentage of ligands without a score still accepted when the VS library is a tar. Default (5). A task that never finished does not count towards this percentage."
+	printGlobalHelp "sd" "O" " [ ram | path ]" "Where each task extracts its slice of a tar library. 'ram' uses /dev/shm (counts against the job memory, -mm). Default is \$TMPDIR, or /tmp."
 	
 	echo ""
 	echo -e "${PURPLE}Queue Manager Options${NONE}"

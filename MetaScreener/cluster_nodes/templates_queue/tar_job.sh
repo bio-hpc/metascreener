@@ -28,6 +28,9 @@ emit_tar_job() {
   _tar_append "MS_EXT_QUERY=\"${ext_query}\""
   _tar_append "MS_EXPERIMENT=\"${folder_experiment%/}\""
   _tar_append "MS_PACKED_PY=\"${CWD}MetaScreener/analyze_results/Get_histogram/PackedStore.py\""
+  if [ -n "$stage_dir" ] && [ "$stage_dir" != "N/A" ]; then
+    _tar_append "MS_STAGE_ROOT=\"${stage_dir}\""
+  fi
   _tar_append "source ${path_cluster_nodes}tar_runtime.sh"
   _tar_append 'ms_tar_begin || exit $?'
   _tar_append 'if [ "$MS_TAR_SKIP" != 1 ]; then'

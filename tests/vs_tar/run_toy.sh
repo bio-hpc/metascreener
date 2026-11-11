@@ -113,9 +113,12 @@ run_vs() {
   local software="$1" target="$2" library="$3" x="$4" y="$5" z="$6" out="$7"
   rm -rf "$ROOT/$out" "$ROOT/$(basename "$out").tar.gz"
   echo "== VS $software =="
+  # TOY_STAGE (e.g. "ram") maps to -sd so the toy run can stage on a tmpfs.
+  local stage_args=()
+  [ -n "${TOY_STAGE:-}" ] && stage_args=(-sd "$TOY_STAGE")
   bash "$ROOT/ms.sh" -o VS -s "$software" -t "$target" -q "$library" \
     -x "$x" -y "$y" -z "$z" -ij 2 -se y -hi y -qu main -nj "toy_tar_${software}" \
-    -d "$out" -rf 1 -rb 1
+    -d "$out" -rf 1 -rb 1 "${stage_args[@]}"
   local tgz="$ROOT/$(basename "$out").tar.gz"
   [ -f "$tgz" ]
   mv "$tgz" "$WORK/"
