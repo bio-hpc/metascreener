@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 import os
@@ -10,7 +10,10 @@ import signal
 import progressbar
 import subprocess
 import json
-import pybel
+try:
+    import pybel
+except ImportError:
+    from openbabel import pybel
 import numpy as np
 from debug import BColors
 

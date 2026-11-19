@@ -1,10 +1,12 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import os
 import sys
 
-
-from _. ..analyze_resuls Get_histogram.Tools import *
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                '..', '..', 'analyze_results', 'Get_histogram'))
+from Tools import read_coords, get_rmsd, get_aligned_rmsd
 
 
 if __name__ == '__main__':

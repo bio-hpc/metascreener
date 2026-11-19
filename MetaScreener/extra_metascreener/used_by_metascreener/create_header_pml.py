@@ -1,4 +1,4 @@
-# !/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
    Description: Adds the protein to the pml, the indicated queries and returns the default parameters that are used

@@ -1,4 +1,4 @@
-# !/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
 #   Author: Jorge de la Peña García
@@ -37,7 +37,7 @@ def print_error( lst_text ):
 def print_c(cl):
     if cl != TOKEN_EMPTY:
         for l in cl:
-            print   '{}_{} {} {} {}'.format(l['sw'], l['cluster'], l['coords'], l['score'], l['lig_name'])
+            print('{}_{} {} {} {}'.format(l['sw'], l['cluster'], l['coords'], l['score'], l['lig_name']))
     else:
         print(TOKEN_EMPTY)
     print("")
@@ -148,8 +148,8 @@ if DEBUG:
         print ("\n\n"+i)    
 
         for cl in lst_cl:
-			total += 1  
-			print (cl)
+            total += 1
+            print(cl)
 print_s('End Read Data')
 print  ("\n\n")
 
@@ -309,8 +309,8 @@ def print_latex(text):
 def rectify_line(line):
 
     lst_queries = []
-    print len(line)
-    print len(dict_clusters)
+    print(len(line))
+    print(len(dict_clusters))
     for i in line:
         print_c (i)
 

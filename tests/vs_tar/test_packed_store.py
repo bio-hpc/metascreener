@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """Toy check of the per-task tar index, without running a docking."""
 from __future__ import print_function

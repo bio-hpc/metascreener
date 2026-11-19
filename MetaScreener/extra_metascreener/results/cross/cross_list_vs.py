@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #   Author: Carlos Martínez Cortés
 #   Email:  cmartinez1@ucam.edu
@@ -122,7 +122,7 @@ for molecule in all[first_sw]:
     aux = ""
     for sw in all.keys():
         if sw != first_sw:
-            if all[sw].has_key(molecule):
+            if molecule in all[sw]:
                 result = all[sw][molecule]
                 aux += '{} {} {}'.format(all[sw].keys().index(molecule)+1, result[0], result[1] )
             else:

@@ -18,5 +18,5 @@ res = remover.StripMol(m)
 smi_in = Chem.MolToSmiles(m)
 smi_out = Chem.MolToSmiles(res)
 
-print smi_in
-print smi_out
+print(smi_in)
+print(smi_out)

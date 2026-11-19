@@ -1,4 +1,4 @@
-# !/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 import sys
@@ -100,6 +100,8 @@ class Clusters:
                     "STANDARD_BD"
                 )
                 cl.pml = subprocess.check_output(cmd, shell=True)
+                if isinstance(cl.pml, bytes):
+                    cl.pml = cl.pml.decode("utf-8", "ignore")
 
                 aux = cl.pml.split("\n")
                 group = aux[len(aux)-3]
@@ -162,7 +164,8 @@ def write_protein_pml(file_pml, protein_file, f_molecules):
 
     cmd = PML_HEAD_PYMOL.format(" -t "+f_rec, False, True)
     f = open(file_pml, "a")
-    f.write(subprocess.check_output(cmd, shell=True))
+    _out = subprocess.check_output(cmd, shell=True)
+    f.write(_out.decode("utf-8", "ignore") if isinstance(_out, bytes) else _out)
     f.close()
 
     return name_protein
@@ -282,7 +285,8 @@ if args.debug:
 file_pml_score = f_o + "pymol_score.pml"
 f = open(file_pml_score, 'w')
 cmd = PML_HEAD_PYMOL.format("", True, False)
-f.write(subprocess.check_output(cmd, shell=True))
+_out = subprocess.check_output(cmd, shell=True)
+f.write(_out.decode("utf-8", "ignore") if isinstance(_out, bytes) else _out)
 f.close()
 write_protein_pml(file_pml_score, args.receptor, f_molecules)
 

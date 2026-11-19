@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #       Author:   Carlos Martínez Cortés
 #       Usage:  Generate score with Vina from a protein and a ligand

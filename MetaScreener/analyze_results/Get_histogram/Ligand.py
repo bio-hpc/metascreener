@@ -1,11 +1,13 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 from __future__ import division, absolute_import, print_function, \
     unicode_literals
-import six
 import re
 import json
-import pybel
+try:
+    import pybel
+except ImportError:
+    from openbabel import pybel
 from .Tools import *
 
 
@@ -42,7 +44,7 @@ class Ligand(object):
         self._mol_coords = None
         self._center = None
 
-        for key, value in six.iteritems(read_json(fname, cfg)):
+        for key, value in read_json(fname, cfg).items():
             setattr(self, key, value)
 
         self.file_json = fname

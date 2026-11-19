@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 import sys
@@ -42,6 +42,8 @@ def map_residues(folder, num_map):
         for i in glob(folder + 'clustered_poses/*.pdb'):
             cmd = "python MetaScreener/extra_metascreener/used_by_metascreener/standar_file_coords.py "+i
             out = subprocess.check_output(cmd, shell=True)
+            if isinstance(out, bytes):
+                out = out.decode()
             for i in out.split("\n"):
                 if not i.startswith("#") and  i != "":
                     aux = i.split(":")
@@ -106,13 +108,13 @@ for folder in lst_dirs:
         lines_pml = read_pml(folder)
 
         clusters = {}
-        for k, v in dict_json.iteritems():
+        for k, v in dict_json.items():
 
             name = os.path.basename(k)
             name = name[:len(name) - len(PREFIX_INTERACTIONS)]
 
             cl = get_cl(lines_pml, name)
-            for k_2, v_2 in v['interactions_groups'].iteritems():
+            for k_2, v_2 in v['interactions_groups'].items():
                 for i in v_2['interactions']:
                     aux_res = i.split('|')[1]+"_"+i.split('|')[0]
                     if aux_res in lst_residues or lst_residues[0]== "all":
@@ -124,14 +126,14 @@ for folder in lst_dirs:
                         if k_2[0:6] not in clusters[cl][str(sum_residues(aux_res, outputGap))]:
                             clusters[cl][str(sum_residues(aux_res, outputGap))].append(k_2[0:6])
         lst = []
-        for cl, v in clusters.iteritems():
+        for cl, v in clusters.items():
             line = ""
             num=0
-            for k_2, v_2 in v.iteritems():
+            for k_2, v_2 in v.items():
                 num += len(v_2)
                 line += k_2 +"("+ str(' '.join(v_2))+") "
             lst.append('{}; {}; {}'.format(cl, num, line))
 
         for i in sorted(lst, key = lambda x: len(x.split(" ")), reverse=True):
-       	    print("\t"+i)
-	print("")
+            print("\t"+i)
+        print("")

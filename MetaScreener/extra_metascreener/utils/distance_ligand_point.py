@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 import sys
@@ -20,6 +20,8 @@ if __name__ == '__main__':
     z = float(coords.split(",")[2]) 
     cmd = 'python '+STANDARD_FILE_COORDS+ ' '+ query
     out = subprocess.check_output(cmd, shell=True)
+    if isinstance(out, bytes):
+        out = out.decode("utf-8", "ignore")
     x_sum = 0
     y_sum = 0
     z_sum = 0

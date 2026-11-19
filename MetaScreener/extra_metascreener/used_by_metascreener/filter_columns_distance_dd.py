@@ -1,4 +1,4 @@
-# !/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
    Description: Generates a csv with the euclidian distance between the ligand and each ligand in the database

@@ -1,4 +1,4 @@
-# !/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
    Description: Convert molecule folders between sdf, pdb, pdbqt and mol2 formats
